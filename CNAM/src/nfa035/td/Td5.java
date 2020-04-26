@@ -10,7 +10,7 @@ public class Td5 {
 		ArrayList<String> L = new ArrayList<String>();
 		for (int i = 1; i < 7; i++) {
 			L.add("position " + i);
-		}
+		}  
 		System.out.println("********************");
 		afficheListeSt(L);
 		L.set(4, "element remplacé");
