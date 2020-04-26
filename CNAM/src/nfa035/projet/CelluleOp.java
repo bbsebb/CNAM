@@ -62,21 +62,7 @@ public class CelluleOp<T, U> extends Cellule {
 	}
 	
 	public void setFormule(T operande1, char operateur, U operande2) {
-		 String i = "552"+((Cellule) operande1).getResultat();
-		if (operande1 instanceof Cellule)
-			if (operande2 instanceof Cellule)
-				super.setFormule(((Cellule) operande1).getResultat() + operateur + (((Cellule) operande2).getResultatToString()));
-			else if (operande2 instanceof Float)
-				super.setFormule(((Cellule) operande1).getResultat() + operateur + (Float) operande2);
-			else
-				throw new IllegalArgumentException();
-		if (operande1 instanceof Float)
-			if (operande2 instanceof Cellule)
-				super.setFormule((Float) operande1 + operateur + (((Cellule) operande2).getResultatToString()));
-			else if (operande2 instanceof Float)
-				super.setFormule((Float) operande1 + operateur + (Double) operande2);
-			else
-				throw new IllegalArgumentException();
+
 
 	}
 

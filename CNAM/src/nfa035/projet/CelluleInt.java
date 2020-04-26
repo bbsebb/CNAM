@@ -14,8 +14,14 @@ public class CelluleInt extends Cellule{
 		return 0;
 	}
 
-	@Override
+	
 	public void setFormule() {
+	}
+
+	@Override
+	public String getFormule() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
