@@ -1,7 +1,7 @@
 package nfa035.projet;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Cette classe est une feuille d'un tableur contenant des {@link Cellule cellules}
@@ -9,7 +9,10 @@ import java.util.Set;
  *
  */
 public class Feuille {
-	private Set<Cellule> cellules = new HashSet<Cellule>();
+	/**
+	 * Chaque valeur correspond à l'ensemble des descendants de la clé par fermeture transitive. Une valeur ne peut aparaitre 2 fois, on enlève donc la possibilité d'un cycle.
+	 */
+	private TreeMap<Cellule,TreeSet<Cellule>> cellules = new TreeMap<Cellule,TreeSet<Cellule>>();
 	
 	
 	
@@ -57,6 +60,14 @@ public class Feuille {
 		
 	}
 	
+	
+	private void fermetureTransitive() {
+		
+	}
+	
+	private TreeSet<Cellule> getListeCellule() {
+		return (TreeSet<Cellule>)cellules.keySet();
+	}
 	
 	
 	
