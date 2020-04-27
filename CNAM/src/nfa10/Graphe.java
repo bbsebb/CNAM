@@ -1,7 +1,5 @@
 package nfa10;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -148,7 +146,7 @@ public class Graphe<T> {
 	 */
 	public void afficheSommetsGraphe() {
 		for (Sommet<T> s : this.graphe) {
-			System.out.print("Sommet numero  " + graphe. + " ");
+			System.out.print("Sommet numero  ?? ");
 			s.afficherAdj();
 			System.out.println(" ");
 		}
