@@ -4,7 +4,7 @@ package nfa035.projet;
  * @author bbseb
  *
  */
- public abstract class Cellule implements Contenu{
+ public class Cellule implements Contenu{
 	protected int x,y;
 	protected String formule;
 	
@@ -97,5 +97,17 @@ package nfa035.projet;
 	 */
 	public void setFormule(String formule) {
 		this.formule = formule;
+	}
+
+	@Override
+	public float getResultat() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getFormule() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
