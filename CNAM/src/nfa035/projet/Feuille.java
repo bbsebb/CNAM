@@ -1,8 +1,9 @@
 package nfa035.projet;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Cette classe est une feuille d'un tableur contenant des {@link Cellule cellules}
@@ -13,7 +14,7 @@ public class Feuille {
 	/**
 	 * Chaque valeur correspond à l'ensemble des descendants de la clé par fermeture transitive. Une valeur ne peut aparaitre 2 fois, on enlève donc la possibilité d'un cycle.
 	 */
-	private HashMap<Cellule,HashSet<Cellule>> cellules = new HashMap<Cellule,HashSet<Cellule>>();
+	private TreeMap<Cellule,TreeSet<Cellule>> cellules = new TreeMap<Cellule,TreeSet<Cellule>>();
 	
 	/**
 	 * Constructeur qui crée une feuille de 11 lignes et 11 colonnes
@@ -41,8 +42,8 @@ public class Feuille {
 	 * @param nbrColonne est le nombre de colonne du bloc crée
 	 * @return une liste de cellule unique
 	 */
-	private HashSet<Cellule> creerBloc(int nbrLigne,int nbrColonne) {
-		HashSet<Cellule> bloc = new HashSet<Cellule>();
+	private TreeSet<Cellule> creerBloc(int nbrLigne,int nbrColonne) {
+		TreeSet<Cellule> bloc = new TreeSet<Cellule>();
 		for(int i = 0; i<nbrLigne-1;i++) {
 			for(int j = 0; j<nbrColonne-1;j++) {
 				bloc.add(new Cellule(i,j));
@@ -93,6 +94,7 @@ public class Feuille {
 	 * @see CelluleValeur
 	 */
 	public void setCellule(int x, int y, String formule) {
+		Cellule c = this.getCellule(x, y);
 		this.parseFormule(formule);
 	}
 	
@@ -109,10 +111,20 @@ public class Feuille {
 		
 	}
 	
-	private HashSet<Cellule> getListeCellule() {
-		return (HashSet<Cellule>)cellules.keySet();
+	private Set<Cellule> getListeCellule() {
+		
+		return cellules.keySet();
+		
 	}
 	
-	
+	public void affichageCellule() {
+		Set<Cellule> listCellule = this.getListeCellule();
+		int x,y;
+		x=0;
+		y=x;
+		for(Cellule c : listCellule) {
+			System.out.println(c.getX() + " " + c.getY()  + " -> Formule : " +c.getFormule()+" Resultat : " + c.getResultat());
+		}
+	}
 	
 }

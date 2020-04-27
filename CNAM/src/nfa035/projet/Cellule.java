@@ -4,7 +4,7 @@ package nfa035.projet;
  * @author bbseb
  *
  */
- public class Cellule implements Contenu{
+ public class Cellule implements Contenu,Comparable{
 	protected int x,y;
 	protected String formule;
 	
@@ -14,7 +14,7 @@ package nfa035.projet;
 	public Cellule() {
 		this.setX(0);
 		this.setY(0);
-
+		this.setFormule("Inconnu");
 	}
 
 	/**
@@ -25,8 +25,28 @@ package nfa035.projet;
 	public Cellule(int x, int y) {
 		this.setX(x);
 		this.setY(y);
+		this.setFormule("Inconnu");
 	}
 	
+
+	@Override
+	public int compareTo(Object o) {
+		Cellule c = (Cellule)o;
+		int indiceComparaison = 0;
+		if(this.getX() > c.getX())
+			indiceComparaison = 1;
+		else if (this.getX() < c.getX())
+			indiceComparaison = -1;
+		else {
+			if(this.getY() > c.getY())
+				indiceComparaison = 1;
+			else if (this.getY() < c.getY())
+				indiceComparaison = -1;
+			else 
+				indiceComparaison = 0;
+		}
+		return indiceComparaison;
+	}
 	
 	@Override
 	public int hashCode() {
@@ -108,6 +128,8 @@ package nfa035.projet;
 	@Override
 	public String getFormule() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.formule;
 	}
+
+
 }
