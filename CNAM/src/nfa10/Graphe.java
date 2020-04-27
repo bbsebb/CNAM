@@ -1,6 +1,8 @@
 package nfa10;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Permet de créer un graphe de sommet et d'arc
@@ -11,8 +13,9 @@ import java.util.ArrayList;
  *
  */
 public class Graphe<T> {
-	ArrayList<Sommet<T>> graphe;
-	ArrayList<Arc<T>> arcs;
+	TreeSet<Sommet<T>> graphe;
+	TreeSet<Arc<T>> arcs;
+	
 
 	/**
 	 * Crée un graphe
@@ -20,8 +23,8 @@ public class Graphe<T> {
 	 * 
 	 */
 	public Graphe() {
-		this.graphe = new ArrayList<Sommet<T>>();
-		this.arcs = new ArrayList<Arc<T>>();
+		this.graphe = new TreeSet<Sommet<T>>();
+		this.arcs = new TreeSet<Arc<T>>();
 	}
 
 	/**
@@ -30,8 +33,8 @@ public class Graphe<T> {
 	 * @param s est un Sommet de T, ou T est générique
 	 */
 	public Graphe(Sommet<T> s) {
-		this.graphe = new ArrayList<Sommet<T>>();
-		this.arcs = new ArrayList<Arc<T>>();
+		this.graphe = new TreeSet<Sommet<T>>();
+		this.arcs = new TreeSet<Arc<T>>();
 		this.addSommet(s);
 	}
 
@@ -145,7 +148,7 @@ public class Graphe<T> {
 	 */
 	public void afficheSommetsGraphe() {
 		for (Sommet<T> s : this.graphe) {
-			System.out.print("Sommet numero  " + graphe.indexOf(s) + " ");
+			System.out.print("Sommet numero  " + graphe. + " ");
 			s.afficherAdj();
 			System.out.println(" ");
 		}

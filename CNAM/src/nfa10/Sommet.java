@@ -1,6 +1,6 @@
 package nfa10;
 
-import java.util.ArrayList;
+import java.util.TreeSet;
 
 /**
  * Crée un sommet
@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Sommet<T> {
 	protected T s;
-	protected ArrayList<Sommet<T>> adjacents,predecesseurs;
+	protected TreeSet<Sommet<T>> adjacents,predecesseurs;
 
 	/**
 	 * Crée un sommet avec un nom générique
@@ -21,8 +21,8 @@ public class Sommet<T> {
 	 * @param name est le nom du sommet
 	 */
 	public Sommet(T name) {
-		adjacents = new ArrayList<Sommet<T>>();
-		predecesseurs = new ArrayList<Sommet<T>>();
+		adjacents = new TreeSet<Sommet<T>>();
+		predecesseurs = new TreeSet<Sommet<T>>();
 		this.setS(name);
 	}
 
@@ -47,14 +47,14 @@ public class Sommet<T> {
 	 * 
 	 * @return la liste des adjacents
 	 */
-	public ArrayList<Sommet<T>> getAdj() {
+	public TreeSet<Sommet<T>> getAdj() {
 		return this.adjacents;
 	}
 
 	/**
 	 * @return the predecesseurs
 	 */
-	protected ArrayList<Sommet<T>> getPredecesseurs() {
+	protected TreeSet<Sommet<T>> getPredecesseurs() {
 		return predecesseurs;
 	}
 
