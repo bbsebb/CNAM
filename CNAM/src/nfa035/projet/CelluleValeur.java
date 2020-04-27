@@ -1,9 +1,12 @@
 package nfa035.projet;
 
-public class CelluleInt extends Cellule{
 
-	
-	
+/**
+ * Cette classe est un cellule possédant une simple valeur {@link Operande (operande)}
+ * @author bbseb
+ *
+ */
+public class CelluleValeur extends Cellule{
 	
 	
 	

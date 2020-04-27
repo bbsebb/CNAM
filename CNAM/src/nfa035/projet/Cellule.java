@@ -4,12 +4,12 @@ package nfa035.projet;
  * @author bbseb
  *
  */
- public abstract class Cellule implements AffichageCellule{
+ public abstract class Cellule implements Contenu{
 	protected int x,y;
 	protected String formule;
 	
 	/**
-	 * Constructeur par defaut
+	 * Constructeur par defaut, il instancie une cellule à une place indéterminé (0,0)
 	 */
 	public Cellule() {
 		this.setX(0);
@@ -54,10 +54,15 @@ package nfa035.projet;
 	}
 
 
-	
+	/**
+	 * Renvoie le resultat sous forme de chaine
+	 * @return le resultat
+	 */
 	public  String getResultatToString() {
 		return String.valueOf(this.getResultat());
 	}
+	
+
 
 	/**
 	 * @return le numéro de la ligne
@@ -87,5 +92,10 @@ package nfa035.projet;
 		this.y = y;
 	}
 
-	
+	/**
+	 * @param modifie la formule de la cellule
+	 */
+	public void setFormule(String formule) {
+		this.formule = formule;
+	}
 }

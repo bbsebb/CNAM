@@ -1,38 +1,42 @@
 package nfa035.projet;
 
-public class CelluleOp<T, U> extends Cellule {
+/**
+ * Cette classe est un cellule possédant une opération arithmétique simple {@link Operateur (liste opérateur)} entre deux {@link Operande operandes} 
+ * @author bbseb
+ *
+ */
+public class CelluleOp extends Cellule {
 
-	private T operande1;
-	private U operande2;
+	private Operande operande1;
+	private Operande operande2;
 	private Operateur operateur;
 	
 
 	/**
 	 * @return le operande1
 	 */
-	private T getOperande1() {
+	private Operande getOperande1() {
 		return this.operande1;
 	}
 
 	/**
 	 * @param operande1 le operande1 à éditer
 	 */
-	private void setOperande1(T operande1) {
-		if(operande1 instanceof Cellule || operande1 instanceof Double)
+	private void setOperande1(Operande operande1) {
 		this.operande1 = operande1;
 	}
 
 	/**
 	 * @return le operande2
 	 */
-	private U getOperande2() {
+	private Operande getOperande2() {
 		return this.operande2;
 	}
 
 	/**
 	 * @param operande2 le operande2 à éditer
 	 */
-	private void setOperande2(U operande2) {
+	private void setOperande2(Operande operande2) {
 		this.operande2 = operande2;
 	}
 
@@ -61,14 +65,13 @@ public class CelluleOp<T, U> extends Cellule {
 		return 0;
 	}
 	
-	public void setFormule(T operande1, char operateur, U operande2) {
-
-
+	public void setFormule(Operande operande1, Operateur operateur, Operande operande2) {
+		this.setOperande1(operande1);
+		this.setOperande2(operande2);
+		this.setOperateur(operateur);
 	}
 
-	private boolean isCycle() {
-		return false;
-	}
+	
 
 
 }
