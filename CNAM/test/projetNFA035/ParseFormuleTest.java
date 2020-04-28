@@ -3,15 +3,10 @@
  */
 package projetNFA035;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,34 +18,7 @@ import nfa035.projet.ParseFormule;
  */
 class ParseFormuleTest {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeAll
-	static void init() throws Exception {
-		
-	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterAll
-	static void close() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterEach
-	void tearDown() throws Exception {
-	}
 
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#ParseFormule()}.
@@ -72,51 +40,50 @@ class ParseFormuleTest {
 	 */
 	@Test
 	@DisplayName("Test de 0123456789,56789")
-	void test0estCelluleValeur() {
-		ParseFormule p = new ParseFormule(" 0123456789,56789 ");
-		assertTrue(p.estCelluleValeur()," 0123456789,56789 ");
+	void test0estValeur() {
+		
+		assertTrue(ParseFormule.estValeur(" 0123456789,56789 ")," 0123456789,56789 ");
 	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estCelluleValeur(java.lang.String)}.
 	 */
 	@Test
 	@DisplayName("Test de 0123456789,01234")
-	void test1estCelluleValeur() {
-		ParseFormule p = new ParseFormule(" 0123456789,01234 ");
-		assertTrue(p.estCelluleValeur()," 0123456789,01234 ");
+	void test1estValeur() {
+		assertTrue(ParseFormule.estValeur(" 0123456789,01234 ")," 0123456789,01234 ");
 	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estCelluleValeur(java.lang.String)}.
 	 */
 	@Test
-	void test2estCelluleValeur() {
-		ParseFormule p = new ParseFormule("123456789");
-		assertTrue(p.estCelluleValeur(),"123456789");
+	void test2estValeur() {
+		
+		assertTrue(ParseFormule.estValeur("123456789"),"123456789");
 	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estCelluleValeur(java.lang.String)}.
 	 */
 	@Test
-	void test3estCelluleValeur() {
-		ParseFormule p = new ParseFormule("12345 6789");
-		assertFalse(p.estCelluleValeur(),"12345 6789");
+	void test3estValeur() {
+		
+		assertFalse(ParseFormule.estValeur("12345 6789"),"12345 6789");
 	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estCelluleValeur(java.lang.String)}.
 	 */
 	@Test
-	void test4estCelluleValeur() {
-		ParseFormule p = new ParseFormule("12,345,6789");
-		assertFalse(p.estCelluleValeur(),"12,345,6789");
+	void test4estValeur() {
+		
+		assertFalse(ParseFormule.estValeur("12,345,6789"),"12,345,6789");
 	}	
 	
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estCelluleValeur(java.lang.String)}.
 	 */
 	@Test
-	void test5estCelluleValeur() {
-		ParseFormule p = new ParseFormule("12,6a789");
-		assertFalse(p.estCelluleValeur(),"12,6a789");
+	void test5estValeurr() {
+		
+		assertFalse(ParseFormule.estValeur("12,6a789"),"12,6a789");
 	}	
 
 	/**
@@ -151,9 +118,45 @@ class ParseFormuleTest {
 	 */
 	@Test
 	void testEstCellule() {
-		
+		assertTrue(ParseFormule.estCellule("1.1"),"1.1");	
 	}
-
+	
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
+	 */
+	@Test
+	void test2EstCellule() {
+		assertTrue(ParseFormule.estCellule("9.9"),"9.9");	
+	}
+	
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
+	 */
+	@Test
+	void test3EstCellule() {
+		assertFalse(ParseFormule.estCellule("0.0"),"0.0");	
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
+	 */
+	@Test
+	void test4EstCellule() {
+		assertFalse(ParseFormule.estCellule("11"),"11");	
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
+	 */
+	@Test
+	void test5EstCellule() {
+		assertFalse(ParseFormule.estCellule("11."),"11.");	
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
+	 */
+	@Test
+	void test6EstCellule() {
+		assertFalse(ParseFormule.estCellule(".11"),".11");	
+	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estFonction()}.
 	 */
@@ -176,14 +179,115 @@ class ParseFormuleTest {
 	@Test
 	void testEstFonctionSomme() {
 		
+		assertTrue(ParseFormule .estFonctionSomme("somme(1.1;2.2)"),"somme(1.1;2.2)");
 	}
 
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
+	 */
+	@Test
+	void test1EstFonctionSomme() {
+	
+		assertTrue(ParseFormule.estFonctionSomme("Somme(1.1;2.2)"),"Somme(1.1;2.2)");
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
+	 */
+	@Test
+	void test2EstFonctionSomme() {
+		
+		assertFalse(ParseFormule.estFonctionSomme("Soeme(1.1;2.2)"),"Soeme(1.1;2.2)");
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
+	 */
+	@Test
+	void test3EstFonctionSomme() {
+		
+		assertFalse(ParseFormule.estFonctionSomme("Somme(0.0;2.2)"),"Somme(0.0;2.2)");
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
+	 */
+	@Test
+	void test4EstFonctionSomme() {
+	
+		assertFalse(ParseFormule.estFonctionSomme("Somme(1.1;22.)"),"Somme(1.1;22.)");
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
+	 */
+	@Test
+	void test5EstFonctionSomme() {
+		
+		assertFalse(ParseFormule.estFonctionSomme("Somme(1.1;2.2"),"Somme(1.1;2.2");
+	}
+	
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
+	 */
+	@Test
+	void test6EstFonctionSomme() {
+		
+		assertFalse(ParseFormule.estFonctionSomme("Somme(1.1,2.2"),"Somme(1.1,2.2");
+	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
 	 */
 	@Test
 	void testEstFonctionMoyenne() {
 		
+		assertTrue(ParseFormule .estFonctionMoyenne("moyenne(1.1;2.2)"),"moyenne(1.1;2.2)");
+	}
+
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
+	 */
+	@Test
+	void test1EstFonctionMoyenne() {
+	
+		assertTrue(ParseFormule.estFonctionMoyenne("Moyenne(1.1;2.2)"),"Moyenne(1.1;2.2)");
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
+	 */
+	@Test
+	void test2EstFonctionMoyenne() {
+		
+		assertFalse(ParseFormule.estFonctionMoyenne("Soeme(1.1;2.2)"),"Soeme(1.1;2.2)");
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
+	 */
+	@Test
+	void test3EstFonctionMoyenne() {
+		
+		assertFalse(ParseFormule.estFonctionMoyenne("Moyenne(0.0;2.2)"),"Moyenne(0.0;2.2)");
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
+	 */
+	@Test
+	void test4EstFonctionMoyenne() {
+	
+		assertFalse(ParseFormule.estFonctionMoyenne("Moyenne(1.1;22.)"),"Moyenne(1.1;22.)");
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
+	 */
+	@Test
+	void test5EstFonctionMoyenne() {
+		
+		assertFalse(ParseFormule.estFonctionMoyenne("Moyenne(1.1;2.2"),"Moyenne(1.1;2.2");
+	}
+	
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
+	 */
+	@Test
+	void test6EstFonctionMoyenne() {
+		
+		assertFalse(ParseFormule.estFonctionMoyenne("Moyenne(1.1,2.2"),"Moyenne(1.1,2.2");
 	}
 
 	/**

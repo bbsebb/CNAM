@@ -1,7 +1,15 @@
 package nfa035.projet;
 
-import java.awt.datatransfer.StringSelection;
-
+/**
+ * <p>
+ * Permet de tester si la formule entrer par l'uilisateur est correcte et à quel
+ * class de cellule elle correspond. On pourra parser la formule en fonction des
+ * besoins
+ * </p>
+ * 
+ * @author bbseb
+ *
+ */
 public class ParseFormule {
 
 	private String formule;
@@ -10,34 +18,33 @@ public class ParseFormule {
 		this.formule = null;
 	}
 
+	/**
+	 * Constructeur qui enlève les espaces et met en minuscule le paramettre
+	 * 
+	 * @param formule
+	 */
 	public ParseFormule(String formule) {
 		this.formule = formule;
-		this.formule=this.formule.toUpperCase().trim();
+		this.formule = this.formule.toLowerCase().trim();
 
 	}
 
-	private boolean estValeur(String str) {
-		char[] chaine = str.toCharArray();
-		int compteurVirgule = 0;
-		for (int c : chaine) {
-			if (c != 44 && (c < 48 || c > 57))
-				return false;
-			if (c == 44) {
-				compteurVirgule++;
-				if (compteurVirgule > 1)
-					return false;
-			}
-		}
-		return true;
-	}
 
+
+	/**
+	 * Renvoie le nombre décimal de la chaine. La chaine doit être composé que d'un
+	 * nombre decimal valide avec une , ou non
+	 * 
+	 * @param str est la chaine à tester
+	 * @return le nombre décimal de la chaine
+	 */
 	private float parseValeur(String str) {
-		if (this.estValeur(str)) {
+		if (estValeur(str)) {
 			char[] chaine = str.toCharArray();
 			float i = 1;
 			int j = 0;
 			if (str.indexOf(',') >= 0)
-				j = chaine.length   - str.indexOf(',');
+				j = chaine.length - str.indexOf(',');
 			for (; j < chaine.length - 1; j++) {
 				i = i * 10;
 			}
@@ -52,46 +59,139 @@ public class ParseFormule {
 
 	}
 
-	public boolean estCellule() {
-
-return false;
+	/**
+	 * Teste si une chaine est une possible cellule avec a.b et a et b des entier
+	 * positif.
+	 * 
+	 * @param str la chaine de caractère à tester
+	 * @return vrai si c'est une cellule ou faut si ce n'est pas une cellule
+	 */
+	static public boolean estCellule(String str) {
+		str = str.trim().toLowerCase();
+		char[] chaine = str.toCharArray();
+		if (chaine.length == 3 && chaine[0] > 48 && chaine[0] < 58 && chaine[2] < 58 && chaine[2] > 48
+				&& chaine[1] == '.')
+			return true;
+		else
+			return false;
 	}
 
+	/**
+	 * Teste si la formule de l'instance correspond uniquement à une cellule de type valeur
+	 * 
+	 * @return true si elle correspond à une cellule de type valeur sinon false
+	 * @see CelluleValeur
+	 */
 	public boolean estCelluleValeur() {
-		if (this.estValeur(this.formule))
+		if (estValeur(this.formule))
 			return true;
 		else
 			return false;
 
 	}
-	
+
+	/**
+	 * Renvoie le nombre décimal qui correspond à la formule de l'instance, si cette
+	 * formule correspond à une cellule de type valeur.
+	 * 
+	 * @return le nombre décimal de la formule
+	 */
 	public float parseEstCelluleValeur() {
-		if(estCelluleValeur())
+		if (estCelluleValeur())
 			return this.parseValeur(this.formule);
 		else
 			throw new IllegalArgumentException();
 	}
-	
+
+	/**
+	 * Teste si la formule de l'instance correspond uniquement à une cellule de type fonction
+	 * 
+	 * @return true si elle correspond à une cellule de type fonction sinon false
+	 * @see CelluleFonction
+	 */	
 	public boolean estCelluleFonction() {
-		return false;
+		if (estFonctionMoyenne(this.formule) || estFonctionSomme(this.formule))
+			return true;
+		else
+			return false;
 
 	}
-
+	/**
+	 * Teste si la formule de l'instance correspond uniquement à une cellule de type opération
+	 * 
+	 * @return true si elle correspond à une cellule de type opération sinon false
+	 * @see CelluleOp
+	 */	
 	public boolean estCelluleOperation() {
 		return false;
 
 	}
 
-	public boolean estFonctionSomme() {
+	/**
+	 * Teste si le paramettre est uniquement une fonction somme.
+	 * 
+	 * @param le chaine à tester
+	 * @return vrai si c'est une fonction somme, faux sinon
+	 */
+	static public boolean estFonctionSomme(String str) {
+		str = str.trim().toLowerCase();
+		char[] cible = "somme(".toCharArray();
+		char[] chaine = str.toCharArray();
+		if (chaine.length == 14 && chaine[9] == ';' && chaine[13] == ')') {
+			for (int i = 0; i < cible.length; i++) {
+				if (cible[i] != chaine[i])
+					return false;
+			}
+			if (estCellule(str.substring(6, 9)) && estCellule(str.substring(10, 13)))
+				return true;
+		}
 		return false;
 
 	}
 
-	public boolean estFonctionMoyenne() {
+	/**
+	 * Teste si le paramettre est uniquement une fonction moyenne
+	 * 
+	 * @param le chaine à tester
+	 * @return vrai si c'est une fonction somme, faux sinon
+	 */
+	static public boolean estFonctionMoyenne(String str) {
+		str = str.trim().toLowerCase();
+		char[] cible = "moyenne(".toCharArray();
+		char[] chaine = str.toCharArray();
+		if (chaine.length == 16 && chaine[11] == ';' && chaine[15] == ')') {
+			for (int i = 0; i < cible.length; i++) {
+				if (cible[i] != chaine[i])
+					return false;
+			}
+			if (estCellule(str.substring(8, 11)) && estCellule(str.substring(12, 15)))
+				return true;
+		}
 		return false;
 
 	}
-
+	
+	/**
+	 * Teste si le paramettre correspond à un nombre décimal avec une , ou non
+	 * 
+	 * @param str est la chaine à tester
+	 * @return true si c'est un nombre décimal ou faux
+	 */
+	static public boolean estValeur(String str) {
+		str = str.trim().toLowerCase();
+		char[] chaine = str.toCharArray();
+		int compteurVirgule = 0;
+		for (int c : chaine) {
+			if (c != 44 && (c < 48 || c > 57))
+				return false;
+			if (c == 44) {
+				compteurVirgule++;
+				if (compteurVirgule > 1)
+					return false;
+			}
+		}
+		return true;
+	}
 	public boolean estOperationOperande() {
 		return false;
 
