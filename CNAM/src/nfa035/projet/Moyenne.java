@@ -8,6 +8,9 @@ package nfa035.projet;
  */
 public class Moyenne extends Fonction{
 
+	public Moyenne(Bloc b) {
+		super(b);
+	}
 	@Override
 	public float getResultat() {
 		// TODO Auto-generated method stub

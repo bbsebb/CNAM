@@ -10,7 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import nfa035.projet.Bloc;
+import nfa035.projet.Moyenne;
 import nfa035.projet.ParseFormule;
+import nfa035.projet.Somme;
 
 /**
  * @author bbseb
@@ -111,8 +114,22 @@ class ParseFormuleTest {
 		ParseFormule p = new ParseFormule("123456789");
 		assertEquals(123456789f,p.parseEstCelluleValeur()," 123456789 ");
 	}
-
-
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
+	 */
+	@Test
+	void testParseEstCelluleFonction() {
+		ParseFormule p = new ParseFormule("Somme(1.1;2.2)");
+		assertEquals(new Somme(new Bloc(1,1,2,2)),p.parseEstCelluleFonction(),"Somme(1.1;2.2)");
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
+	 */
+	@Test
+	void test1ParseEstCelluleFonction() {
+		ParseFormule p = new ParseFormule("Moyenne(1.1;2.2)");	
+		assertEquals(new Moyenne(new Bloc(1,1,2,2)),p.parseEstCelluleFonction(),"Moyenne(1.1;2.2)");
+	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
 	 */

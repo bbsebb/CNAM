@@ -29,8 +29,6 @@ public class ParseFormule {
 
 	}
 
-
-
 	/**
 	 * Renvoie le nombre décimal de la chaine. La chaine doit être composé que d'un
 	 * nombre decimal valide avec une , ou non
@@ -60,24 +58,8 @@ public class ParseFormule {
 	}
 
 	/**
-	 * Teste si une chaine est une possible cellule avec a.b et a et b des entier
-	 * positif.
-	 * 
-	 * @param str la chaine de caractère à tester
-	 * @return vrai si c'est une cellule ou faut si ce n'est pas une cellule
-	 */
-	static public boolean estCellule(String str) {
-		str = str.trim().toLowerCase();
-		char[] chaine = str.toCharArray();
-		if (chaine.length == 3 && chaine[0] > 48 && chaine[0] < 58 && chaine[2] < 58 && chaine[2] > 48
-				&& chaine[1] == '.')
-			return true;
-		else
-			return false;
-	}
-
-	/**
-	 * Teste si la formule de l'instance correspond uniquement à une cellule de type valeur
+	 * Teste si la formule de l'instance correspond uniquement à une cellule de type
+	 * valeur
 	 * 
 	 * @return true si elle correspond à une cellule de type valeur sinon false
 	 * @see CelluleValeur
@@ -104,11 +86,12 @@ public class ParseFormule {
 	}
 
 	/**
-	 * Teste si la formule de l'instance correspond uniquement à une cellule de type fonction
+	 * Teste si la formule de l'instance correspond uniquement à une cellule de type
+	 * fonction
 	 * 
 	 * @return true si elle correspond à une cellule de type fonction sinon false
 	 * @see CelluleFonction
-	 */	
+	 */
 	public boolean estCelluleFonction() {
 		if (estFonctionMoyenne(this.formule) || estFonctionSomme(this.formule))
 			return true;
@@ -116,15 +99,55 @@ public class ParseFormule {
 			return false;
 
 	}
+
 	/**
-	 * Teste si la formule de l'instance correspond uniquement à une cellule de type opération
+	 * Renvoie la fonction associé au bloc donné dans la chaine de caractère
+	 * @return une fonction associé à un bloc de cellule
+	 */
+	public Fonction parseEstCelluleFonction() {
+
+		if (this.estCelluleFonction()) {
+			int pointeur = (estFonctionMoyenne()) ? 8 : 6;
+			char[] chaine = this.formule.toCharArray();
+			Bloc b = new Bloc(chaine[pointeur]-48, chaine[pointeur+2]-48, chaine[pointeur+4]-48, chaine[pointeur+6]-48);
+			if (this.estFonctionMoyenne())
+				return new Moyenne(b);
+			else if (this.estFonctionSomme())
+				return new Somme(b);
+			else
+				throw new IllegalArgumentException();
+		} else
+			throw new IllegalArgumentException();
+
+	}
+
+	/**
+	 * Teste si la formule de l'instance correspond uniquement à une cellule de type
+	 * opération
 	 * 
 	 * @return true si elle correspond à une cellule de type opération sinon false
 	 * @see CelluleOp
-	 */	
+	 */
 	public boolean estCelluleOperation() {
 		return false;
 
+	}
+
+	/**
+	 * Teste si une chaine est une possible cellule avec a.b et a et b des entier
+	 * positif.
+	 * 
+	 * @param str la chaine de caractère à tester
+	 * @return vrai si c'est une cellule ou faut si ce n'est pas une cellule
+	 */
+	static public boolean estCellule(String str) {
+		str = str.trim().toLowerCase();
+		char[] chaine = str.toCharArray();
+		if (chaine.length == 3 && chaine[0] > 48 && chaine[0] < 58 && chaine[2] < 58 && chaine[2] > 48
+				&& chaine[1] == '.')
+			return true;
+		else
+			return false;
 	}
 
 	/**
@@ -149,6 +172,10 @@ public class ParseFormule {
 
 	}
 
+	private boolean estFonctionSomme() {
+		return estFonctionSomme(this.formule);
+	}
+
 	/**
 	 * Teste si le paramettre est uniquement une fonction moyenne
 	 * 
@@ -168,9 +195,12 @@ public class ParseFormule {
 				return true;
 		}
 		return false;
-
 	}
-	
+
+	private boolean estFonctionMoyenne() {
+		return estFonctionMoyenne(this.formule);
+	}
+
 	/**
 	 * Teste si le paramettre correspond à un nombre décimal avec une , ou non
 	 * 
@@ -192,6 +222,7 @@ public class ParseFormule {
 		}
 		return true;
 	}
+
 	public boolean estOperationOperande() {
 		return false;
 
