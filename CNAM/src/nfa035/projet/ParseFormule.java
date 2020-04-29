@@ -362,8 +362,9 @@ public class ParseFormule {
 		str = str.trim().toLowerCase();
 		int compteur = 0;
 		for (Operateur op : Operateur.values()) {
-			if (str.contains(op.toString())) {
+			if (str.contains(op.toString()) && str.indexOf(op.toString()) == str.lastIndexOf(op.toString())) {
 				compteur++;
+				
 			}
 		}
 		if (compteur == 1)
