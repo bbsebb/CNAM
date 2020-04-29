@@ -126,6 +126,20 @@ public class ParseFormule {
 			throw new ErreurFormuleException();
 
 	}
+	/**
+	 * Teste si la formule de l'instance correspond uniquement à une cellule de type
+	 * Operation
+	 * 
+	 * @return true si elle correspond à une cellule de type fonction sinon false
+	 * @see CelluleOp
+	 */
+	public boolean estCelluleOperation() {
+		if (estOperation(this.formule))
+			return true;
+		else
+			return false;
+
+	}
 
 	/**
 	 * Teste si la formule est une opération avec deux opérandes qui peuvent être une référence de cellule ou une valeur et un opérateur de {@link Operateur Operateur}

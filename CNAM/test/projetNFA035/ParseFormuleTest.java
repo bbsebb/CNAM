@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -27,71 +26,25 @@ class ParseFormuleTest {
 
 
 
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#ParseFormule()}.
-	 */
-	@Test
-	void testParseFormule() {
-		
-	}
 
 	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#ParseFormule(java.lang.String)}.
+	 * Test method for {@link nfa035.projet.ParseFormule#estCelluleValeur(java.lang.String)}.
 	 */
-	@Test
-	void testParseFormuleString() {
+	@ParameterizedTest
+	@ValueSource(strings = { " 0123456789,56789 ", " 0123456789,01234 ", "123456789" })
+	void testestValeurTrue(String valeur) {
 		
+		assertTrue(ParseFormule.estValeur(valeur),valeur);
 	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estCelluleValeur(java.lang.String)}.
 	 */
-	@Test
-	@DisplayName("Test de 0123456789,56789")
-	void test0estValeur() {
+	@ParameterizedTest
+	@ValueSource(strings = { "12345 6789", "12,345,6789", "12,6a789" })
+	void testestValeurFalse(String valeur) {
 		
-		assertTrue(ParseFormule.estValeur(" 0123456789,56789 ")," 0123456789,56789 ");
+		assertFalse(ParseFormule.estValeur(valeur),valeur);
 	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estCelluleValeur(java.lang.String)}.
-	 */
-	@Test
-	@DisplayName("Test de 0123456789,01234")
-	void test1estValeur() {
-		assertTrue(ParseFormule.estValeur(" 0123456789,01234 ")," 0123456789,01234 ");
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estCelluleValeur(java.lang.String)}.
-	 */
-	@Test
-	void test2estValeur() {
-		
-		assertTrue(ParseFormule.estValeur("123456789"),"123456789");
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estCelluleValeur(java.lang.String)}.
-	 */
-	@Test
-	void test3estValeur() {
-		
-		assertFalse(ParseFormule.estValeur("12345 6789"),"12345 6789");
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estCelluleValeur(java.lang.String)}.
-	 */
-	@Test
-	void test4estValeur() {
-		
-		assertFalse(ParseFormule.estValeur("12,345,6789"),"12,345,6789");
-	}	
-	
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estCelluleValeur(java.lang.String)}.
-	 */
-	@Test
-	void test5estValeurr() {
-		
-		assertFalse(ParseFormule.estValeur("12,6a789"),"12,6a789");
-	}	
 
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
@@ -162,47 +115,23 @@ class ParseFormuleTest {
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
 	 */
-	@Test
-	void testEstCellule() {
-		assertTrue(ParseFormule.estCellule("1.1"),"1.1");	
+	@ParameterizedTest
+	@ValueSource(strings = {"1.1", "9.9" })
+	void testEstCelluleTrue(String cellule) {
+		assertTrue(ParseFormule.estCellule(cellule),cellule);	
 	}
+	
+
 	
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
 	 */
-	@Test
-	void test2EstCellule() {
-		assertTrue(ParseFormule.estCellule("9.9"),"9.9");	
+	@ParameterizedTest
+	@ValueSource(strings = {"0.0", "11","11.",".11" })
+	void testEstCelluleFalse(String cellule) {
+		assertFalse(ParseFormule.estCellule(cellule),cellule);	
 	}
 	
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
-	 */
-	@Test
-	void test3EstCellule() {
-		assertFalse(ParseFormule.estCellule("0.0"),"0.0");	
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
-	 */
-	@Test
-	void test4EstCellule() {
-		assertFalse(ParseFormule.estCellule("11"),"11");	
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
-	 */
-	@Test
-	void test5EstCellule() {
-		assertFalse(ParseFormule.estCellule("11."),"11.");	
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
-	 */
-	@Test
-	void test6EstCellule() {
-		assertFalse(ParseFormule.estCellule(".11"),".11");	
-	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estFonction()}.
 	 */
@@ -223,119 +152,43 @@ class ParseFormuleTest {
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
 	 */
-	@Test
-	void testEstFonctionSomme() {
+	@ParameterizedTest
+	@ValueSource(strings = { "somme(1.1;2.2)", "Somme(1.1;2.2)" })
+	void testEstFonctionSommeTrue(String fonction) {
 		
-		assertTrue(ParseFormule .estFonctionSomme("somme(1.1;2.2)"),"somme(1.1;2.2)");
+		assertTrue(ParseFormule .estFonctionSomme(fonction),fonction);
 	}
+
 
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
 	 */
-	@Test
-	void test1EstFonctionSomme() {
-	
-		assertTrue(ParseFormule.estFonctionSomme("Somme(1.1;2.2)"),"Somme(1.1;2.2)");
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
-	 */
-	@Test
-	void test2EstFonctionSomme() {
+	@ParameterizedTest
+	@ValueSource(strings = { "Soeme(1.1;2.2)", "Somme(0.0;2.2)", "Somme(1.1;22.)","Somme(1.1;2.2","Somme(1.1,2.2"})
+	void testEstFonctionSommeFalse(String somme) {
 		
-		assertFalse(ParseFormule.estFonctionSomme("Soeme(1.1;2.2)"),"Soeme(1.1;2.2)");
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
-	 */
-	@Test
-	void test3EstFonctionSomme() {
-		
-		assertFalse(ParseFormule.estFonctionSomme("Somme(0.0;2.2)"),"Somme(0.0;2.2)");
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
-	 */
-	@Test
-	void test4EstFonctionSomme() {
-	
-		assertFalse(ParseFormule.estFonctionSomme("Somme(1.1;22.)"),"Somme(1.1;22.)");
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
-	 */
-	@Test
-	void test5EstFonctionSomme() {
-		
-		assertFalse(ParseFormule.estFonctionSomme("Somme(1.1;2.2"),"Somme(1.1;2.2");
-	}
-	
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
-	 */
-	@Test
-	void test6EstFonctionSomme() {
-		
-		assertFalse(ParseFormule.estFonctionSomme("Somme(1.1,2.2"),"Somme(1.1,2.2");
+		assertFalse(ParseFormule.estFonctionSomme(somme),somme);
 	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
-	 */
-	@Test
-	void testEstFonctionMoyenne() {
+	 */	
+	@ParameterizedTest
+	@ValueSource(strings = { "moyenne(1.1;2.2)", "Moyenne(1.1;2.2)"})
+	void testEstFonctionMoyenneTrue(String moyenne) {
 		
-		assertTrue(ParseFormule .estFonctionMoyenne("moyenne(1.1;2.2)"),"moyenne(1.1;2.2)");
+		assertTrue(ParseFormule .estFonctionMoyenne(moyenne),moyenne);
 	}
 
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
 	 */
-	@Test
-	void test1EstFonctionMoyenne() {
-	
-		assertTrue(ParseFormule.estFonctionMoyenne("Moyenne(1.1;2.2)"),"Moyenne(1.1;2.2)");
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
-	 */
-	@Test
-	void test2EstFonctionMoyenne() {
+	@ParameterizedTest
+	@ValueSource(strings = { "Soeme(1.1;2.2)", "Moyenne(0.0;2.2)","Moyenne(1.1;22.)","Moyenne(1.1;2.2","Moyenne1.1;2.2)"})
+	void test2EstFonctionMoyenne(String moyenne) {
 		
-		assertFalse(ParseFormule.estFonctionMoyenne("Soeme(1.1;2.2)"),"Soeme(1.1;2.2)");
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
-	 */
-	@Test
-	void test3EstFonctionMoyenne() {
-		
-		assertFalse(ParseFormule.estFonctionMoyenne("Moyenne(0.0;2.2)"),"Moyenne(0.0;2.2)");
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
-	 */
-	@Test
-	void test4EstFonctionMoyenne() {
-	
-		assertFalse(ParseFormule.estFonctionMoyenne("Moyenne(1.1;22.)"),"Moyenne(1.1;22.)");
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
-	 */
-	@Test
-	void test5EstFonctionMoyenne() {
-		
-		assertFalse(ParseFormule.estFonctionMoyenne("Moyenne(1.1;2.2"),"Moyenne(1.1;2.2");
+		assertFalse(ParseFormule.estFonctionMoyenne(moyenne),moyenne);
 	}
 	
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
-	 */
-	@Test
-	void test6EstFonctionMoyenne() {
-		
-		assertFalse(ParseFormule.estFonctionMoyenne("Moyenne(1.1,2.2"),"Moyenne(1.1,2.2");
-	}
 
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estOperationOperande()}.
