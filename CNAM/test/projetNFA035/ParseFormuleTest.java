@@ -5,12 +5,16 @@ package projetNFA035;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import nfa035.projet.Bloc;
+import nfa035.projet.ErreurFormuleException;
 import nfa035.projet.Moyenne;
 import nfa035.projet.ParseFormule;
 import nfa035.projet.Somme;
@@ -91,44 +95,69 @@ class ParseFormuleTest {
 
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
+	 * @throws ErreurFormuleException 
 	 */
 	@Test
-	void testParseEstCelluleValeur() {
+	void testParseEstCelluleValeur() throws ErreurFormuleException {
 		ParseFormule p = new ParseFormule(" 325,25 ");
 		assertEquals(325,25f,p.parseEstCelluleValeur()," 325,25 ");
 	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
+	 * @throws ErreurFormuleException 
 	 */
 	@Test
-	void test1ParseEstCelluleValeur() {
+	void test1ParseEstCelluleValeur() throws ErreurFormuleException {
 		ParseFormule p = new ParseFormule(" 0123456789,01234 ");
 		assertEquals(123456789.01234f,p.parseEstCelluleValeur()," 0123456789,01234 ");
 	}
 	
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
+	 * @throws ErreurFormuleException 
 	 */
 	@Test
-	void test2ParseEstCelluleValeur() {
+	void test2ParseEstCelluleValeur() throws ErreurFormuleException {
 		ParseFormule p = new ParseFormule("123456789");
 		assertEquals(123456789f,p.parseEstCelluleValeur()," 123456789 ");
 	}
+	
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
+	 * @throws ErreurFormuleException 
 	 */
 	@Test
-	void testParseEstCelluleFonction() {
+	void test3ParseEstCelluleValeur()  {
+		ParseFormule p = new ParseFormule("aze");
+		assertThrows(ErreurFormuleException.class,() -> p.parseEstCelluleValeur()," 123456789 ");
+		
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
+	 * @throws ErreurFormuleException 
+	 */
+	@Test
+	void testParseEstCelluleFonction() throws ErreurFormuleException {
 		ParseFormule p = new ParseFormule("Somme(1.1;2.2)");
 		assertEquals(new Somme(new Bloc(1,1,2,2)),p.parseEstCelluleFonction(),"Somme(1.1;2.2)");
 	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
+	 * @throws ErreurFormuleException 
 	 */
 	@Test
-	void test1ParseEstCelluleFonction() {
+	void test1ParseEstCelluleFonction() throws ErreurFormuleException {
 		ParseFormule p = new ParseFormule("Moyenne(1.1;2.2)");	
 		assertEquals(new Moyenne(new Bloc(1,1,2,2)),p.parseEstCelluleFonction(),"Moyenne(1.1;2.2)");
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
+	 * @throws ErreurFormuleException 
+	 */
+	@Test
+	void test2ParseEstCelluleFonction() throws ErreurFormuleException {
+		ParseFormule p = new ParseFormule("Moyene(1.1;2.2)");	
+		assertThrows(ErreurFormuleException.class, () -> p.parseEstCelluleFonction());
 	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
@@ -185,9 +214,10 @@ class ParseFormuleTest {
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estOperation()}.
 	 */
-	@Test
-	void testEstOperation() {
-		
+	@ParameterizedTest
+	@ValueSource(strings = { "1.2 * 20,5", "20,20+3.4", " 21/36,2 ","1.2-3.4" })
+	void testEstOperation(String operation) {
+		assertTrue(ParseFormule.estOperation(operation));
 	}
 
 	/**
@@ -318,9 +348,10 @@ class ParseFormuleTest {
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estOperationOperateur()}.
 	 */
-	@Test
-	void testEstOperationOperateur() {
-		
+	@ParameterizedTest
+	@ValueSource(strings = { "+", "-", "*","/" })
+	void testEstOperationOperateur(String operateur) {
+		assertTrue(ParseFormule.estOperationOperateur(operateur));
 	}
 
 }

@@ -35,8 +35,9 @@ public class ParseFormule {
 	 * 
 	 * @param str est la chaine à tester
 	 * @return le nombre décimal de la chaine
+	 * @throws ErreurFormuleException est lancé si str n'est pas une valeur
 	 */
-	private float parseValeur(String str) {
+	private float parseValeur(String str) throws ErreurFormuleException {
 		if (estValeur(str)) {
 			char[] chaine = str.toCharArray();
 			float i = 1;
@@ -53,7 +54,7 @@ public class ParseFormule {
 			}
 			return rtr;
 		} else
-			throw new IllegalArgumentException();
+			throw new ErreurFormuleException();
 
 	}
 
@@ -63,6 +64,7 @@ public class ParseFormule {
 	 * 
 	 * @return true si elle correspond à une cellule de type valeur sinon false
 	 * @see CelluleValeur
+	 * 
 	 */
 	public boolean estCelluleValeur() {
 		if (estValeur(this.formule))
@@ -77,12 +79,13 @@ public class ParseFormule {
 	 * formule correspond à une cellule de type valeur.
 	 * 
 	 * @return le nombre décimal de la formule
+	 * @throws ErreurFormuleException est lancé si la formule n'est pas une valeur
 	 */
-	public float parseEstCelluleValeur() {
+	public float parseEstCelluleValeur() throws ErreurFormuleException {
 		if (estCelluleValeur())
 			return this.parseValeur(this.formule);
 		else
-			throw new IllegalArgumentException();
+			throw new ErreurFormuleException();
 	}
 
 	/**
@@ -102,34 +105,53 @@ public class ParseFormule {
 
 	/**
 	 * Renvoie la fonction associé au bloc donné dans la chaine de caractère
+	 * 
 	 * @return une fonction associé à un bloc de cellule
+	 * @throws ErreurFormuleException est lancé si la formule n'est pas une fonction
 	 */
-	public Fonction parseEstCelluleFonction() {
+	public Fonction parseEstCelluleFonction() throws ErreurFormuleException {
 
 		if (this.estCelluleFonction()) {
 			int pointeur = (estFonctionMoyenne()) ? 8 : 6;
 			char[] chaine = this.formule.toCharArray();
-			Bloc b = new Bloc(chaine[pointeur]-48, chaine[pointeur+2]-48, chaine[pointeur+4]-48, chaine[pointeur+6]-48);
+			Bloc b = new Bloc(chaine[pointeur] - 48, chaine[pointeur + 2] - 48, chaine[pointeur + 4] - 48,
+					chaine[pointeur + 6] - 48);
 			if (this.estFonctionMoyenne())
 				return new Moyenne(b);
 			else if (this.estFonctionSomme())
 				return new Somme(b);
 			else
-				throw new IllegalArgumentException();
+				throw new ErreurFormuleException();
 		} else
-			throw new IllegalArgumentException();
+			throw new ErreurFormuleException();
 
 	}
 
 	/**
-	 * Teste si la formule de l'instance correspond uniquement à une cellule de type
-	 * opération
+	 * Teste si la formule est une opération avec deux opérandes qui peuvent être une référence de cellule ou une valeur et un opérateur de {@link Operateur Operateur}
 	 * 
-	 * @return true si elle correspond à une cellule de type opération sinon false
-	 * @see CelluleOp
+	 * 
+	 * @return true si c'est une opération sinon false
+	 * 
 	 */
-	public boolean estCelluleOperation() {
-		return false;
+	static public boolean estOperation(String str) {
+		str = str.trim().toLowerCase();
+		char operateur = '0';
+		String[] operandes = new String[0];
+		for (Operateur op : Operateur.values()) {
+			if (str.contains(op.toString())) {
+				operandes = str.split(op.toRegex());
+				operateur = op.toChar();
+				break;
+			}
+		}
+		if (operateur != 0 && operandes.length == 2) {
+			if (estOperationOperande(operandes[0]) && estOperationOperande(operandes[1]))
+				return true;
+			else
+				return false;
+		} else
+			return false;
 
 	}
 
@@ -223,13 +245,21 @@ public class ParseFormule {
 		return true;
 	}
 
-	public boolean estOperationOperande() {
-		return false;
+	static public boolean estOperationOperande(String str) {
+		if (estCellule(str) || estValeur(str))
+			return true;
+		else
+			return false;
 
 	}
 
-	public boolean estOperationOperateur() {
+	static public boolean estOperationOperateur(String str) {
+		str = str.trim().toLowerCase();
+		for (Operateur op : Operateur.values()) {
+			if (str.contains(op.toString())) {
+				return true;
+			}
+		}
 		return false;
-
 	}
 }
