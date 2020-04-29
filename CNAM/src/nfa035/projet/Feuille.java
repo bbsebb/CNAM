@@ -15,6 +15,7 @@ public class Feuille {
 	 * Chaque valeur correspond à l'ensemble des descendants de la clé par fermeture transitive. Une valeur ne peut aparaitre 2 fois, on enlève donc la possibilité d'un cycle.
 	 */
 	private TreeMap<Cellule,TreeSet<Cellule>> cellules = new TreeMap<Cellule,TreeSet<Cellule>>();
+	private ParseFormule pf;
 	
 	/**
 	 * Constructeur qui crée une feuille de 11 lignes et 11 colonnes
@@ -23,6 +24,7 @@ public class Feuille {
 		for(Cellule c : creerBloc(11,11)) {
 			this.cellules.put(c, null);
 		}
+		pf = new ParseFormule(this);
 	}
 	
 	/**
@@ -34,6 +36,7 @@ public class Feuille {
 		for(Cellule c : creerBloc(nbrLigne,nbrColonne)) {
 			this.cellules.put(c, null);
 		}
+		pf = new ParseFormule(this);
 	}
 	
 	/**
@@ -52,7 +55,7 @@ public class Feuille {
 		return bloc;
 	}
 	
-	private Cellule getCellule(int x, int y) {
+	public Cellule getCellule(int x, int y) {
 		Iterator<Cellule> it = this.cellules.keySet().iterator();
 		while(it.hasNext()) {
 			Cellule c = it.next();

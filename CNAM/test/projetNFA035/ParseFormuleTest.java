@@ -203,8 +203,16 @@ class ParseFormuleTest {
 	 */
 	@ParameterizedTest
 	@ValueSource(strings = { "+", "-", "*","/" })
-	void testEstOperationOperateur(String operateur) {
+	void testEstOperationOperateurTrue(String operateur) {
 		assertTrue(ParseFormule.estOperationOperateur(operateur));
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estOperationOperateur()}.
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = { "++", " - /", "=","'" })
+	void testEstOperationOperateurFalse(String operateur) {
+		assertFalse(ParseFormule.estOperationOperateur(operateur));
 	}
 
 }
