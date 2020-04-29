@@ -56,7 +56,7 @@ public class Td10 {
 		 * Question2
 		 */
 		l.ecrireListeR();
-		l.inserer(new ElementListe(5,null), 5);
+		l.inserer(new ElementListe(5,null), 1);
 		l.ecrireListeR();
 	}
 	

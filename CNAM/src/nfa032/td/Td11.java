@@ -19,7 +19,7 @@ public class Td11 {
 		l.ajouterTriee(11);
 		l.ajouterTriee(12);
 		//Question 1
-	//	System.out.println(l.somme());
+		System.out.println(l.somme());
 		
 		//Question 2
 		ElementListe temp = l.getPremier();

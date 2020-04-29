@@ -144,32 +144,31 @@ public class Liste {
 		}
 		return dernier;
 	}
-	
-	public void inserer(ElementListe ins,int n) {
-		if(n<1 || n>this.getLongueur()+1)
+
+	public void inserer(ElementListe ins, int n) {
+		if (n < 1 || n > this.getLongueur() + 1)
 			throw new IllegalArgumentException();
 
 		ElementListe el = this.getPremier();
-		ElementListe temp=null;
+
 		int i = 1;
-		while(el != null) {
-			if(i==n) {
-					ins.setSuivant(el);
-				if(i!=1) 
-					temp.setSuivant(ins);
-				else
-					this.premier = ins;
+		while (el != null) {
+			if (i == n - 1) {
+				ins.setSuivant(el.getSuivant());
+				el.setSuivant(ins);
 				break;
 			}
-			temp = el;
 			el = el.getSuivant();
 			i++;
-		} 
-		if(el == null) {
+		}
+		if (n == 1) {
+			this.ajouterAuDebut(ins.valeur);
+		} else if (el == null) {
 			ElementListe dernier = getDernierElement();
 			// nous savons que
 			// dernier.getSuivant() == null => dernier est bien le dernier élément.
 			dernier.setSuivant(ins);
 		}
+
 	}
 }
