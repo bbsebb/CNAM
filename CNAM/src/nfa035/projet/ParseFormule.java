@@ -28,8 +28,6 @@ public class ParseFormule {
 	public ParseFormule(String formule) {
 		this.formule = formule;
 		this.formule = this.formule.toLowerCase().trim();
-		
-		
 
 	}
 
@@ -130,6 +128,7 @@ public class ParseFormule {
 			throw new ErreurFormuleException();
 
 	}
+
 	/**
 	 * Teste si la formule de l'instance correspond uniquement à une cellule de type
 	 * Operation
@@ -144,59 +143,64 @@ public class ParseFormule {
 			return false;
 
 	}
-	
+
 	/**
 	 * Retourne l'opérande 1 qui peut étre une opérande(valeur float) ou une cellule
+	 * 
 	 * @return l'opérande 1 qui peut étre une opérande(valeur float) ou une cellule
 	 * @throws ErreurFormuleException si la formule ne comporte pas d'opérande
 	 */
 	public Contenu parseCelluleOperationGetOperande1() throws ErreurFormuleException {
 		if (estOperation(this.formule)) {
-			String str = this.formule;	
+			String str = this.formule;
 			Operateur op = this.parseCelluleOperationGetOperateur();
 			String[] operandes = str.split(op.toRegex());
-			if(estCellule(operandes[0])) {
-				return this.f.getCellule(parseCellule(operandes[0])[0],parseCellule(operandes[0])[1]);
-			} else if(estValeur(operandes[0])) {
+			if (estCellule(operandes[0])) {
+				return this.f.getCellule(parseCellule(operandes[0])[0], parseCellule(operandes[0])[1]);
+			} else if (estValeur(operandes[0])) {
 				Contenu operande = new Operande(parseValeur(operandes[0]));
 				return operande;
 			} else {
-				throw new ErreurFormuleException();	
+				throw new ErreurFormuleException();
 			}
-			
+
 		}
 		throw new ErreurFormuleException();
 	}
+
 	/**
 	 * Retourne l'opérande 2 qui peut étre une opérande(valeur float) ou une cellule
+	 * 
 	 * @return l'opérande 2 qui peut étre une opérande(valeur float) ou une cellule
 	 * @throws ErreurFormuleException si la formule ne comporte pas d'opérande
 	 */
 	public Contenu parseCelluleOperationGetOperande2() throws ErreurFormuleException {
 		if (estOperation(this.formule)) {
-			String str = this.formule;	
+			String str = this.formule;
 			Operateur op = this.parseCelluleOperationGetOperateur();
 			String[] operandes = str.split(op.toRegex());
-			if(estCellule(operandes[1])) {
-				return this.f.getCellule(parseCellule(operandes[1])[0],parseCellule(operandes[1])[1]);
-			} else if(estValeur(operandes[1])) {
-				Contenu  operande = new Operande(parseValeur(operandes[1]));
+			if (estCellule(operandes[1])) {
+				return this.f.getCellule(parseCellule(operandes[1])[0], parseCellule(operandes[1])[1]);
+			} else if (estValeur(operandes[1])) {
+				Contenu operande = new Operande(parseValeur(operandes[1]));
 				return operande;
 			} else {
-				throw new ErreurFormuleException();	
+				throw new ErreurFormuleException();
 			}
-			
+
 		}
-		throw new ErreurFormuleException();	
+		throw new ErreurFormuleException();
 	}
+
 	/**
 	 * Retourne l'opérateur de l'opération
+	 * 
 	 * @return l'opérateur de l'opération
 	 * @throws ErreurFormuleException
 	 */
 	public Operateur parseCelluleOperationGetOperateur() throws ErreurFormuleException {
 		if (estOperation(this.formule)) {
-			String str = this.formule;	
+			String str = this.formule;
 			for (Operateur op : Operateur.values()) {
 				if (str.contains(op.toString())) {
 					return op;
@@ -207,7 +211,9 @@ public class ParseFormule {
 	}
 
 	/**
-	 * Teste si la formule est une opération avec deux opérandes qui peuvent être une référence de cellule ou une valeur et un opérateur de {@link Operateur Operateur}
+	 * Teste si la formule est une opération avec deux opérandes qui peuvent être
+	 * une référence de cellule ou une valeur et un opérateur de {@link Operateur
+	 * Operateur}
 	 * 
 	 * 
 	 * @return true si c'est une opération sinon false
@@ -233,7 +239,7 @@ public class ParseFormule {
 			return false;
 
 	}
-	
+
 	/**
 	 * Teste si une chaine est une possible cellule avec a.b et a et b des entier
 	 * positif.
@@ -250,21 +256,23 @@ public class ParseFormule {
 		else
 			return false;
 	}
-	
+
 	/**
-	 * transforme le paramettre qui est une chaine de caractère qui référence une cellule en les coordonnés x,y de cette cellule.
+	 * transforme le paramettre qui est une chaine de caractère qui référence une
+	 * cellule en les coordonnés x,y de cette cellule.
+	 * 
 	 * @param str une chaine de caractère qui représente une cellule
 	 * @return un tableau avec x en position 0 et y en position 1
 	 * @throws ErreurFormuleException si la chaine n'est pas une cellule
 	 */
 	static public int[] parseCellule(String str) throws ErreurFormuleException {
-		if(estCellule(str)) {
-		int[] rtr = new int[2];
-		str = str.trim().toLowerCase();
-		char[] chaine = str.toCharArray();
-		rtr[0] = chaine[0]-48;
-		rtr[1] = chaine[2]-48;
-		return rtr;
+		if (estCellule(str)) {
+			int[] rtr = new int[2];
+			str = str.trim().toLowerCase();
+			char[] chaine = str.toCharArray();
+			rtr[0] = chaine[0] - 48;
+			rtr[1] = chaine[2] - 48;
+			return rtr;
 		} else
 			throw new ErreurFormuleException();
 	}
@@ -352,11 +360,15 @@ public class ParseFormule {
 
 	static public boolean estOperationOperateur(String str) {
 		str = str.trim().toLowerCase();
+		int compteur = 0;
 		for (Operateur op : Operateur.values()) {
 			if (str.contains(op.toString())) {
-				return true;
+				compteur++;
 			}
 		}
-		return false;
+		if (compteur == 1)
+			return true;
+		else
+			return false;
 	}
 }
