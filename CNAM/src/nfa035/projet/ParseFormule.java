@@ -31,8 +31,6 @@ public class ParseFormule {
 
 	}
 
-
-
 	/**
 	 * Teste si la formule de l'instance correspond uniquement à une cellule de type
 	 * valeur
@@ -77,12 +75,15 @@ public class ParseFormule {
 			return false;
 
 	}
+
 	private boolean estFonctionSomme() {
 		return estFonctionSomme(this.formule);
 	}
+
 	private boolean estFonctionMoyenne() {
 		return estFonctionMoyenne(this.formule);
 	}
+
 	/**
 	 * Renvoie la fonction associé au bloc donné dans la chaine de caractère
 	 * 
@@ -134,7 +135,10 @@ public class ParseFormule {
 			Operateur op = this.parseCelluleOperationGetOperateur();
 			String[] operandes = str.split(op.toRegex());
 			if (estCellule(operandes[0])) {
-				return this.f.getCellule(parseCellule(operandes[0])[0], parseCellule(operandes[0])[1]);
+				if (f != null)
+					return this.f.getCellule(parseCellule(operandes[0])[0], parseCellule(operandes[0])[1]);
+				else
+					return new Cellule(parseCellule(operandes[0])[0], parseCellule(operandes[0])[1]);
 			} else if (estValeur(operandes[0])) {
 				Contenu operande = new Operande(parseValeur(operandes[0]));
 				return operande;
@@ -158,7 +162,10 @@ public class ParseFormule {
 			Operateur op = this.parseCelluleOperationGetOperateur();
 			String[] operandes = str.split(op.toRegex());
 			if (estCellule(operandes[1])) {
-				return this.f.getCellule(parseCellule(operandes[1])[0], parseCellule(operandes[1])[1]);
+				if (f != null)
+					return this.f.getCellule(parseCellule(operandes[1])[0], parseCellule(operandes[1])[1]);
+				else
+					return new Cellule(parseCellule(operandes[1])[0], parseCellule(operandes[1])[1]);
 			} else if (estValeur(operandes[1])) {
 				Contenu operande = new Operande(parseValeur(operandes[1]));
 				return operande;
@@ -217,6 +224,7 @@ public class ParseFormule {
 			return false;
 
 	}
+
 	static private boolean estOperationOperande(String str) {
 		if (estCellule(str) || estValeur(str))
 			return true;
@@ -231,7 +239,7 @@ public class ParseFormule {
 		for (Operateur op : Operateur.values()) {
 			if (str.contains(op.toString()) && str.indexOf(op.toString()) == str.lastIndexOf(op.toString())) {
 				compteur++;
-				
+
 			}
 		}
 		if (compteur == 1)
@@ -299,8 +307,6 @@ public class ParseFormule {
 
 	}
 
-
-
 	/**
 	 * Teste si le paramettre est uniquement une fonction moyenne
 	 * 
@@ -321,9 +327,9 @@ public class ParseFormule {
 		}
 		return false;
 	}
-	
+
 	/**
-	 * Teste si le paramettre est uniquement une fonction 
+	 * Teste si le paramettre est uniquement une fonction
 	 * 
 	 * @param le chaine à tester
 	 * @return vrai si c'est une fonction, faux sinon
@@ -334,7 +340,7 @@ public class ParseFormule {
 		else
 			return false;
 
-	} 
+	}
 
 	/**
 	 * Teste si le paramettre correspond à un nombre décimal avec une , ou non
@@ -358,8 +364,6 @@ public class ParseFormule {
 		return true;
 	}
 
-
-	
 	/**
 	 * Renvoie le nombre décimal de la chaine. La chaine doit être composé que d'un
 	 * nombre decimal valide avec une , ou non
@@ -381,12 +385,12 @@ public class ParseFormule {
 			}
 			double rtr = 0;
 			for (int c : chaine) {
-				if(c ==44) 
+				if (c == 44)
 					continue;
 				rtr = rtr + (c - 48) * i;
 				i = i / 10;
 			}
-			return (float)rtr;
+			return (float) rtr;
 		} else
 			throw new ErreurFormuleException();
 
