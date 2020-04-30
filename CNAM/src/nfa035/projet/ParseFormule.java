@@ -206,16 +206,17 @@ public class ParseFormule {
 	 */
 	static public boolean estOperation(String str) {
 		str = str.trim().toLowerCase();
-		char operateur = '0';
 		String[] operandes = new String[0];
+		Operateur operateur = null;
 		for (Operateur op : Operateur.values()) {
 			if (str.contains(op.toString())) {
 				operandes = str.split(op.toRegex());
-				operateur = op.toChar();
+				operateur = op;
 				break;
+			
 			}
 		}
-		if (operateur != 0 && operandes.length == 2) {
+		if (operateur != null && str.indexOf(operateur.toString())==str.lastIndexOf(operateur.toString()) && operandes.length == 2) {
 			if (estOperationOperande(operandes[0]) && estOperationOperande(operandes[1]))
 				return true;
 			else
@@ -233,20 +234,7 @@ public class ParseFormule {
 
 	}
 
-	static private boolean estOperationOperateur(String str) {
-		str = str.trim().toLowerCase();
-		int compteur = 0;
-		for (Operateur op : Operateur.values()) {
-			if (str.contains(op.toString()) && str.indexOf(op.toString()) == str.lastIndexOf(op.toString())) {
-				compteur++;
 
-			}
-		}
-		if (compteur == 1)
-			return true;
-		else
-			return false;
-	}
 
 	/**
 	 * Teste si une chaine est une possible cellule avec a.b et a et b des entier
@@ -350,6 +338,8 @@ public class ParseFormule {
 	 */
 	static public boolean estValeur(String str) {
 		str = str.trim().toLowerCase();
+		if(str.isEmpty())
+			return false;
 		char[] chaine = str.toCharArray();
 		int compteurVirgule = 0;
 		for (int c : chaine) {
