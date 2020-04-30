@@ -369,21 +369,24 @@ public class ParseFormule {
 	 * @throws ErreurFormuleException est lancé si str n'est pas une valeur
 	 */
 	static private float parseValeur(String str) throws ErreurFormuleException {
+		str = str.trim().toLowerCase();
 		if (estValeur(str)) {
 			char[] chaine = str.toCharArray();
-			float i = 1;
+			double i = 1;
 			int j = 0;
 			if (str.indexOf(',') >= 0)
 				j = chaine.length - str.indexOf(',');
 			for (; j < chaine.length - 1; j++) {
 				i = i * 10;
 			}
-			float rtr = 0;
+			double rtr = 0;
 			for (int c : chaine) {
+				if(c ==44) 
+					continue;
 				rtr = rtr + (c - 48) * i;
 				i = i / 10;
 			}
-			return rtr;
+			return (float)rtr;
 		} else
 			throw new ErreurFormuleException();
 
