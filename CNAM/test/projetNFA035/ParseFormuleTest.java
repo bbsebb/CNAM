@@ -18,6 +18,7 @@ import nfa035.projet.Contenu;
 import nfa035.projet.ErreurFormuleException;
 import nfa035.projet.Moyenne;
 import nfa035.projet.Operande;
+import nfa035.projet.Operateur;
 import nfa035.projet.ParseFormule;
 import nfa035.projet.Somme;
 
@@ -162,11 +163,21 @@ class ParseFormuleTest {
 	 * Test method for {@link nfa035.projet.ParseFormule#estOperation()}.
 	 */
 	@ParameterizedTest
-	@ValueSource(strings = { "1.2 * 20,5", "20,20+3.4", " 21/36,2 ","1.2-3.4" })
-	void testEstOperation(String operation) {
+	@ValueSource(strings = { "1.2 * 20,5", "20,20+3.4", " 21/36,2 ","1.2-3.4"})
+	void testEstOperationTrue(String operation) {
 		assertTrue(ParseFormule.estOperation(operation));
 		ParseFormule p = new ParseFormule(operation);	
 		assertTrue(p.estCelluleOperation());
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estOperation()}.
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = { "1.2 ** 20,5", "20,20+3.4+", " /2136,2 ","1.2 3.4"})
+	void testEstOperationFalse(String operation) {
+		assertFalse(ParseFormule.estOperation(operation));
+		ParseFormule p = new ParseFormule(operation);	
+		assertFalse(p.estCelluleOperation());
 	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperande1(java.lang.String)} et {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperande2(java.lang.String)} et .
@@ -239,6 +250,75 @@ class ParseFormuleTest {
 		assertThrows(ErreurFormuleException.class, () -> p.parseCelluleOperationGetOperande2());
 	}		
 
-
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperateur(java.lang.String)}  .
+	 * @throws ErreurFormuleException 
+	 */
+	@Test
+	void testParseCelluleOperationGetOperateur() throws ErreurFormuleException {
+		ParseFormule p = new ParseFormule("35,27*2.3");	
+		assertEquals(Operateur.MULTIPLICATION,p.parseCelluleOperationGetOperateur(),"35,27*2.3");
+		
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperateur(java.lang.String)}  .
+	 * @throws ErreurFormuleException 
+	 */
+	@Test
+	void test1ParseCelluleOperationGetOperateur() throws ErreurFormuleException {
+		ParseFormule p = new ParseFormule("35,27/2.3");	
+		assertEquals(Operateur.DIVISION,p.parseCelluleOperationGetOperateur(),"35,27*2.3");
+		
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperateur(java.lang.String)}  .
+	 * @throws ErreurFormuleException 
+	 */
+	@Test
+	void test2ParseCelluleOperationGetOperateur() throws ErreurFormuleException {
+		ParseFormule p = new ParseFormule("35,27-2.3");	
+		assertEquals(Operateur.SOUSTRACTION,p.parseCelluleOperationGetOperateur(),"35,27*2.3");
+		
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperateur(java.lang.String)}  .
+	 * @throws ErreurFormuleException 
+	 */
+	@Test
+	void test3ParseCelluleOperationGetOperateur() throws ErreurFormuleException {
+		ParseFormule p = new ParseFormule("35,27+2.3");	
+		assertEquals(Operateur.ADDITION,p.parseCelluleOperationGetOperateur(),"35,27*2.3");
+		
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperateur(java.lang.String)}  .
+	 * @throws ErreurFormuleException 
+	 */
+	@Test
+	void test4ParseCelluleOperationGetOperateur() throws ErreurFormuleException {
+		ParseFormule p = new ParseFormule("35,27+-2.3");	
+		assertThrows(ErreurFormuleException.class, () -> p.parseCelluleOperationGetOperateur());
+		
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperateur(java.lang.String)}  .
+	 * @throws ErreurFormuleException 
+	 */
+	@Test
+	void test5ParseCelluleOperationGetOperateur() throws ErreurFormuleException {
+		ParseFormule p = new ParseFormule("35,27+2.3+");	
+		assertThrows(ErreurFormuleException.class, () -> p.parseCelluleOperationGetOperateur());
+		
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperateur(java.lang.String)}  .
+	 * @throws ErreurFormuleException 
+	 */
+	@Test
+	void test6ParseCelluleOperationGetOperateur() throws ErreurFormuleException {
+		ParseFormule p = new ParseFormule("35,-272.3");	
+		assertThrows(ErreurFormuleException.class, () -> p.parseCelluleOperationGetOperateur());
+		
+	}
 
 }
