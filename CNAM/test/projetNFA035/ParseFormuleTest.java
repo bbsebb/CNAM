@@ -162,45 +162,6 @@ class ParseFormuleTest {
 		assertTrue(ParseFormule.estOperation(operation));
 	}
 
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
-	 */
-	@ParameterizedTest
-	@ValueSource(strings = { "somme(1.1;2.2)", "Somme(1.1;2.2)" })
-	void testEstFonctionSommeTrue(String fonction) {
-		
-		assertTrue(ParseFormule .estFonctionSomme(fonction),fonction);
-	}
-
-
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionSomme()}.
-	 */
-	@ParameterizedTest
-	@ValueSource(strings = { "Soeme(1.1;2.2)", "Somme(0.0;2.2)", "Somme(1.1;22.)","Somme(1.1;2.2","Somme(1.1,2.2"})
-	void testEstFonctionSommeFalse(String somme) {
-		
-		assertFalse(ParseFormule.estFonctionSomme(somme),somme);
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
-	 */	
-	@ParameterizedTest
-	@ValueSource(strings = { "moyenne(1.1;2.2)", "Moyenne(1.1;2.2)"})
-	void testEstFonctionMoyenneTrue(String moyenne) {
-		
-		assertTrue(ParseFormule .estFonctionMoyenne(moyenne),moyenne);
-	}
-
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonctionMoyenne()}.
-	 */
-	@ParameterizedTest
-	@ValueSource(strings = { "Soeme(1.1;2.2)", "Moyenne(0.0;2.2)","Moyenne(1.1;22.)","Moyenne(1.1;2.2","Moyenne1.1;2.2)"})
-	void test2EstFonctionMoyenne(String moyenne) {
-		
-		assertFalse(ParseFormule.estFonctionMoyenne(moyenne),moyenne);
-	}
 	
 
 	/**
