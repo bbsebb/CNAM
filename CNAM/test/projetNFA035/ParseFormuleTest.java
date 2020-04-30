@@ -24,7 +24,25 @@ import nfa035.projet.Somme;
  */
 class ParseFormuleTest {
 
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = {"1.1", "9.9" })
+	void testEstCelluleTrue(String cellule) {
+		assertTrue(ParseFormule.estCellule(cellule),cellule);	
+	}
+	
 
+	
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = {"0.0", "11","11.",".11" })
+	void testEstCelluleFalse(String cellule) {
+		assertFalse(ParseFormule.estCellule(cellule),cellule);	
+	}
 
 
 	/**
@@ -86,6 +104,26 @@ class ParseFormuleTest {
 		
 	}
 	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonction(String)}. et {@link nfa035.projet.ParseFormule#estCelluleFonction()}
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = { "somme(1.1;2.2)", "Somme(1.1;2.2)" ,"moyenne(1.1;2.2)", "Moyenne(1.1;2.2)"})
+	void testEstFonctionTrue(String fonction) {
+		assertTrue(ParseFormule.estFonction(fonction),fonction);
+		ParseFormule p = new ParseFormule(fonction);
+		assertTrue(p.estCelluleFonction(),fonction);
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonction(String)}. et {@link nfa035.projet.ParseFormule#estCelluleFonction()}
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = { "Soeme(1.1;2.2)", "Somme(0.0;2.2)", "Somme(1.1;22.)","Somme(1.1;2.2","Somme(1.1,2.2","Soeme(1.1;2.2)", "Moyenne(0.0;2.2)","Moyenne(1.1;22.)","Moyenne(1.1;2.2","Moyenne1.1;2.2)"})
+	void testEstFonctionFalse(String fonction) {
+		assertFalse(ParseFormule.estFonction(fonction),fonction);
+		ParseFormule p = new ParseFormule(fonction);
+		assertFalse(p.estCelluleFonction(),fonction);
+	}
+	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
 	 * @throws ErreurFormuleException 
 	 */
@@ -112,46 +150,9 @@ class ParseFormuleTest {
 		ParseFormule p = new ParseFormule("Moyene(1.1;2.2)");	
 		assertThrows(ErreurFormuleException.class, () -> p.parseEstCelluleFonction());
 	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
-	 */
-	@ParameterizedTest
-	@ValueSource(strings = {"1.1", "9.9" })
-	void testEstCelluleTrue(String cellule) {
-		assertTrue(ParseFormule.estCellule(cellule),cellule);	
-	}
-	
 
 	
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estCellule()}.
-	 */
-	@ParameterizedTest
-	@ValueSource(strings = {"0.0", "11","11.",".11" })
-	void testEstCelluleFalse(String cellule) {
-		assertFalse(ParseFormule.estCellule(cellule),cellule);	
-	}
-	
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonction(String)}. et {@link nfa035.projet.ParseFormule#estCelluleFonction()}
-	 */
-	@ParameterizedTest
-	@ValueSource(strings = { "somme(1.1;2.2)", "Somme(1.1;2.2)" ,"moyenne(1.1;2.2)", "Moyenne(1.1;2.2)"})
-	void testEstFonctionTrue(String fonction) {
-		assertTrue(ParseFormule.estFonction(fonction),fonction);
-		ParseFormule p = new ParseFormule(fonction);
-		assertTrue(p.estCelluleFonction(),fonction);
-	}
-	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonction(String)}. et {@link nfa035.projet.ParseFormule#estCelluleFonction()}
-	 */
-	@ParameterizedTest
-	@ValueSource(strings = { "Soeme(1.1;2.2)", "Somme(0.0;2.2)", "Somme(1.1;22.)","Somme(1.1;2.2","Somme(1.1,2.2","Soeme(1.1;2.2)", "Moyenne(0.0;2.2)","Moyenne(1.1;22.)","Moyenne(1.1;2.2","Moyenne1.1;2.2)"})
-	void testEstFonctionFalse(String fonction) {
-		assertFalse(ParseFormule.estFonction(fonction),fonction);
-		ParseFormule p = new ParseFormule(fonction);
-		assertFalse(p.estCelluleFonction(),fonction);
-	}
+
 
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#estOperation()}.
@@ -160,6 +161,8 @@ class ParseFormuleTest {
 	@ValueSource(strings = { "1.2 * 20,5", "20,20+3.4", " 21/36,2 ","1.2-3.4" })
 	void testEstOperation(String operation) {
 		assertTrue(ParseFormule.estOperation(operation));
+		ParseFormule p = new ParseFormule(operation);	
+		assertTrue(p.estCelluleOperation());
 	}
 
 	
