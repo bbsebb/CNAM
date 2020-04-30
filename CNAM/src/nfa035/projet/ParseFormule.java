@@ -307,7 +307,7 @@ public class ParseFormule {
 	 * @param le chaine à tester
 	 * @return vrai si c'est une fonction, faux sinon
 	 */
-	public boolean estFonction(String str) {
+	static public boolean estFonction(String str) {
 		if (estFonctionMoyenne(str) || estFonctionSomme(str))
 			return true;
 		else
