@@ -31,34 +31,7 @@ public class ParseFormule {
 
 	}
 
-	/**
-	 * Renvoie le nombre décimal de la chaine. La chaine doit être composé que d'un
-	 * nombre decimal valide avec une , ou non
-	 * 
-	 * @param str est la chaine à tester
-	 * @return le nombre décimal de la chaine
-	 * @throws ErreurFormuleException est lancé si str n'est pas une valeur
-	 */
-	private float parseValeur(String str) throws ErreurFormuleException {
-		if (estValeur(str)) {
-			char[] chaine = str.toCharArray();
-			float i = 1;
-			int j = 0;
-			if (str.indexOf(',') >= 0)
-				j = chaine.length - str.indexOf(',');
-			for (; j < chaine.length - 1; j++) {
-				i = i * 10;
-			}
-			float rtr = 0;
-			for (int c : chaine) {
-				rtr = rtr + (c - 48) * i;
-				i = i / 10;
-			}
-			return rtr;
-		} else
-			throw new ErreurFormuleException();
 
-	}
 
 	/**
 	 * Teste si la formule de l'instance correspond uniquement à une cellule de type
@@ -85,26 +58,31 @@ public class ParseFormule {
 	 */
 	public float parseEstCelluleValeur() throws ErreurFormuleException {
 		if (estCelluleValeur())
-			return this.parseValeur(this.formule);
+			return parseValeur(this.formule);
 		else
 			throw new ErreurFormuleException();
 	}
 
 	/**
 	 * Teste si la formule de l'instance correspond uniquement à une cellule de type
-	 * fonction
+	 * fonction (somme ou moyenne)
 	 * 
 	 * @return true si elle correspond à une cellule de type fonction sinon false
 	 * @see CelluleFonction
 	 */
 	public boolean estCelluleFonction() {
-		if (estFonctionMoyenne(this.formule) || estFonctionSomme(this.formule))
+		if (estFonction(this.formule))
 			return true;
 		else
 			return false;
 
 	}
-
+	private boolean estFonctionSomme() {
+		return estFonctionSomme(this.formule);
+	}
+	private boolean estFonctionMoyenne() {
+		return estFonctionMoyenne(this.formule);
+	}
 	/**
 	 * Renvoie la fonction associé au bloc donné dans la chaine de caractère
 	 * 
@@ -240,6 +218,7 @@ public class ParseFormule {
 
 	}
 
+
 	/**
 	 * Teste si une chaine est une possible cellule avec a.b et a et b des entier
 	 * positif.
@@ -299,9 +278,7 @@ public class ParseFormule {
 
 	}
 
-	private boolean estFonctionSomme() {
-		return estFonctionSomme(this.formule);
-	}
+
 
 	/**
 	 * Teste si le paramettre est uniquement une fonction moyenne
@@ -323,10 +300,20 @@ public class ParseFormule {
 		}
 		return false;
 	}
+	
+	/**
+	 * Teste si le paramettre est uniquement une fonction 
+	 * 
+	 * @param le chaine à tester
+	 * @return vrai si c'est une fonction, faux sinon
+	 */
+	public boolean estFonction(String str) {
+		if (estFonctionMoyenne(str) || estFonctionSomme(str))
+			return true;
+		else
+			return false;
 
-	private boolean estFonctionMoyenne() {
-		return estFonctionMoyenne(this.formule);
-	}
+	} 
 
 	/**
 	 * Teste si le paramettre correspond à un nombre décimal avec une , ou non
@@ -371,5 +358,34 @@ public class ParseFormule {
 			return true;
 		else
 			return false;
+	}
+	
+	/**
+	 * Renvoie le nombre décimal de la chaine. La chaine doit être composé que d'un
+	 * nombre decimal valide avec une , ou non
+	 * 
+	 * @param str est la chaine à tester
+	 * @return le nombre décimal de la chaine
+	 * @throws ErreurFormuleException est lancé si str n'est pas une valeur
+	 */
+	static private float parseValeur(String str) throws ErreurFormuleException {
+		if (estValeur(str)) {
+			char[] chaine = str.toCharArray();
+			float i = 1;
+			int j = 0;
+			if (str.indexOf(',') >= 0)
+				j = chaine.length - str.indexOf(',');
+			for (; j < chaine.length - 1; j++) {
+				i = i * 10;
+			}
+			float rtr = 0;
+			for (int c : chaine) {
+				rtr = rtr + (c - 48) * i;
+				i = i / 10;
+			}
+			return rtr;
+		} else
+			throw new ErreurFormuleException();
+
 	}
 }
