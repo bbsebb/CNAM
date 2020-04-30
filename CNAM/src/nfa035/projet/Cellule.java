@@ -63,7 +63,7 @@ package nfa035.projet;
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Cellule))
 			return false;
 		Cellule other = (Cellule) obj;
 		if (x != other.x)

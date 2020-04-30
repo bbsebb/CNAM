@@ -46,4 +46,25 @@ public class Operande implements Contenu{
 		return this.valeur;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(valeur);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof Operande))
+			return false;
+		Operande other = (Operande) obj;
+		if (Float.floatToIntBits(valeur) != Float.floatToIntBits(other.valeur))
+			return false;
+		return true;
+	}
+	
+
 }
