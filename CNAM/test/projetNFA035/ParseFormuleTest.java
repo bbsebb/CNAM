@@ -133,11 +133,24 @@ class ParseFormuleTest {
 	}
 	
 	/**
-	 * Test method for {@link nfa035.projet.ParseFormule#estFonction()}.
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonction(String)}. et {@link nfa035.projet.ParseFormule#estCelluleFonction()}
 	 */
-	@Test
-	void testEstFonction() {
-		
+	@ParameterizedTest
+	@ValueSource(strings = { "somme(1.1;2.2)", "Somme(1.1;2.2)" ,"moyenne(1.1;2.2)", "Moyenne(1.1;2.2)"})
+	void testEstFonctionTrue(String fonction) {
+		assertTrue(ParseFormule.estFonction(fonction),fonction);
+		ParseFormule p = new ParseFormule(fonction);
+		assertTrue(p.estCelluleFonction(),fonction);
+	}
+	/**
+	 * Test method for {@link nfa035.projet.ParseFormule#estFonction(String)}. et {@link nfa035.projet.ParseFormule#estCelluleFonction()}
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = { "Soeme(1.1;2.2)", "Somme(0.0;2.2)", "Somme(1.1;22.)","Somme(1.1;2.2","Somme(1.1,2.2","Soeme(1.1;2.2)", "Moyenne(0.0;2.2)","Moyenne(1.1;22.)","Moyenne(1.1;2.2","Moyenne1.1;2.2)"})
+	void testEstFonctionFalse(String fonction) {
+		assertFalse(ParseFormule.estFonction(fonction),fonction);
+		ParseFormule p = new ParseFormule(fonction);
+		assertFalse(p.estCelluleFonction(),fonction);
 	}
 
 	/**
