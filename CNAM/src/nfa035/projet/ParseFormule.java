@@ -20,15 +20,8 @@ public class ParseFormule {
 		this.f = f;
 	}
 
-	/**
-	 * Constructeur qui enlève les espaces et met en minuscule le paramettre
-	 * 
-	 * @param formule
-	 */
-	public ParseFormule(String formule) {
-		this.formule = formule;
-		this.formule = this.formule.toLowerCase().trim();
-
+	public void setFormule(String f) {
+		this.formule = f;
 	}
 
 	/**
