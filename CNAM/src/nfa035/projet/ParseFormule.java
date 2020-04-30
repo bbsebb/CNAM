@@ -217,7 +217,28 @@ public class ParseFormule {
 			return false;
 
 	}
+	static private boolean estOperationOperande(String str) {
+		if (estCellule(str) || estValeur(str))
+			return true;
+		else
+			return false;
 
+	}
+
+	static private boolean estOperationOperateur(String str) {
+		str = str.trim().toLowerCase();
+		int compteur = 0;
+		for (Operateur op : Operateur.values()) {
+			if (str.contains(op.toString()) && str.indexOf(op.toString()) == str.lastIndexOf(op.toString())) {
+				compteur++;
+				
+			}
+		}
+		if (compteur == 1)
+			return true;
+		else
+			return false;
+	}
 
 	/**
 	 * Teste si une chaine est une possible cellule avec a.b et a et b des entier
@@ -337,28 +358,7 @@ public class ParseFormule {
 		return true;
 	}
 
-	static public boolean estOperationOperande(String str) {
-		if (estCellule(str) || estValeur(str))
-			return true;
-		else
-			return false;
 
-	}
-
-	static public boolean estOperationOperateur(String str) {
-		str = str.trim().toLowerCase();
-		int compteur = 0;
-		for (Operateur op : Operateur.values()) {
-			if (str.contains(op.toString()) && str.indexOf(op.toString()) == str.lastIndexOf(op.toString())) {
-				compteur++;
-				
-			}
-		}
-		if (compteur == 1)
-			return true;
-		else
-			return false;
-	}
 	
 	/**
 	 * Renvoie le nombre décimal de la chaine. La chaine doit être composé que d'un
