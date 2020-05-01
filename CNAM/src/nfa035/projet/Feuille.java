@@ -27,7 +27,7 @@ public class Feuille {
 	 * Constructeur qui crée une feuille de 11 lignes et 11 colonnes
 	 */
 	public Feuille() {
-		for (Cellule c : creerBloc(11, 11)) {
+		for (Cellule c : creeFeuille(11, 11)) {
 			this.cellules.put(c, null);
 			this.graphe.put(c, null);
 		}
@@ -43,7 +43,7 @@ public class Feuille {
 	 * @param nbrColonne est le nombre de colonne de la feuille crée
 	 */
 	public Feuille(int nbrLigne, int nbrColonne) {
-		for (Cellule c : creerBloc(nbrLigne, nbrColonne)) {
+		for (Cellule c : creeFeuille(nbrLigne, nbrColonne)) {
 			this.cellules.put(c, null);
 			this.graphe.put(c, null);
 		}
@@ -58,13 +58,18 @@ public class Feuille {
 	 * @param nbrColonne est le nombre de colonne du bloc crée
 	 * @return une liste de cellule unique
 	 */
-	private TreeSet<Cellule> creerBloc(int nbrLigne, int nbrColonne) {
+	private TreeSet<Cellule> creeFeuille(int nbrLigne, int nbrColonne) {
 		TreeSet<Cellule> bloc = new TreeSet<Cellule>();
 		for (int i = 0; i < nbrLigne - 1; i++) {
 			for (int j = 0; j < nbrColonne - 1; j++) {
 				bloc.add(new Cellule(i, j));
 			}
 		}
+		return bloc;
+	}
+	
+	public Bloc creeBloc(int nbrLigne, int nbrColonne) {
+		this.cellules.subMap(fromKey, toKey);
 		return bloc;
 	}
 
