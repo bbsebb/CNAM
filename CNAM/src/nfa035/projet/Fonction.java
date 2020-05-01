@@ -8,9 +8,7 @@ package nfa035.projet;
 public abstract class Fonction {
 	protected Bloc bloc;
 	
-    public Fonction() {
-    	this.setBloc(new Bloc(0, 0, 0, 0));
-    }
+
     
     public Fonction(Bloc b) {
     	this.setBloc(b);
@@ -21,6 +19,10 @@ public abstract class Fonction {
 	 */
 	public void setBloc(Bloc bloc) {
 		this.bloc = bloc;
+	}
+	
+	public Bloc getBloc() {
+		return this.bloc;
 	}
 
 	public abstract float getResultat();

@@ -11,28 +11,18 @@ public class CelluleFonction extends Cellule implements Contenu{
 	private Fonction fonction;
 	
 	
-	public CelluleFonction() {
-		super();
-		bloc = null;
-		fonction = null;
-	}
-	
-	public CelluleFonction(int x, int y) {
-		super(x,y);
-		bloc = null;
-		fonction = null;
-	}
+
 	
 	public CelluleFonction(int x, int y,Fonction f) {
 		super(x,y);
-		bloc = null;
+		bloc = f.getBloc();
 		fonction = f;
 	}
 	
 	@Override
 	public float getResultat() {
 		
-		return 0;
+		return this.fonction.getResultat();
 	}
 
 
