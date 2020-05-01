@@ -142,27 +142,29 @@ class ParseFormuleTest {
 	 * @throws ErreurFormuleException 
 	 */
 	@Test
-	void testParseEstCelluleFonction() throws ErreurFormuleException {
-		ParseFormule p = new ParseFormule();
+	void testParseCelluleFonction() throws ErreurFormuleException {
+		Feuille f = new Feuille();
+		ParseFormule p = new ParseFormule(f);
 		p.setFormule("Somme(1.1;2.2)");
-		assertEquals(new Somme(new Bloc(1,1,2,2)),p.parseCelluleFonction(),"Somme(1.1;2.2)");
+		assertEquals(new Somme(new Bloc(1,1,2,2,f)),p.parseCelluleFonction(),"Somme(1.1;2.2)");
 	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
 	 * @throws ErreurFormuleException 
 	 */
 	@Test
-	void test1ParseEstCelluleFonction() throws ErreurFormuleException {
-		ParseFormule p = new ParseFormule();	
+	void test1ParseCelluleFonction() throws ErreurFormuleException {
+		Feuille f = new Feuille();
+		ParseFormule p = new ParseFormule(f);	
 		p.setFormule("Moyenne(1.1;2.2)");
-		assertEquals(new Moyenne(new Bloc(1,1,2,2)),p.parseCelluleFonction(),"Moyenne(1.1;2.2)");
+		assertEquals(new Moyenne(new Bloc(1,1,2,2,f)),p.parseCelluleFonction(),"Moyenne(1.1;2.2)");
 	}
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
 	 * @throws ErreurFormuleException 
 	 */
 	@Test
-	void test2ParseEstCelluleFonction() throws ErreurFormuleException {
+	void test2ParseCelluleFonction() throws ErreurFormuleException {
 		ParseFormule p = new ParseFormule();
 		p.setFormule("Moyene(1.1;2.2)");
 		assertThrows(ErreurFormuleException.class, () -> p.parseCelluleFonction());
