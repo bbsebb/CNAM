@@ -23,6 +23,12 @@ public class CelluleFonction extends Cellule implements Contenu{
 		fonction = null;
 	}
 	
+	public CelluleFonction(int x, int y,Fonction f) {
+		super(x,y);
+		bloc = null;
+		fonction = f;
+	}
+	
 	@Override
 	public float getResultat() {
 		

@@ -21,7 +21,7 @@ public class CelluleOp extends Cellule implements Contenu{
 	public CelluleOp(int x, int y) {
 		super(x,y);
 	}
-	public CelluleOp(int x, int y,Operande o1, Operande o2, Operateur op) {
+	public CelluleOp(int x, int y,Contenu o1, Contenu o2, Operateur op) {
 		super(x,y);
 		this.setOperande1(o1);
 		this.setOperande2(o2);
