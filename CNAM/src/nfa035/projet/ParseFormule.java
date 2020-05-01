@@ -15,6 +15,11 @@ public class ParseFormule {
 	private String formule;
 	private Feuille f;
 
+	public ParseFormule() {
+		this.formule = null;
+		this.f = null;
+	}
+
 	public ParseFormule(Feuille f) {
 		this.formule = null;
 		this.f = f;
@@ -47,7 +52,7 @@ public class ParseFormule {
 	 * @return le nombre décimal de la formule
 	 * @throws ErreurFormuleException est lancé si la formule n'est pas une valeur
 	 */
-	public float parseEstCelluleValeur() throws ErreurFormuleException {
+	public float parseCelluleValeur() throws ErreurFormuleException {
 		if (estCelluleValeur())
 			return parseValeur(this.formule);
 		else
@@ -83,7 +88,7 @@ public class ParseFormule {
 	 * @return une fonction associé à un bloc de cellule
 	 * @throws ErreurFormuleException est lancé si la formule n'est pas une fonction
 	 */
-	public Fonction parseEstCelluleFonction() throws ErreurFormuleException {
+	public Fonction parseCelluleFonction() throws ErreurFormuleException {
 
 		if (this.estCelluleFonction()) {
 			int pointeur = (estFonctionMoyenne()) ? 8 : 6;
@@ -121,17 +126,15 @@ public class ParseFormule {
 	 * 
 	 * @return l'opérande 1 qui peut étre une opérande(valeur float) ou une cellule
 	 * @throws ErreurFormuleException si la formule ne comporte pas d'opérande
+	 * @throws ErreurCelluleException 
 	 */
-	public Contenu parseCelluleOperationGetOperande1() throws ErreurFormuleException {
+	public Contenu parseCelluleOperationGetOperande1() throws ErreurFormuleException, ErreurCelluleException {
 		if (estOperation(this.formule)) {
 			String str = this.formule;
 			Operateur op = this.parseCelluleOperationGetOperateur();
 			String[] operandes = str.split(op.toRegex());
-			if (estCellule(operandes[0])) {
-				if (f != null)
-					return this.f.getCellule(parseCellule(operandes[0])[0], parseCellule(operandes[0])[1]);
-				else
-					return new Cellule(parseCellule(operandes[0])[0], parseCellule(operandes[0])[1]);
+			if (estCellule(operandes[0])) {			
+				return this.f.getContenu(this.f.getCellule(parseCellule(operandes[0])[0], parseCellule(operandes[0])[1]));
 			} else if (estValeur(operandes[0])) {
 				Contenu operande = new Operande(parseValeur(operandes[0]));
 				return operande;
@@ -148,17 +151,15 @@ public class ParseFormule {
 	 * 
 	 * @return l'opérande 2 qui peut étre une opérande(valeur float) ou une cellule
 	 * @throws ErreurFormuleException si la formule ne comporte pas d'opérande
+	 * @throws ErreurCelluleException 
 	 */
-	public Contenu parseCelluleOperationGetOperande2() throws ErreurFormuleException {
+	public Contenu parseCelluleOperationGetOperande2() throws ErreurFormuleException, ErreurCelluleException {
 		if (estOperation(this.formule)) {
 			String str = this.formule;
 			Operateur op = this.parseCelluleOperationGetOperateur();
 			String[] operandes = str.split(op.toRegex());
 			if (estCellule(operandes[1])) {
-				if (f != null)
-					return this.f.getCellule(parseCellule(operandes[1])[0], parseCellule(operandes[1])[1]);
-				else
-					return new Cellule(parseCellule(operandes[1])[0], parseCellule(operandes[1])[1]);
+				return this.f.getContenu(this.f.getCellule(parseCellule(operandes[1])[0], parseCellule(operandes[1])[1]));
 			} else if (estValeur(operandes[1])) {
 				Contenu operande = new Operande(parseValeur(operandes[1]));
 				return operande;
@@ -206,10 +207,11 @@ public class ParseFormule {
 				operandes = str.split(op.toRegex());
 				operateur = op;
 				break;
-			
+
 			}
 		}
-		if (operateur != null && str.indexOf(operateur.toString())==str.lastIndexOf(operateur.toString()) && operandes.length == 2) {
+		if (operateur != null && str.indexOf(operateur.toString()) == str.lastIndexOf(operateur.toString())
+				&& operandes.length == 2) {
 			if (estOperationOperande(operandes[0]) && estOperationOperande(operandes[1]))
 				return true;
 			else
@@ -226,8 +228,6 @@ public class ParseFormule {
 			return false;
 
 	}
-
-
 
 	/**
 	 * Teste si une chaine est une possible cellule avec a.b et a et b des entier
@@ -331,7 +331,7 @@ public class ParseFormule {
 	 */
 	static public boolean estValeur(String str) {
 		str = str.trim().toLowerCase();
-		if(str.isEmpty())
+		if (str.isEmpty())
 			return false;
 		char[] chaine = str.toCharArray();
 		int compteurVirgule = 0;
