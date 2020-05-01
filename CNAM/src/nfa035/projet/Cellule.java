@@ -4,7 +4,7 @@ package nfa035.projet;
  * @author bbseb
  *
  */
- public class Cellule implements Contenu,Comparable{
+ public class Cellule implements Comparable{
 	protected int x,y;
 	protected String formule;
 	
@@ -74,13 +74,6 @@ package nfa035.projet;
 	}
 
 
-	/**
-	 * Renvoie le resultat sous forme de chaine
-	 * @return le resultat
-	 */
-	public  String getResultatToString() {
-		return String.valueOf(this.getResultat());
-	}
 	
 
 
@@ -119,13 +112,11 @@ package nfa035.projet;
 		this.formule = formule;
 	}
 
-	@Override
-	public float getResultat() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
-	@Override
+	/**
+	 * Renvoie la formule du conteneur
+	 * @return la formule du conteneur
+	 */
 	public String getFormule() {
 		// TODO Auto-generated method stub
 		return this.formule;

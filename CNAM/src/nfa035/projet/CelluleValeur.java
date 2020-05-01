@@ -6,27 +6,33 @@ package nfa035.projet;
  * @author bbseb
  *
  */
-public class CelluleValeur extends Cellule{
-	
+public class CelluleValeur extends Cellule implements Contenu{
 	
 	
 	private float valeur;
+	
+	public CelluleValeur() {
+		super();
+		this.setValeur(0);
+	}
+	public CelluleValeur(int x, int y) {
+		super(x,y);
+		
+	}
+	public CelluleValeur(int x, int y,float valeur) {
+		super(x,y);
+		this.setValeur(valeur);
+	}
 	@Override
 	public float getResultat() {
 		
-		return 0;
+		return this.valeur;
 	}
 
 	
-	public void setFormule() {
+	public void setValeur(float valeur) {
+		this.valeur = valeur;
 	}
 
-	@Override
-	public String getFormule() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
 
 }
