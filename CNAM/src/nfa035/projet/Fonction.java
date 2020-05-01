@@ -6,14 +6,14 @@ package nfa035.projet;
  *
  */
 public abstract class Fonction {
-	private Bloc bloc;
+	protected Bloc bloc;
 	
     public Fonction() {
-    	this.bloc = new Bloc(0, 0, 0, 0);
+    	this.setBloc(new Bloc(0, 0, 0, 0));
     }
     
     public Fonction(Bloc b) {
-    	this.bloc = b;
+    	this.setBloc(b);
     }
 	/**
 	 * 
@@ -25,7 +25,6 @@ public abstract class Fonction {
 
 	public abstract float getResultat();
 	
-	public abstract boolean estFonction();
 
 	@Override
 	public int hashCode() {

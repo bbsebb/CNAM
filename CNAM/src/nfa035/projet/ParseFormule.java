@@ -94,7 +94,7 @@ public class ParseFormule {
 			int pointeur = (estFonctionMoyenne()) ? 8 : 6;
 			char[] chaine = this.formule.toCharArray();
 			Bloc b = new Bloc(chaine[pointeur] - 48, chaine[pointeur + 2] - 48, chaine[pointeur + 4] - 48,
-					chaine[pointeur + 6] - 48);
+					chaine[pointeur + 6] - 48,this.f);
 			if (this.estFonctionMoyenne())
 				return new Moyenne(b);
 			else if (this.estFonctionSomme())

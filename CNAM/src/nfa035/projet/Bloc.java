@@ -1,34 +1,56 @@
 package nfa035.projet;
 
+import java.util.Iterator;
+import java.util.Set;
+import java.util.Map.Entry;
+
 /**
  * Cette classe est bloc de {@link Cellule celulles}
+ * 
  * @author bbseb
  *
  */
-public class Bloc extends Feuille{
-	private int xCellule1,yCellule1,xCellule2,yCellule2;
+public class Bloc extends Feuille {
+	private int xCellule1, yCellule1, xCellule2, yCellule2;
 	private Feuille f;
-	
+
 	public Bloc() {
 		this.setxCellule1(0);
 		this.setxCellule2(0);
 		this.setyCellule1(0);
-		this.setyCellule2(0);	
+		this.setyCellule2(0);
+		this.setF(null);
+		this.setCellules();
 	}
-	
+
 	public Bloc(int x1, int y1, int x2, int y2) {
 		this.setxCellule1(x1);
 		this.setxCellule2(x2);
 		this.setyCellule1(y1);
-		this.setyCellule2(y2);	
+		this.setyCellule2(y2);
+		this.setF(null);
+		this.setCellules();
 	}
-	
-	public Bloc(int x1, int y1, int x2, int y2,Feuille f) {
+
+	public Bloc(int x1, int y1, int x2, int y2, Feuille f) {
 		this.setxCellule1(x1);
 		this.setxCellule2(x2);
 		this.setyCellule1(y1);
-		this.setyCellule2(y2);	
+		this.setyCellule2(y2);
 		this.setF(f);
+		this.setCellules();
+	}
+
+	private void setCellules() {
+		if (f != null) {
+			Set<Entry<Cellule, Contenu>> entry = this.f.getCellules().entrySet();
+			Iterator<Entry<Cellule, Contenu>> it = entry.iterator();
+			while (it.hasNext()) {
+				Entry<Cellule, Contenu> e= it.next();
+				if((e.getKey().getX()>=xCellule1 && e.getKey().getX()<=xCellule2) ||(e.getKey().getY()>=yCellule1 && e.getKey().getY()<=yCellule2))
+					this.cellules.put(e.getKey(), e.getValue());
+			}
+		}
 	}
 
 	/**
@@ -135,6 +157,5 @@ public class Bloc extends Feuille{
 			return false;
 		return true;
 	}
-	
-	
+
 }

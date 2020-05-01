@@ -2,7 +2,6 @@ package nfa035.projet;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -21,7 +20,7 @@ public class Feuille {
 	 * possibilité d'un cycle.
 	 */
 	private TreeMap<Cellule, LinkedHashSet<Cellule>> graphe = new TreeMap<Cellule, LinkedHashSet<Cellule>>();
-	private TreeMap<Cellule, Contenu> cellules = new TreeMap<Cellule, Contenu>();
+	protected TreeMap<Cellule, Contenu> cellules = new TreeMap<Cellule, Contenu>();
 	private ParseFormule pf;
 
 	/**
@@ -69,16 +68,19 @@ public class Feuille {
 		return bloc;
 	}
 	
-	public Bloc creeBloc(int x1, int y1,int x2,int y2) {
-		Set<Entry<Cellule,Contenu>> entry =  this.cellules.entrySet();
-		Iterator<Entry<Cellule,Contenu>> it = entry.iterator();
-		Bloc b = new Bloc();
-		while(it.hasNext()) {
-			
-		}
-		return bloc;
+	public  Bloc creeBloc(int x1, int y1,int x2,int y2) {
+		return creeBloc(x1,y1,x2,y2,this);
+	}
+	
+	public static Bloc creeBloc(int x1, int y1,int x2,int y2,Feuille f) {
+		Bloc b = new Bloc(x1,y1,x2,y2,f);
+		return b;
 	}
 
+	public TreeMap<Cellule, Contenu> getCellules() {
+		return this.cellules;
+	}
+	
 	public Cellule getCellule(int x, int y) throws ErreurCelluleException {
 		Iterator<Cellule> it = this.cellules.keySet().iterator();
 		while (it.hasNext()) {
