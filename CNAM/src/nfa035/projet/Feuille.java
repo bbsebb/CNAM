@@ -2,6 +2,7 @@ package nfa035.projet;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -68,8 +69,13 @@ public class Feuille {
 		return bloc;
 	}
 	
-	public Bloc creeBloc(int nbrLigne, int nbrColonne) {
-		this.cellules.subMap(fromKey, toKey);
+	public Bloc creeBloc(int x1, int y1,int x2,int y2) {
+		Set<Entry<Cellule,Contenu>> entry =  this.cellules.entrySet();
+		Iterator<Entry<Cellule,Contenu>> it = entry.iterator();
+		Bloc b = new Bloc();
+		while(it.hasNext()) {
+			
+		}
 		return bloc;
 	}
 
