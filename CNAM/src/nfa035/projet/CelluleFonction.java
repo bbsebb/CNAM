@@ -5,10 +5,23 @@ package nfa035.projet;
  * @author bbseb
  *
  */
-public class CelluleFonction extends Cellule{
+public class CelluleFonction extends Cellule implements Contenu{
 
 	private Bloc bloc;
 	private Fonction fonction;
+	
+	
+	public CelluleFonction() {
+		super();
+		bloc = null;
+		fonction = null;
+	}
+	
+	public CelluleFonction(int x, int y) {
+		super(x,y);
+		bloc = null;
+		fonction = null;
+	}
 	
 	@Override
 	public float getResultat() {
@@ -16,11 +29,6 @@ public class CelluleFonction extends Cellule{
 		return 0;
 	}
 
-	@Override
-	public String getFormule() {
-		
-		return null;
-	}
 
 	
 }
