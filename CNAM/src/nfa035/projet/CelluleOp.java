@@ -73,8 +73,25 @@ public class CelluleOp extends Cellule implements Contenu{
 
 	@Override
 	public float getResultat() {
-
-		return 0;
+		
+		float resultat = 0;
+		switch (this.getOperateur().toChar()) {
+			case '+':
+				resultat = this.getOperande1().getResultat() + this.getOperande2().getResultat();
+				break;
+			case '-':
+				resultat = this.getOperande1().getResultat() - this.getOperande2().getResultat();
+				break;
+			case '/':
+				resultat = this.getOperande1().getResultat() / this.getOperande2().getResultat();
+				break;
+			case '*': 
+				resultat = this.getOperande1().getResultat() * this.getOperande2().getResultat();
+				break;
+				
+		}
+		return resultat;
+		
 	}
 	
 	public void setFormule(Operande operande1, Operateur operateur, Operande operande2) {
