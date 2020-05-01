@@ -34,11 +34,6 @@ public class Operande implements Contenu{
 	}
 	
 	
-	@Override
-	public String getFormule() {
-		
-		return String.valueOf(this.valeur);
-	}
 
 	@Override
 	public float getResultat() {
