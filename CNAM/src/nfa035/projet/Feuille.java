@@ -119,12 +119,11 @@ public class Feuille {
 		Contenu ct = null;
 		this.pf.setFormule(formule);
 		if(this.pf.estCelluleValeur()) {
-			
-			ct = new CelluleValeur(x,y);
+			ct = new CelluleValeur(x,y,this.pf.parseCelluleValeur());
 		} else if (this.pf.estCelluleOperation()) {
-			ct = new CelluleOp(x,y);
+			ct = new CelluleOp(x,y,this.pf.parseCelluleOperationGetOperande1(),this.pf.parseCelluleOperationGetOperande2(),this.pf.parseCelluleOperationGetOperateur());
 		} else if(this.pf.estCelluleFonction()) {
-			ct = new CelluleFonction(x,y);
+			ct = new CelluleFonction(x,y,this.pf.parseCelluleFonction());
 		} else
 			throw new ErreurFormuleException();
 		this.cellules.put(c, ct);
