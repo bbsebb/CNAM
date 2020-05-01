@@ -9,6 +9,13 @@ public class Bloc extends Feuille{
 	private int xCellule1,yCellule1,xCellule2,yCellule2;
 	private Feuille f;
 	
+	public Bloc() {
+		this.setxCellule1(0);
+		this.setxCellule2(0);
+		this.setyCellule1(0);
+		this.setyCellule2(0);	
+	}
+	
 	public Bloc(int x1, int y1, int x2, int y2) {
 		this.setxCellule1(x1);
 		this.setxCellule2(x2);
