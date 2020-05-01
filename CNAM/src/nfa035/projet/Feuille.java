@@ -24,10 +24,10 @@ public class Feuille {
 	private ParseFormule pf;
 
 	/**
-	 * Constructeur qui crée une feuille de 11 lignes et 11 colonnes
+	 * Constructeur par defaut qui crée une feuille de 11 lignes et 11 colonnes
 	 */
 	public Feuille() {
-		for (Cellule c : creeFeuille(11, 11)) {
+		for (Cellule c : creeFeuille(0, 0,11,11)) {
 			this.cellules.put(c, null);
 			this.graphe.put(c, null);
 		}
@@ -37,16 +37,33 @@ public class Feuille {
 
 	/**
 	 * Constructeur qui crée une feuille du nombre de ligne et nombre de colonne en
-	 * paramettre
+	 * paramettre, la première cellule commencera à 0.0
 	 * 
 	 * @param nbrLigne   est le nombre de ligne de la feuille crée
 	 * @param nbrColonne est le nombre de colonne de la feuille crée
 	 */
 	public Feuille(int nbrLigne, int nbrColonne) {
-		for (Cellule c : creeFeuille(nbrLigne, nbrColonne)) {
+		for (Cellule c : creeFeuille(0,nbrLigne,0, nbrColonne)) {
 			this.cellules.put(c, null);
 			this.graphe.put(c, null);
 		}
+		pf = new ParseFormule(this);
+	}
+	
+	/**
+	 * Constructeur qui crée une feuille du nombre de ligne et nombre de colonne en
+	 * paramettre, la première cellule commencera à 0.0
+	 * @param xDebut est la ligne de la première cellule
+	 * @param yDebut est la colonne de la première cellule
+	 * @param xFin est la ligne de la dernière cellule
+	 * @param yFin est la colonne de la dernière cellule
+	 */
+	public Feuille(int xDebut,int yDebut,int xFin,int yFin) {
+		for (Cellule c : creeFeuille(xDebut, yDebut,xFin,yFin)) {
+			this.cellules.put(c, null);
+			this.graphe.put(c, null);
+		}
+
 		pf = new ParseFormule(this);
 	}
 
@@ -58,20 +75,37 @@ public class Feuille {
 	 * @param nbrColonne est le nombre de colonne du bloc crée
 	 * @return une liste de cellule unique
 	 */
-	private TreeSet<Cellule> creeFeuille(int nbrLigne, int nbrColonne) {
+	private TreeSet<Cellule> creeFeuille(int xDebut,int yDebut,int xFin,int yFin) {
 		TreeSet<Cellule> bloc = new TreeSet<Cellule>();
-		for (int i = 0; i < nbrLigne - 1; i++) {
-			for (int j = 0; j < nbrColonne - 1; j++) {
+		for (int i = xDebut; i <= xFin; i++) {
+			for (int j = yDebut; j <= yFin; j++) {
 				bloc.add(new Cellule(i, j));
 			}
 		}
 		return bloc;
 	}
 	
+	/**
+	 * Renvoie un bloc de cellule qui est une partie de la feuille
+	 * @param x1 est la ligne de la première cellule du bloc
+	 * @param y1 est la colonne de la première cellule du bloc
+	 * @param x2 est la ligne de la deuxième cellule du bloc
+	 * @param y2 est la colonne de la deuxième cellule du bl
+	 * @return un object bloc
+	 */
 	public  Bloc creeBloc(int x1, int y1,int x2,int y2) {
 		return creeBloc(x1,y1,x2,y2,this);
 	}
 	
+	/**
+	 * Renvoie un bloc de cellule qui est une partie de la feuille en paramètre
+	 * @param x1 est la ligne de la première cellule du bloc
+	 * @param y1 est la colonne de la première cellule du bloc
+	 * @param x2 est la ligne de la deuxième cellule du bloc
+	 * @param y2 est la colonne de la deuxième cellule du bl
+	 * @param f est la feuille de référence de bloc
+	 * @return un object bloc
+	 */
 	public static Bloc creeBloc(int x1, int y1,int x2,int y2,Feuille f) {
 		Bloc b = new Bloc(x1,y1,x2,y2,f);
 		return b;

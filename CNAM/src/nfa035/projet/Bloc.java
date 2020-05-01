@@ -15,28 +15,15 @@ public class Bloc extends Feuille {
 	private Feuille f;
 
 	public Bloc() {
-		this.setxCellule1(0);
-		this.setxCellule2(0);
-		this.setyCellule1(0);
-		this.setyCellule2(0);
-		this.setF(null);
-		this.setCellules();
+		
 	}
 
-	public Bloc(int x1, int y1, int x2, int y2) {
-		this.setxCellule1(x1);
-		this.setxCellule2(x2);
-		this.setyCellule1(y1);
-		this.setyCellule2(y2);
-		this.setF(null);
-		this.setCellules();
-	}
-
-	public Bloc(int x1, int y1, int x2, int y2, Feuille f) {
-		this.setxCellule1(x1);
-		this.setxCellule2(x2);
-		this.setyCellule1(y1);
-		this.setyCellule2(y2);
+	public Bloc(int xDebut, int yDebut, int xFin, int yFin, Feuille f) {
+		super(xDebut,yDebut,xFin,yFin);
+		this.setxCellule1(xDebut);
+		this.setxCellule2(xFin);
+		this.setyCellule1(yDebut);
+		this.setyCellule2(yFin);
 		this.setF(f);
 		this.setCellules();
 	}
@@ -47,7 +34,7 @@ public class Bloc extends Feuille {
 			Iterator<Entry<Cellule, Contenu>> it = entry.iterator();
 			while (it.hasNext()) {
 				Entry<Cellule, Contenu> e= it.next();
-				if((e.getKey().getX()>=xCellule1 && e.getKey().getX()<=xCellule2) ||(e.getKey().getY()>=yCellule1 && e.getKey().getY()<=yCellule2))
+				if((e.getKey().getX()>=xCellule1 && e.getKey().getX()<=xCellule2) &&(e.getKey().getY()>=yCellule1 && e.getKey().getY()<=yCellule2))
 					this.cellules.put(e.getKey(), e.getValue());
 			}
 		}
