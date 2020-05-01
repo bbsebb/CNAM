@@ -1,6 +1,7 @@
 package nfa035.projet;
 
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -14,7 +15,8 @@ public class Feuille {
 	/**
 	 * Chaque valeur correspond à l'ensemble des descendants de la clé par fermeture transitive. Une valeur ne peut aparaitre 2 fois, on enlève donc la possibilité d'un cycle.
 	 */
-	private TreeMap<Cellule,TreeSet<Cellule>> cellules = new TreeMap<Cellule,TreeSet<Cellule>>();
+	private TreeMap<Cellule,LinkedHashSet<Cellule>> graphe = new TreeMap<Cellule,LinkedHashSet<Cellule>>();
+	private TreeMap<Cellule,Contenu> cellules = new TreeMap<Cellule,Contenu>();
 	private ParseFormule pf;
 	
 	/**
@@ -23,7 +25,9 @@ public class Feuille {
 	public Feuille() {
 		for(Cellule c : creerBloc(11,11)) {
 			this.cellules.put(c, null);
+			this.graphe.put(c, null);
 		}
+		
 		pf = new ParseFormule(this);
 	}
 	
@@ -35,6 +39,7 @@ public class Feuille {
 	public Feuille(int nbrLigne,int nbrColonne) {
 		for(Cellule c : creerBloc(nbrLigne,nbrColonne)) {
 			this.cellules.put(c, null);
+			this.graphe.put(c, null);
 		}
 		pf = new ParseFormule(this);
 	}
@@ -55,7 +60,7 @@ public class Feuille {
 		return bloc;
 	}
 	
-	public Cellule getCellule(int x, int y) {
+	public Cellule getCellule(int x, int y) throws ErreurCelluleException {
 		Iterator<Cellule> it = this.cellules.keySet().iterator();
 		while(it.hasNext()) {
 			Cellule c = it.next();
@@ -63,16 +68,26 @@ public class Feuille {
 				return c;
 			}
 		}
-		return null;
+		throw new ErreurCelluleException();
 	}
+	
+	public Contenu getContenu(Cellule c) throws ErreurCelluleException {	
+		Contenu rtr = cellules.get(c);
+		if(rtr == null) 
+			throw new ErreurCelluleException();
+		else
+			return rtr;
+	}
+	
 	
 	/**
 	 * Renvoie la formule d'une {@link Cellule cellule} spécifié en paramètre
 	 * @param x est la ligne de cellule
 	 * @param y est la colonne de la cellule
 	 * @return la formule de la cellule spécifié en paramètre
+	 * @throws ErreurCelluleException 
 	 */
-	public String getCelluleFormule(int x, int y) {
+	public String getCelluleFormule(int x, int y) throws ErreurCelluleException {
 		
 		return this.getCellule(x, y).getFormule();
 	}
@@ -82,9 +97,10 @@ public class Feuille {
 	 * @param x est la ligne de cellule
 	 * @param y est la colonne de la cellule
 	 * @return la valeur d'une cellule spécifié en paramètre
+	 * @throws ErreurCelluleException 
 	 */
-	public float getCelluleResultat(int x, int y) {
-		return this.getCellule(x, y).getResultat();
+	public float getCelluleResultat(int x, int y) throws ErreurCelluleException {
+		return this.getContenu(this.getCellule(x, y)).getResultat();
 	}
 	
 	/**
@@ -92,21 +108,31 @@ public class Feuille {
 	 * @param x est la ligne de cellule
 	 * @param y est la colonne de la cellule
 	 * @param formule
+	 * @throws ErreurFormuleException 
+	 * @throws ErreurCelluleException 
 	 * @see CelluleFonction
 	 * @see CelluleOp
 	 * @see CelluleValeur
 	 */
-	public void setCellule(int x, int y, String formule) {
+	public void setCellule(int x, int y, String formule) throws ErreurFormuleException, ErreurCelluleException {
 		Cellule c = this.getCellule(x, y);
-		this.parseFormule(formule);
+		Contenu ct = null;
+		this.pf.setFormule(formule);
+		if(this.pf.estCelluleValeur()) {
+			
+			ct = new CelluleValeur(x,y);
+		} else if (this.pf.estCelluleOperation()) {
+			ct = new CelluleOp(x,y);
+		} else if(this.pf.estCelluleFonction()) {
+			ct = new CelluleFonction(x,y);
+		} else
+			throw new ErreurFormuleException();
+		this.cellules.put(c, ct);
 	}
 	
-	/**
-	 * 
-	 * @param formule
-	 */
-	private void parseFormule(String formule) {
-		
+	public void setCellule(int x, int y, Contenu ct) throws ErreurFormuleException, ErreurCelluleException {
+		Cellule c = this.getCellule(x, y);
+		this.cellules.put(c, ct);
 	}
 	
 	
@@ -120,13 +146,13 @@ public class Feuille {
 		
 	}
 	
-	public void affichageCellule() {
+	public void affichageCellule()  {
 		Set<Cellule> listCellule = this.getListeCellule();
 		int x,y;
 		x=0;
 		y=x;
 		for(Cellule c : listCellule) {
-			System.out.println(c.getX() + " " + c.getY()  + " -> Formule : " +c.getFormule()+" Resultat : " + c.getResultat());
+			System.out.println(c.getX() + " " + c.getY()  + " -> Formule : " +c.getFormule()+" Resultat : " + this.cellules.get(c));
 		}
 	}
 	
