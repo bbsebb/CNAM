@@ -1,13 +1,12 @@
 package nfa035.projet2;
 
-import nfa035.projet2.Bloc;
-
 public abstract class Fonction implements Contenu{
 	protected Bloc bloc;
+	protected String formule;
 	
-	
-	 public Fonction(Bloc b) {
+	 public Fonction(Bloc b,String formule) {
 	    	this.setBloc(b);
+	    	this.setFormule(formule);
 	    }
 		/**
 		 * 
@@ -21,5 +20,19 @@ public abstract class Fonction implements Contenu{
 			return this.bloc;
 		}
 		
+		/**
+		 * @return the formule
+		 */
+		@Override
+		public String getFormule() {
+			return formule;
+		}
+		/**
+		 * @param formule the formule to set
+		 */
+		private void setFormule(String formule) {
+			this.formule = formule;
+		}
+		@Override
 		public abstract float getResultat();
 }

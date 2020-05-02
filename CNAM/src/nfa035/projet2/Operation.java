@@ -3,12 +3,14 @@ package nfa035.projet2;
 public class Operation implements Contenu{
 	private Contenu operande1,operande2;
 	private Operateur operateur;
+	private String formule;
 	
 	
-	public Operation(Contenu c1,Contenu c2,Operateur op) {
+	public Operation(Contenu c1,Contenu c2,Operateur op,String formule) {
 		this.setOperande1(c1);
 		this.setOperande2(c2);
 		this.setOperateur(op);
+		this.setFormule(formule);
 	}
 
 	/**
@@ -68,7 +70,15 @@ public class Operation implements Contenu{
 		this.operateur = op;
 	}
 
+	@Override
+	public String getFormule() {
+		// TODO Auto-generated method stub
+		return this.formule;
+	}
 
+	private void setFormule(String formule) {
+		this.formule = formule;
+	}
 
 
 	@Override
@@ -92,4 +102,6 @@ public class Operation implements Contenu{
 		}
 		return resultat;
 	}
+
+
 	}

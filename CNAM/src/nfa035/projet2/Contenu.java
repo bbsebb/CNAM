@@ -6,4 +6,5 @@ public interface Contenu {
 	 * @return la valeur du conteneur
 	 */
 	public abstract float getResultat();
+	public abstract String getFormule();
 }

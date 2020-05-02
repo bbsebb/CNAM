@@ -4,8 +4,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.TreeMap;
 
-import nfa035.projet.Cellule;
-import nfa035.projet.ErreurDepacementFeuilleException;
 
 public class Feuille {
 	protected TreeMap<Cellule, LinkedHashSet<Cellule>> cellules;
@@ -73,7 +71,9 @@ public class Feuille {
 		this.yMax = yMax;
 	}	
 	
-
+	public void setCellule(String formule) {
+		
+	}
 	public Cellule getCellule(int x, int y) throws HorsFeuilleException {
 		Iterator<Cellule> it = this.cellules.keySet().iterator();
 		while (it.hasNext()) {
@@ -85,13 +85,16 @@ public class Feuille {
 		throw new HorsFeuilleException();
 	}
 	
-	public boolean estCelluleVide(int x, int y)  {
-		if()
+	public boolean estCelluleVide(int x, int y) throws HorsFeuilleException  {
+		if(this.getCellule(x, y).estVide())
 			return true;
 		else 
 			return false;
 	}	
+	
 	private TreeMap<Cellule, LinkedHashSet<Cellule>> creeBloc(int xCellule1,int yCellule1,int xCellule2,int yCellule2) {
+		if(xCellule1<0 || xCellule2<0 || yCellule1<0 || yCellule2<0)
+			throw new IllegalArgumentException();
 		TreeMap<Cellule, LinkedHashSet<Cellule>> cellules = new TreeMap<Cellule, LinkedHashSet<Cellule>>();
 		for (int i = xCellule1; i <= xCellule2; i++) {
 			for (int j = yCellule1; j <= yCellule2; j++) {

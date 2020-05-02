@@ -1,19 +1,22 @@
 package nfa035.projet2;
 
-public class Cellule implements Contenu{
+public class Cellule implements Contenu,Comparable<Cellule>{
 	private int x,y;
 	private Contenu contenu;
+	private String formule ;
 	
 	public Cellule(int x,int y) {
 		this.setX(x);
 		this.setY(y);
 		this.setContenu(null);
+		this.setFormule(null);
 	}
 	
-	public Cellule(int x,int y,Contenu c) {
+	public Cellule(int x,int y,Contenu c,String formule) {
 		this.setX(x);
 		this.setY(y);
 		this.setContenu(c);
+		this.setFormule(formule);
 	}
 
 	/**
@@ -45,6 +48,21 @@ public class Cellule implements Contenu{
 	}
 
 	/**
+	 * @return the formule
+	 */
+	@Override
+	public String getFormule() {
+		return formule;
+	}
+
+	/**
+	 * @param formule the formule to set
+	 */
+	private void setFormule(String formule) {
+		this.formule = formule;
+	}
+
+	/**
 	 * @return the contenu
 	 */
 	private Contenu getContenu() {
@@ -58,11 +76,46 @@ public class Cellule implements Contenu{
 		this.contenu = contenu;
 	}
 
+	public boolean estVide() {
+		if(this.getContenu() == null) 
+			return true;
+		else
+			return false;
+	}
 	@Override
 	public float getResultat() {
 		// TODO Auto-generated method stub
 		return this.getContenu().getResultat();
 	}
 	
+
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + x;
+		result = prime * result + y;
+		return result;
+	}
+
+	@Override
+	public int compareTo(Cellule o) {
+		Cellule c = (Cellule)o;
+		int indiceComparaison = 0;
+		if(this.getX() > c.getX())
+			indiceComparaison = 1;
+		else if (this.getX() < c.getX())
+			indiceComparaison = -1;
+		else {
+			if(this.getY() > c.getY())
+				indiceComparaison = 1;
+			else if (this.getY() < c.getY())
+				indiceComparaison = -1;
+			else 
+				indiceComparaison = 0;
+		}
+		return indiceComparaison;
+	}
 	
 }
