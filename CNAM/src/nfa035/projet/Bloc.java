@@ -123,7 +123,8 @@ public class Bloc extends Feuille {
 	public void setF(Feuille f) throws ErreurDepacementFeuilleException {
 		if (f.estCellule(this.getxCellule2(), this.getyCellule2()) && f.estCellule(this.getxCellule1(), this.getyCellule1()) ) {
 			this.f = f;
-		}
+		} else
+			throw new ErreurDepacementFeuilleException();
 	}
 
 	@Override

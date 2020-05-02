@@ -164,10 +164,10 @@ public class Feuille {
 		throw new ErreurDepacementFeuilleException();
 	}
 
-	public Contenu getContenu(Cellule c) throws ErreurDepacementFeuilleException {
+	public Contenu getContenu(Cellule c) throws ErreurCelluleException {
 		Contenu rtr = cellules.get(c);
 		if (rtr == null)
-			throw new ErreurDepacementFeuilleException();
+			throw new ErreurCelluleException();
 		else
 			return rtr;
 	}
@@ -195,7 +195,7 @@ public class Feuille {
 	 * @throws ErreurCelluleException
 	 * @throws ErreurDepacementFeuilleException
 	 */
-	public float getCelluleResultat(int x, int y) throws ErreurDepacementFeuilleException {
+	public float getCelluleResultat(int x, int y) throws ErreurDepacementFeuilleException, ErreurCelluleException {
 		return this.getContenu(this.getCellule(x, y)).getResultat();
 	}
 

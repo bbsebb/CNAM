@@ -28,6 +28,7 @@ public class ParseFormule {
 	public void setFormule(String f) {
 		this.formule = f;
 	}
+	
 
 	/**
 	 * Teste si la formule de l'instance correspond uniquement à une cellule de type
