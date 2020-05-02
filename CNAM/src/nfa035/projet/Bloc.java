@@ -15,27 +15,40 @@ public class Bloc extends Feuille {
 	private Feuille f;
 
 	public Bloc() {
-		
+
 	}
 
-	public Bloc(int xDebut, int yDebut, int xFin, int yFin, Feuille f) {
-		super(xDebut,yDebut,xFin,yFin);
+	public Bloc(int xDebut, int yDebut, int xFin, int yFin, Feuille f) throws  ErreurDepacementFeuilleException, ErreurCelluleException {
+		super(xDebut, yDebut, xFin, yFin);
+		if(xDebut>xFin || yDebut>yFin) {
+			int temp = xDebut;
+			xDebut=xFin;
+			xFin=temp;
+			temp = yDebut;
+			yDebut=yFin;
+			yFin=temp;
+		}
 		this.setxCellule1(xDebut);
 		this.setxCellule2(xFin);
 		this.setyCellule1(yDebut);
 		this.setyCellule2(yFin);
 		this.setF(f);
 		this.setCellules();
+
 	}
 
-	private void setCellules() {
+	private void setCellules() throws ErreurCelluleException {
 		if (f != null) {
 			Set<Entry<Cellule, Contenu>> entry = this.f.getCellules().entrySet();
 			Iterator<Entry<Cellule, Contenu>> it = entry.iterator();
 			while (it.hasNext()) {
-				Entry<Cellule, Contenu> e= it.next();
-				if((e.getKey().getX()>=xCellule1 && e.getKey().getX()<=xCellule2) &&(e.getKey().getY()>=yCellule1 && e.getKey().getY()<=yCellule2))
+				Entry<Cellule, Contenu> e = it.next();
+				if ((e.getKey().getX() >= xCellule1 && e.getKey().getX() <= xCellule2)
+						&& (e.getKey().getY() >= yCellule1 && e.getKey().getY() <= yCellule2)) {
+					if (e.getValue() == null)
+						throw new ErreurCelluleException();
 					this.cellules.put(e.getKey(), e.getValue());
+				}
 			}
 		}
 	}
@@ -105,9 +118,12 @@ public class Bloc extends Feuille {
 
 	/**
 	 * @param f the f to set
+	 * @throws ErreurDepacementFeuilleException 
 	 */
-	public void setF(Feuille f) {
-		this.f = f;
+	public void setF(Feuille f) throws ErreurDepacementFeuilleException {
+		if (f.estCellule(this.getxCellule2(), this.getyCellule2()) && f.estCellule(this.getxCellule1(), this.getyCellule1()) ) {
+			this.f = f;
+		}
 	}
 
 	@Override

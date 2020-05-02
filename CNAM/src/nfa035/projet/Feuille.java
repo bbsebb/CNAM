@@ -27,7 +27,7 @@ public class Feuille {
 	 * Constructeur par defaut qui crée une feuille de 11 lignes et 11 colonnes
 	 */
 	public Feuille() {
-		for (Cellule c : creeFeuille(0, 0,11,11)) {
+		for (Cellule c : creeFeuille(0, 0, 11, 11)) {
 			this.cellules.put(c, null);
 			this.graphe.put(c, null);
 		}
@@ -43,23 +43,24 @@ public class Feuille {
 	 * @param nbrColonne est le nombre de colonne de la feuille crée
 	 */
 	public Feuille(int nbrLigne, int nbrColonne) {
-		for (Cellule c : creeFeuille(0,nbrLigne,0, nbrColonne)) {
+		for (Cellule c : creeFeuille(0, nbrLigne, 0, nbrColonne)) {
 			this.cellules.put(c, null);
 			this.graphe.put(c, null);
 		}
 		pf = new ParseFormule(this);
 	}
-	
+
 	/**
 	 * Constructeur qui crée une feuille du nombre de ligne et nombre de colonne en
 	 * paramettre, la première cellule commencera à 0.0
+	 * 
 	 * @param xDebut est la ligne de la première cellule
 	 * @param yDebut est la colonne de la première cellule
-	 * @param xFin est la ligne de la dernière cellule
-	 * @param yFin est la colonne de la dernière cellule
+	 * @param xFin   est la ligne de la dernière cellule
+	 * @param yFin   est la colonne de la dernière cellule
 	 */
-	public Feuille(int xDebut,int yDebut,int xFin,int yFin) {
-		for (Cellule c : creeFeuille(xDebut, yDebut,xFin,yFin)) {
+	public Feuille(int xDebut, int yDebut, int xFin, int yFin) {
+		for (Cellule c : creeFeuille(xDebut, yDebut, xFin, yFin)) {
 			this.cellules.put(c, null);
 			this.graphe.put(c, null);
 		}
@@ -75,47 +76,84 @@ public class Feuille {
 	 * @param nbrColonne est le nombre de colonne du bloc crée
 	 * @return une liste de cellule unique
 	 */
-	private TreeSet<Cellule> creeFeuille(int xDebut,int yDebut,int xFin,int yFin) {
-		TreeSet<Cellule> bloc = new TreeSet<Cellule>();
+	private TreeSet<Cellule> creeFeuille(int xDebut, int yDebut, int xFin, int yFin) {
+		if(xDebut>xFin || yDebut>yFin) {
+			int temp = xDebut;
+			xDebut=xFin;
+			xFin=temp;
+			temp = yDebut;
+			yDebut=yFin;
+			yFin=temp;
+		}
+		TreeSet<Cellule> feuille = new TreeSet<Cellule>();
 		for (int i = xDebut; i <= xFin; i++) {
 			for (int j = yDebut; j <= yFin; j++) {
-				bloc.add(new Cellule(i, j));
+				feuille.add(new Cellule(i, j));
 			}
 		}
-		return bloc;
+		return feuille;
 	}
-	
+
 	/**
 	 * Renvoie un bloc de cellule qui est une partie de la feuille
+	 * 
 	 * @param x1 est la ligne de la première cellule du bloc
 	 * @param y1 est la colonne de la première cellule du bloc
 	 * @param x2 est la ligne de la deuxième cellule du bloc
 	 * @param y2 est la colonne de la deuxième cellule du bl
 	 * @return un object bloc
+	 * @throws ErreurDepacementFeuilleException 
 	 */
-	public  Bloc creeBloc(int x1, int y1,int x2,int y2) {
-		return creeBloc(x1,y1,x2,y2,this);
+	public Bloc creeBloc(int x1, int y1, int x2, int y2) throws ErreurDepacementFeuilleException {
+		return creeBloc(x1, y1, x2, y2, this);
 	}
-	
+
 	/**
 	 * Renvoie un bloc de cellule qui est une partie de la feuille en paramètre
+	 * 
 	 * @param x1 est la ligne de la première cellule du bloc
 	 * @param y1 est la colonne de la première cellule du bloc
 	 * @param x2 est la ligne de la deuxième cellule du bloc
 	 * @param y2 est la colonne de la deuxième cellule du bl
-	 * @param f est la feuille de référence de bloc
+	 * @param f  est la feuille de référence de bloc
 	 * @return un object bloc
+	 * @throws ErreurDepacementFeuilleException 
 	 */
-	public static Bloc creeBloc(int x1, int y1,int x2,int y2,Feuille f) {
-		Bloc b = new Bloc(x1,y1,x2,y2,f);
+	public static Bloc creeBloc(int x1, int y1, int x2, int y2, Feuille f) throws ErreurDepacementFeuilleException {
+		Bloc b;
+		try {
+			b = new Bloc(x1, y1, x2, y2, f);
+		} catch (ErreurCelluleException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			b = null;
+		}
 		return b;
 	}
 
 	public TreeMap<Cellule, Contenu> getCellules() {
 		return this.cellules;
 	}
+
+	public boolean estCellule(int x, int y) {
+		Iterator<Cellule> it = this.cellules.keySet().iterator();
+		while (it.hasNext()) {
+			Cellule c = it.next();
+			if (c.getX() == x && c.getY() == y)
+				return true;
+		}
+		return false;
+	}
 	
-	public Cellule getCellule(int x, int y) throws ErreurCelluleException {
+	public boolean estCelluleVide(int x, int y) throws ErreurDepacementFeuilleException {
+		if(this.cellules.get(this.getCellule(x, y))==null)
+			return true;
+		else 
+			return false;
+	}
+
+	public Cellule getCellule(int x, int y) throws ErreurDepacementFeuilleException {
 		Iterator<Cellule> it = this.cellules.keySet().iterator();
 		while (it.hasNext()) {
 			Cellule c = it.next();
@@ -123,13 +161,13 @@ public class Feuille {
 				return c;
 			}
 		}
-		throw new ErreurCelluleException();
+		throw new ErreurDepacementFeuilleException();
 	}
 
-	public Contenu getContenu(Cellule c) throws ErreurCelluleException {
+	public Contenu getContenu(Cellule c) throws ErreurDepacementFeuilleException {
 		Contenu rtr = cellules.get(c);
 		if (rtr == null)
-			throw new ErreurCelluleException();
+			throw new ErreurDepacementFeuilleException();
 		else
 			return rtr;
 	}
@@ -141,8 +179,9 @@ public class Feuille {
 	 * @param y est la colonne de la cellule
 	 * @return la formule de la cellule spécifié en paramètre
 	 * @throws ErreurCelluleException
+	 * @throws ErreurDepacementFeuilleException
 	 */
-	public String getCelluleFormule(int x, int y) throws ErreurCelluleException {
+	public String getCelluleFormule(int x, int y) throws ErreurDepacementFeuilleException {
 
 		return this.getCellule(x, y).getFormule();
 	}
@@ -154,8 +193,9 @@ public class Feuille {
 	 * @param y est la colonne de la cellule
 	 * @return la valeur d'une cellule spécifié en paramètre
 	 * @throws ErreurCelluleException
+	 * @throws ErreurDepacementFeuilleException
 	 */
-	public float getCelluleResultat(int x, int y) throws ErreurCelluleException {
+	public float getCelluleResultat(int x, int y) throws ErreurDepacementFeuilleException {
 		return this.getContenu(this.getCellule(x, y)).getResultat();
 	}
 
@@ -169,11 +209,13 @@ public class Feuille {
 	 * @param formule
 	 * @throws ErreurFormuleException
 	 * @throws ErreurCelluleException
+	 * @throws ErreurDepacementFeuilleException
 	 * @see CelluleFonction
 	 * @see CelluleOp
 	 * @see CelluleValeur
 	 */
-	public void setCellule(int x, int y, String formule) throws ErreurFormuleException, ErreurCelluleException {
+	public void setCellule(int x, int y, String formule)
+			throws ErreurFormuleException, ErreurCelluleException, ErreurDepacementFeuilleException {
 		Cellule c = this.getCellule(x, y);
 		Contenu ct = null;
 		this.pf.setFormule(formule);
@@ -189,7 +231,8 @@ public class Feuille {
 		this.cellules.put(c, ct);
 	}
 
-	public void setCellule(int x, int y, Contenu ct) throws ErreurFormuleException, ErreurCelluleException {
+	public void setCellule(int x, int y, Contenu ct)
+			throws ErreurFormuleException, ErreurCelluleException, ErreurDepacementFeuilleException {
 		Cellule c = this.getCellule(x, y);
 		this.cellules.put(c, ct);
 	}
@@ -206,16 +249,13 @@ public class Feuille {
 
 	public void affichageCellule() {
 		Set<Cellule> listCellule = this.getListeCellule();
-		int x, y;
-		x = 0;
-		y = x;
 
 		for (Cellule c : listCellule) {
 			float resultat = 0;
 			if (this.cellules.get(c) != null)
 				resultat = this.cellules.get(c).getResultat();
-			System.out.println(c.getX() + " " + c.getY() + " -> Formule : " + c.getFormule() + " Resultat : "
-					+ resultat);
+			System.out
+					.println(c.getX() + " " + c.getY() + " -> Formule : " + c.getFormule() + " Resultat : " + resultat);
 		}
 	}
 
