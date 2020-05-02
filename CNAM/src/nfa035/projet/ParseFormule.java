@@ -87,8 +87,10 @@ public class ParseFormule {
 	 * 
 	 * @return une fonction associé à un bloc de cellule
 	 * @throws ErreurFormuleException est lancé si la formule n'est pas une fonction
+	 * @throws ErreurCelluleException 
+	 * @throws ErreurDepacementFeuilleException 
 	 */
-	public Fonction parseCelluleFonction() throws ErreurFormuleException {
+	public Fonction parseCelluleFonction() throws ErreurFormuleException, ErreurCelluleException, ErreurDepacementFeuilleException {
 
 		if (this.estCelluleFonction()) {
 			int pointeur = (estFonctionMoyenne()) ? 8 : 6;
@@ -127,8 +129,9 @@ public class ParseFormule {
 	 * @return l'opérande 1 qui peut étre une opérande(valeur float) ou une cellule
 	 * @throws ErreurFormuleException si la formule ne comporte pas d'opérande
 	 * @throws ErreurCelluleException 
+	 * @throws ErreurDepacementFeuilleException 
 	 */
-	public Contenu parseCelluleOperationGetOperande1() throws ErreurFormuleException, ErreurCelluleException {
+	public Contenu parseCelluleOperationGetOperande1() throws ErreurFormuleException, ErreurCelluleException, ErreurDepacementFeuilleException {
 		if (estOperation(this.formule)) {
 			String str = this.formule;
 			Operateur op = this.parseCelluleOperationGetOperateur();
@@ -152,8 +155,9 @@ public class ParseFormule {
 	 * @return l'opérande 2 qui peut étre une opérande(valeur float) ou une cellule
 	 * @throws ErreurFormuleException si la formule ne comporte pas d'opérande
 	 * @throws ErreurCelluleException 
+	 * @throws ErreurDepacementFeuilleException 
 	 */
-	public Contenu parseCelluleOperationGetOperande2() throws ErreurFormuleException, ErreurCelluleException {
+	public Contenu parseCelluleOperationGetOperande2() throws ErreurFormuleException, ErreurCelluleException, ErreurDepacementFeuilleException {
 		if (estOperation(this.formule)) {
 			String str = this.formule;
 			Operateur op = this.parseCelluleOperationGetOperateur();

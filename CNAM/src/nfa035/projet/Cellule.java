@@ -4,7 +4,7 @@ package nfa035.projet;
  * @author bbseb
  *
  */
- public class Cellule implements Comparable{
+ public class Cellule implements Comparable<Cellule>{
 	protected int x,y;
 	protected String formule;
 	
@@ -30,7 +30,7 @@ package nfa035.projet;
 	
 
 	@Override
-	public int compareTo(Object o) {
+	public int compareTo(Cellule o) {
 		Cellule c = (Cellule)o;
 		int indiceComparaison = 0;
 		if(this.getX() > c.getX())
@@ -121,6 +121,8 @@ package nfa035.projet;
 		// TODO Auto-generated method stub
 		return this.formule;
 	}
+
+
 
 
 }

@@ -13,10 +13,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import nfa035.projet.Bloc;
-import nfa035.projet.Cellule;
 import nfa035.projet.CelluleOp;
 import nfa035.projet.Contenu;
 import nfa035.projet.ErreurCelluleException;
+import nfa035.projet.ErreurDepacementFeuilleException;
 import nfa035.projet.ErreurFormuleException;
 import nfa035.projet.Feuille;
 import nfa035.projet.Moyenne;
@@ -140,9 +140,11 @@ class ParseFormuleTest {
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
 	 * @throws ErreurFormuleException 
+	 * @throws ErreurCelluleException 
+	 * @throws ErreurDepacementFeuilleException 
 	 */
 	@Test
-	void testParseCelluleFonction() throws ErreurFormuleException {
+	void testParseCelluleFonction() throws ErreurFormuleException, ErreurDepacementFeuilleException, ErreurCelluleException {
 		Feuille f = new Feuille();
 		ParseFormule p = new ParseFormule(f);
 		p.setFormule("Somme(1.1;2.2)");
@@ -151,9 +153,11 @@ class ParseFormuleTest {
 	/**
 	 * Test method for {@link nfa035.projet.ParseFormule#parseEstCelluleValeur(java.lang.String)}.
 	 * @throws ErreurFormuleException 
+	 * @throws ErreurCelluleException 
+	 * @throws ErreurDepacementFeuilleException 
 	 */
 	@Test
-	void test1ParseCelluleFonction() throws ErreurFormuleException {
+	void test1ParseCelluleFonction() throws ErreurFormuleException, ErreurDepacementFeuilleException, ErreurCelluleException {
 		Feuille f = new Feuille();
 		ParseFormule p = new ParseFormule(f);	
 		p.setFormule("Moyenne(1.1;2.2)");
@@ -199,9 +203,10 @@ class ParseFormuleTest {
 	 * Test method for {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperande1(java.lang.String)} et {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperande2(java.lang.String)} et .
 	 * @throws ErreurFormuleException 
 	 * @throws ErreurCelluleException 
+	 * @throws ErreurDepacementFeuilleException 
 	 */
 	@Test
-	void test6ParseCelluleOperationGetOperande() throws ErreurFormuleException, ErreurCelluleException {
+	void test6ParseCelluleOperationGetOperande() throws ErreurFormuleException, ErreurCelluleException, ErreurDepacementFeuilleException {
 		ParseFormule p = new ParseFormule(new Feuille());
 		p.setFormule("5,5*2,3");
 		assertEquals((Contenu)new Operande(5.5f),p.parseCelluleOperationGetOperande1(),"5,5*2,3");
@@ -211,9 +216,10 @@ class ParseFormuleTest {
 	 * Test method for {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperande1(java.lang.String)} et {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperande2(java.lang.String)} et .
 	 * @throws ErreurFormuleException 
 	 * @throws ErreurCelluleException 
+	 * @throws ErreurDepacementFeuilleException 
 	 */
 	@Test
-	void test7ParseCelluleOperationGetOperande() throws ErreurFormuleException, ErreurCelluleException {
+	void test7ParseCelluleOperationGetOperande() throws ErreurFormuleException, ErreurCelluleException, ErreurDepacementFeuilleException {
 		Feuille f = new Feuille();
 		ParseFormule p = new ParseFormule(f);
 		f.setCellule(2, 2, "2,2");
@@ -225,9 +231,10 @@ class ParseFormuleTest {
 	 * Test method for {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperande1(java.lang.String)} et {@link nfa035.projet.ParseFormule#parseCelluleOperationGetOperande2(java.lang.String)} et .
 	 * @throws ErreurFormuleException 
 	 * @throws ErreurCelluleException 
+	 * @throws ErreurDepacementFeuilleException 
 	 */
 	@Test
-	void test8ParseCelluleOperationGetOperande() throws ErreurFormuleException, ErreurCelluleException {
+	void test8ParseCelluleOperationGetOperande() throws ErreurFormuleException, ErreurCelluleException, ErreurDepacementFeuilleException {
 		Feuille f = new Feuille();
 		ParseFormule p = new ParseFormule(f);	
 		f.setCellule(2, 3, "2,2");
