@@ -49,7 +49,7 @@ public class AnalyseFormule {
 		int compteurVirgule = 0;
 		int compteurNegatif = 0;
 		for (int c : chaine) {
-			if (c != 44 && c != 45 && (c < 47 || c > 57))
+			if (c != 44 && c != 45 && (c < 48 || c > 57))
 				return false;
 			if (c == 44) {
 				compteurVirgule++;
