@@ -1,4 +1,7 @@
 package nfa035.projet;
+
+import nfa035.projet2.Contenu;
+
 /**
  * Classe abstraite d'une cellule dans une {@link Feuille feuille} 
  * @author bbseb
@@ -120,6 +123,11 @@ package nfa035.projet;
 	public String getFormule() {
 		// TODO Auto-generated method stub
 		return this.formule;
+	}
+
+	public void setContenu(Contenu formuleToContenu) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

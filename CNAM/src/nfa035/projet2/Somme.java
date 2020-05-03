@@ -1,12 +1,18 @@
 package nfa035.projet2;
 
+import java.util.Set;
+
 public class Somme extends Fonction{
 	public Somme(Bloc b,String formule) {
 		super(b,formule);
 	}
 	@Override
 	public float getResultat() {
-		// TODO Auto-generated method stub
-		return 0.0f;
+		Set<Cellule> cellules = this.getBloc().getCellules();
+		float rtr = 0;
+		for (Cellule c : cellules) {
+			rtr += c.getResultat();
+		}
+		return rtr;
 	}
 }

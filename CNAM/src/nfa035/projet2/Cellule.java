@@ -58,21 +58,21 @@ public class Cellule implements Contenu,Comparable<Cellule>{
 	/**
 	 * @param formule the formule to set
 	 */
-	private void setFormule(String formule) {
+	public void setFormule(String formule) {
 		this.formule = formule;
 	}
 
 	/**
 	 * @return the contenu
 	 */
-	private Contenu getContenu() {
+	public Contenu getContenu() {
 		return this.contenu;
 	}
 
 	/**
 	 * @param contenu the contenu to set
 	 */
-	private void setContenu(Contenu contenu) {
+	public void setContenu(Contenu contenu) {
 		this.contenu = contenu;
 	}
 

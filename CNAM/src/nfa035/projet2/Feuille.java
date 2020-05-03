@@ -2,21 +2,29 @@ package nfa035.projet2;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.TreeMap;
+
+
+
+
 
 
 public class Feuille {
 	protected TreeMap<Cellule, LinkedHashSet<Cellule>> cellules;
 	protected int xMax,yMax;
 	
+	protected Feuille() {
+		
+	}
 
-	public Feuille(int nbrLigne,int nbrColonne) {
+	public Feuille(int nbrLigne,int nbrColonne) throws HorsFeuilleException {
 		this.setCellules(this.creeBloc(0, 0, nbrLigne - 1, nbrColonne -1));
 		this.setxMax(nbrLigne-1);
 		this.setyMax(nbrColonne-1);
 	}
 	
-	protected Feuille(int xCellule1,int yCellule1,int xCellule2,int yCellule2) {
+	protected Feuille(int xCellule1,int yCellule1,int xCellule2,int yCellule2) throws HorsFeuilleException {
 		if(xCellule1>xCellule2 || yCellule1>yCellule2) {
 			int temp = xCellule1;
 			xCellule1=xCellule2;
@@ -32,14 +40,14 @@ public class Feuille {
 	/**
 	 * @return the cellules
 	 */
-	private TreeMap<Cellule, LinkedHashSet<Cellule>> getCellules() {
-		return cellules;
+	public Set<Cellule> getCellules() {
+		return cellules.keySet();
 	}
 
 	/**
 	 * @param cellules the cellules to set
 	 */
-	private void setCellules(TreeMap<Cellule, LinkedHashSet<Cellule>> cellules) {
+	protected void setCellules(TreeMap<Cellule, LinkedHashSet<Cellule>> cellules) {
 		this.cellules = cellules;
 	}
 
@@ -71,9 +79,13 @@ public class Feuille {
 		this.yMax = yMax;
 	}	
 	
-	public void setCellule(String formule) {
-		
+	public void setCellule(int x, int y,String formule) throws HorsFeuilleException, FormuleErroneeException, CelluleVideException {
+		Cellule c = this.getCellule(x, y);
+		AnalyseFormule af = new AnalyseFormule(this,formule);	
+		c.setFormule(formule);
+		c.setContenu(af.formuleToContenu());
 	}
+	
 	public Cellule getCellule(int x, int y) throws HorsFeuilleException {
 		Iterator<Cellule> it = this.cellules.keySet().iterator();
 		while (it.hasNext()) {
@@ -92,9 +104,9 @@ public class Feuille {
 			return false;
 	}	
 	
-	private TreeMap<Cellule, LinkedHashSet<Cellule>> creeBloc(int xCellule1,int yCellule1,int xCellule2,int yCellule2) {
+	protected TreeMap<Cellule, LinkedHashSet<Cellule>> creeBloc(int xCellule1,int yCellule1,int xCellule2,int yCellule2) throws HorsFeuilleException {
 		if(xCellule1<0 || xCellule2<0 || yCellule1<0 || yCellule2<0)
-			throw new IllegalArgumentException();
+			throw new HorsFeuilleException();
 		TreeMap<Cellule, LinkedHashSet<Cellule>> cellules = new TreeMap<Cellule, LinkedHashSet<Cellule>>();
 		for (int i = xCellule1; i <= xCellule2; i++) {
 			for (int j = yCellule1; j <= yCellule2; j++) {
@@ -105,4 +117,17 @@ public class Feuille {
 	}
 	
 	
+	
+	
+	public void affichageCellule() {
+		Set<Cellule> listCellule = this.getCellules();
+
+		for (Cellule c : listCellule) {
+			float resultat = 0;
+			if (c.getContenu() != null)
+				resultat = c.getContenu().getResultat();
+			System.out
+					.println(c.getX() + " " + c.getY() + " -> Formule : " + c.getFormule() + " Resultat : " + resultat);
+		}
+	}
 }
