@@ -1,9 +1,14 @@
-package nfa035.projet2;
+package nfa035.projet2.feuille;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeMap;
+
+import nfa035.projet2.cellule.CelluleVideException;
+import nfa035.projet2.exceptions.FormuleErroneeException;
+import nfa035.projet2.exceptions.HorsFeuilleException;
 
 
 
@@ -11,7 +16,7 @@ import java.util.TreeMap;
 
 
 public class Feuille {
-	protected TreeMap<Cellule, LinkedHashSet<Cellule>> cellules;
+	protected TreeMap<Cellule, LinkedList<Cellule>> cellules;
 	protected int xMax,yMax;
 	
 	protected Feuille() {
@@ -47,7 +52,7 @@ public class Feuille {
 	/**
 	 * @param cellules the cellules to set
 	 */
-	protected void setCellules(TreeMap<Cellule, LinkedHashSet<Cellule>> cellules) {
+	protected void setCellules(TreeMap<Cellule, LinkedList<Cellule>> cellules) {
 		this.cellules = cellules;
 	}
 
@@ -83,7 +88,8 @@ public class Feuille {
 		Cellule c = this.getCellule(x, y);
 		AnalyseFormule af = new AnalyseFormule(this,formule);	
 		c.setFormule(formule);
-		c.setContenu(af.formuleToContenu());
+		c.setContenu(af.getContenu());
+		this.cellules.put(c,af.getCellulesLie());
 	}
 	
 	public Cellule getCellule(int x, int y) throws HorsFeuilleException {
@@ -104,10 +110,10 @@ public class Feuille {
 			return false;
 	}	
 	
-	protected TreeMap<Cellule, LinkedHashSet<Cellule>> creeBloc(int xCellule1,int yCellule1,int xCellule2,int yCellule2) throws HorsFeuilleException {
+	protected TreeMap<Cellule, LinkedList<Cellule>> creeBloc(int xCellule1,int yCellule1,int xCellule2,int yCellule2) throws HorsFeuilleException {
 		if(xCellule1<0 || xCellule2<0 || yCellule1<0 || yCellule2<0)
 			throw new HorsFeuilleException();
-		TreeMap<Cellule, LinkedHashSet<Cellule>> cellules = new TreeMap<Cellule, LinkedHashSet<Cellule>>();
+		TreeMap<Cellule, LinkedList<Cellule>> cellules = new TreeMap<Cellule, LinkedList<Cellule>>();
 		for (int i = xCellule1; i <= xCellule2; i++) {
 			for (int j = yCellule1; j <= yCellule2; j++) {
 				cellules.put(new Cellule(i, j),null);

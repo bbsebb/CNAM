@@ -1,18 +1,20 @@
-package nfa035.projet2;
+package nfa035.projet2.feuille;
+
+import nfa035.projet2.cellule.Contenu;
 
 public class Cellule implements Contenu,Comparable<Cellule>{
 	private int x,y;
 	private Contenu contenu;
 	private String formule ;
 	
-	public Cellule(int x,int y) {
+	 Cellule(int x,int y) {
 		this.setX(x);
 		this.setY(y);
 		this.setContenu(null);
 		this.setFormule(null);
 	}
 	
-	public Cellule(int x,int y,Contenu c,String formule) {
+	 Cellule(int x,int y,Contenu c,String formule) {
 		this.setX(x);
 		this.setY(y);
 		this.setContenu(c);
@@ -58,25 +60,25 @@ public class Cellule implements Contenu,Comparable<Cellule>{
 	/**
 	 * @param formule the formule to set
 	 */
-	public void setFormule(String formule) {
+	 void setFormule(String formule) {
 		this.formule = formule;
 	}
 
 	/**
 	 * @return the contenu
 	 */
-	public Contenu getContenu() {
+	 Contenu getContenu() {
 		return this.contenu;
 	}
 
 	/**
 	 * @param contenu the contenu to set
 	 */
-	public void setContenu(Contenu contenu) {
+	 void setContenu(Contenu contenu) {
 		this.contenu = contenu;
 	}
 
-	public boolean estVide() {
+	 boolean estVide() {
 		if(this.getContenu() == null) 
 			return true;
 		else

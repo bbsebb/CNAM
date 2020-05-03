@@ -1,4 +1,4 @@
-package nfa035.projet2;
+package nfa035.projet2.exceptions;
 
 public class HorsFeuilleException extends Exception{
 

@@ -1,7 +1,9 @@
-package nfa035.projet2;
+package nfa035.projet2.feuille;
 
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.TreeMap;
+
+import nfa035.projet2.exceptions.HorsFeuilleException;
 
 public class Bloc extends Feuille{
 	private Feuille feuille;
@@ -50,10 +52,10 @@ public class Bloc extends Feuille{
 			throw new HorsFeuilleException();
 	}
 
-	protected TreeMap<Cellule, LinkedHashSet<Cellule>> creeBloc(int xCellule1,int yCellule1,int xCellule2,int yCellule2) throws HorsFeuilleException {
+	protected TreeMap<Cellule, LinkedList<Cellule>> creeBloc(int xCellule1,int yCellule1,int xCellule2,int yCellule2) throws HorsFeuilleException {
 		if(xCellule1<0 || xCellule2<0 || yCellule1<0 || yCellule2<0)
 			throw new HorsFeuilleException();
-		TreeMap<Cellule, LinkedHashSet<Cellule>> cellules = new TreeMap<Cellule, LinkedHashSet<Cellule>>();
+		TreeMap<Cellule, LinkedList<Cellule>> cellules = new TreeMap<Cellule, LinkedList<Cellule>>();
 		for (int i = xCellule1; i <= xCellule2; i++) {
 			for (int j = yCellule1; j <= yCellule2; j++) {
 				cellules.put(this.getFeuille().getCellule(i, j),null);

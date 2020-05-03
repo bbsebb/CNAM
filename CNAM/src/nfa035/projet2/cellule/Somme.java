@@ -1,6 +1,9 @@
-package nfa035.projet2;
+package nfa035.projet2.cellule;
 
 import java.util.Set;
+
+import nfa035.projet2.feuille.Bloc;
+import nfa035.projet2.feuille.Cellule;
 
 public class Somme extends Fonction{
 	public Somme(Bloc b,String formule) {

@@ -1,15 +1,40 @@
-package nfa035.projet2;
+package nfa035.projet2.feuille;
+
+import java.util.LinkedList;
+
+import nfa035.projet2.cellule.CelluleVideException;
+import nfa035.projet2.cellule.Contenu;
+import nfa035.projet2.cellule.Moyenne;
+import nfa035.projet2.cellule.Operateur;
+import nfa035.projet2.cellule.Operation;
+import nfa035.projet2.cellule.Somme;
+import nfa035.projet2.cellule.Valeur;
+import nfa035.projet2.exceptions.FormuleErroneeException;
+import nfa035.projet2.exceptions.HorsFeuilleException;
 
 public class AnalyseFormule {
 	private String formule;
 	private Feuille feuille;
-
-	public AnalyseFormule(Feuille feuille, String formule) {
+	private Contenu contenu;
+	private LinkedList<Cellule> listCellules;
+	public AnalyseFormule(Feuille feuille, String formule) throws FormuleErroneeException, HorsFeuilleException {
 		this.setFeuille(feuille);
 		this.setFormule(formule);
+		listCellules = new LinkedList<Cellule>();
+		this.setContenu(this.formuleToContenu());
 	}
-
-	public Contenu formuleToContenu() throws FormuleErroneeException, HorsFeuilleException, CelluleVideException {
+	
+	public Contenu getContenu() {
+		return this.contenu;
+	}
+	
+	private void setContenu(Contenu contenu) {
+		this.contenu = contenu;
+	}
+	LinkedList<Cellule> getCellulesLie() { 
+		return this.listCellules;
+	 }
+	 private Contenu formuleToContenu() throws FormuleErroneeException, HorsFeuilleException{
 		String f = this.getFormule();
 		if (this.getFormule() == null || this.getFormule().isEmpty())
 			return (Contenu) null;
@@ -20,7 +45,12 @@ public class AnalyseFormule {
 		else if (this.estOperation(f))
 			return this.formuleToOperation(f);
 		else if (this.estFonction(f))
-			return this.formuleToFonction(f);
+			try {
+				return this.formuleToFonction(f);
+			} catch (CelluleVideException e) {
+				// TODO Auto-generated catch block
+				throw new FormuleErroneeException();
+			}
 		else
 			throw new FormuleErroneeException();
 	}
@@ -153,12 +183,17 @@ public class AnalyseFormule {
 	private Contenu formuleToCellule(String str) throws HorsFeuilleException, FormuleErroneeException {
 		int x, y;
 		str = str.trim().toLowerCase();
-		x = this.stringToCoordonneeCellule(str)[0];
-		y = this.stringToCoordonneeCellule(str)[1];
+		String[] coordonnee = str.split("\\.");
+		x = (int) this.stringToValeur(coordonnee[0]);
+		y = (int) this.stringToValeur(coordonnee[1]);
 		if (this.getFeuille().estCelluleVide(x, y))
 			throw new FormuleErroneeException();
-		else
-			return (Contenu) this.getFeuille().getCellule(x, y);
+		else {
+			Cellule c = this.getFeuille().getCellule(x, y);
+			this.listCellules.add(c);
+			return (Contenu) c;
+		}
+			
 	}
 
 	private Contenu formuleToOperation(String str) throws FormuleErroneeException, HorsFeuilleException {
@@ -172,15 +207,13 @@ public class AnalyseFormule {
 		} else 
 			operandes = str.split(operateur.toRegex(),2);
 		if (this.estCellule(operandes[0]))
-			operande1 = (Contenu) this.getFeuille().getCellule(this.stringToCoordonneeCellule(operandes[0])[0],
-					this.stringToCoordonneeCellule(operandes[0])[1]);
+			operande1 = (Contenu) this.formuleToCellule(operandes[0]);
 		else if (this.estValeur(operandes[0]))
 			operande1 = this.formuleToValeur(operandes[0]);
 		else
 			throw new FormuleErroneeException();
 		if (this.estCellule(operandes[1]))
-			operande2 = (Contenu) this.getFeuille().getCellule(this.stringToCoordonneeCellule(operandes[1])[0],
-					this.stringToCoordonneeCellule(operandes[1])[1]);
+			operande2 = (Contenu) this.formuleToCellule(operandes[1]);
 		else if (this.estValeur(operandes[1]))
 			operande2 = this.formuleToValeur(operandes[1]);
 		else

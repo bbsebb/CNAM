@@ -1,6 +1,6 @@
 package nfa035.projet;
 
-import nfa035.projet2.Contenu;
+import nfa035.projet2.cellule.Contenu;
 
 /**
  * Classe abstraite d'une cellule dans une {@link Feuille feuille} 

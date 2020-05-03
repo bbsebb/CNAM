@@ -1,4 +1,4 @@
-package nfa035.projet2;
+package nfa035.projet2.cellule;
 
 public class Valeur implements Contenu{
 	private String formule;

@@ -1,4 +1,6 @@
-package nfa035.projet2;
+package nfa035.projet2.cellule;
+
+import nfa035.projet2.feuille.Bloc;
 
 public abstract class Fonction implements Contenu{
 	protected Bloc bloc;
