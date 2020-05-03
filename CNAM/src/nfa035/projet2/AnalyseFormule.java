@@ -11,7 +11,9 @@ public class AnalyseFormule {
 
 	public Contenu formuleToContenu() throws FormuleErroneeException, HorsFeuilleException, CelluleVideException {
 		String f = this.getFormule();
-		if (this.estValeur(f))
+		if (this.getFormule() == null || this.getFormule().isEmpty())
+			return (Contenu) null;
+		else if (this.estValeur(f))
 			return this.formuleToValeur(f);
 		else if (this.estCellule(f))
 			return this.formuleToCellule(f);
@@ -19,8 +21,6 @@ public class AnalyseFormule {
 			return this.formuleToOperation(f);
 		else if (this.estFonction(f))
 			return this.formuleToFonction(f);
-		else if (this.getFormule() == null || this.getFormule().isEmpty())
-			return (Contenu) null;
 		else
 			throw new FormuleErroneeException();
 	}
@@ -92,19 +92,17 @@ public class AnalyseFormule {
 			// TODO Auto-generated catch block
 			return false;
 		}
-		if(str.charAt(0) == '-') {
-			operandes = str.substring(1).split(operateur.toRegex());
+		if(str.charAt(0) == '-' && (str.charAt(1)>47 && str.charAt(1)<58 )) {
+			operandes = str.substring(1).split(operateur.toRegex(),2);
 			operandes[0] = str.charAt(0) + operandes[0];
-		} else 
-			operandes = str.split(operateur.toRegex());
-		if (operateur != null && str.indexOf(operateur.toString()) == str.lastIndexOf(operateur.toString())
-				&& operandes.length == 2) {
-			if ((estCellule(operandes[0]) || estValeur(operandes[0]))
-					&& (estCellule(operandes[1]) || estValeur(operandes[1])))
-				return true;
-			else
-				return false;
-		} else
+		} else if(str.charAt(0)>47 && str.charAt(0)<58 )
+			operandes = str.split(operateur.toRegex(),2);
+		else
+			return false;
+		if ((estCellule(operandes[0]) || estValeur(operandes[0]))
+				&& (estCellule(operandes[1]) || estValeur(operandes[1])))
+			return true;
+		else
 			return false;
 
 	}
@@ -169,10 +167,10 @@ public class AnalyseFormule {
 		Contenu operande1, operande2;
 		String[] operandes;
 		if(str.charAt(0) == '-') {
-			operandes = str.substring(1).split(operateur.toRegex());
+			operandes = str.substring(1).split(operateur.toRegex(),2);
 			operandes[0] = str.charAt(0) + operandes[0];
 		} else 
-			operandes = str.split(operateur.toRegex());
+			operandes = str.split(operateur.toRegex(),2);
 		if (this.estCellule(operandes[0]))
 			operande1 = (Contenu) this.getFeuille().getCellule(this.stringToCoordonneeCellule(operandes[0])[0],
 					this.stringToCoordonneeCellule(operandes[0])[1]);
