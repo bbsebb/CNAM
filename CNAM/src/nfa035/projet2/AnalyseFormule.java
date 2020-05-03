@@ -81,18 +81,22 @@ public class AnalyseFormule {
 
 	}
 
-	private boolean estOperation(String str) {
+	private boolean estOperation(String str)  {
+
 		str = str.trim().toLowerCase();
 		String[] operandes = new String[0];
-		Operateur operateur = null;
-		for (Operateur op : Operateur.values()) {
-			if (str.contains(op.toString())) {
-				operandes = str.split(op.toRegex());
-				operateur = op;
-				break;
-
-			}
+		Operateur operateur;
+		try {
+			operateur = this.stringToOperateur(str);
+		} catch (FormuleErroneeException e) {
+			// TODO Auto-generated catch block
+			return false;
 		}
+		if(str.charAt(0) == '-') {
+			operandes = str.substring(1).split(operateur.toRegex());
+			operandes[0] = str.charAt(0) + operandes[0];
+		} else 
+			operandes = str.split(operateur.toRegex());
 		if (operateur != null && str.indexOf(operateur.toString()) == str.lastIndexOf(operateur.toString())
 				&& operandes.length == 2) {
 			if ((estCellule(operandes[0]) || estValeur(operandes[0]))
@@ -163,7 +167,12 @@ public class AnalyseFormule {
 		str = str.trim().toLowerCase();
 		Operateur operateur = this.stringToOperateur(str);
 		Contenu operande1, operande2;
-		String[] operandes = str.split(operateur.toRegex());
+		String[] operandes;
+		if(str.charAt(0) == '-') {
+			operandes = str.substring(1).split(operateur.toRegex());
+			operandes[0] = str.charAt(0) + operandes[0];
+		} else 
+			operandes = str.split(operateur.toRegex());
 		if (this.estCellule(operandes[0]))
 			operande1 = (Contenu) this.getFeuille().getCellule(this.stringToCoordonneeCellule(operandes[0])[0],
 					this.stringToCoordonneeCellule(operandes[0])[1]);
@@ -228,9 +237,12 @@ public class AnalyseFormule {
 	}
 
 	private Operateur stringToOperateur(String str) throws FormuleErroneeException {
-		for (Operateur op : Operateur.values()) {
-			if (str.contains(op.toString())) {
-				return op;
+		char[] chaine = str.toCharArray();
+		for(int i =(str.charAt(0)=='-')? 1:0;i<chaine.length;i++) {
+			for (Operateur op : Operateur.values()) {
+				if (chaine[i] == op.toChar()) {
+					return op;
+				}
 			}
 		}
 		throw new FormuleErroneeException();

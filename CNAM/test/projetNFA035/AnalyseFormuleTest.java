@@ -22,10 +22,15 @@ class AnalyseFormuleTest {
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		f = new Feuille(2, 2);
+		f.setCellule(0, 0, "1,5");
+		f.setCellule(0, 1, "-3");
 	}
 
 	@ParameterizedTest
-	@CsvSource(value = {"1,0:1.0","0,2:0.2","100:100","-5,35:-5.35","1,5+1,3:2.8","8*10:80"}, delimiter = ':')
+	@CsvSource(value = {
+			"1,0:1.0"," 0325,25 :325.25"," 569,01234 :569.01234","123456:123456","-1:-1","-1,1:-1.1",
+			"1,2 * 20,5:24.6", "20,20+3,4:23.6", " 21/36,2:0.58011049723 ","1,2-3,4:-2.2","-1*5,2:-5.2"
+			}, delimiter = ':')
 	void testFormuleToContenuTrue(String valeur,String valeurAttendu) throws  FormuleErroneeException, HorsFeuilleException,  CelluleVideException {
 		AnalyseFormule af= new AnalyseFormule(f,valeur);
 		assertTrue(Float.valueOf(valeurAttendu)==af.formuleToContenu().getResultat());
@@ -40,7 +45,7 @@ class AnalyseFormuleTest {
 	
 	
 	@ParameterizedTest
-	@CsvSource(value = {"1,0:1.2","0,2:0","100:1000","-5,35:5.35","1,5+1,3:2.801","8*10,1:80"}, delimiter = ':')
+	@CsvSource(value = {"1,0:1.0001","-1,2:1.2","1,2:-1.2","-1:1","10:-10"}, delimiter = ':')
 	void testFormuleToContenuFalse(String valeur,String valeurAttendu) throws  FormuleErroneeException, HorsFeuilleException, CelluleVideException {
 		AnalyseFormule af= new AnalyseFormule(f,valeur);
 		assertFalse(Float.valueOf(valeurAttendu)==af.formuleToContenu().getResultat());
