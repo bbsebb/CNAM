@@ -3,46 +3,42 @@ package nfa035.projet2.feuille;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
 import nfa035.projet2.cellule.CelluleVideException;
+import nfa035.projet2.exceptions.CircuitException;
 import nfa035.projet2.exceptions.FormuleErroneeException;
 import nfa035.projet2.exceptions.HorsFeuilleException;
 
-
-
-
-
-
 public class Feuille {
 	protected TreeMap<Cellule, LinkedList<Cellule>> cellules;
-	protected int xMax,yMax;
-	
+	protected int xMax, yMax;
+
 	protected Feuille() {
-		
+
 	}
 
-	public Feuille(int nbrLigne,int nbrColonne) throws HorsFeuilleException {
-		this.setCellules(this.creeBloc(0, 0, nbrLigne - 1, nbrColonne -1));
-		this.setxMax(nbrLigne-1);
-		this.setyMax(nbrColonne-1);
+	public Feuille(int nbrLigne, int nbrColonne) throws HorsFeuilleException {
+		this.setCellules(this.creeBloc(0, 0, nbrLigne - 1, nbrColonne - 1));
+		this.setxMax(nbrLigne - 1);
+		this.setyMax(nbrColonne - 1);
 	}
-	
-	protected Feuille(int xCellule1,int yCellule1,int xCellule2,int yCellule2) throws HorsFeuilleException {
-		if(xCellule1>xCellule2 || yCellule1>yCellule2) {
+
+	protected Feuille(int xCellule1, int yCellule1, int xCellule2, int yCellule2) throws HorsFeuilleException {
+		if (xCellule1 > xCellule2 || yCellule1 > yCellule2) {
 			int temp = xCellule1;
-			xCellule1=xCellule2;
-			xCellule2=temp;
+			xCellule1 = xCellule2;
+			xCellule2 = temp;
 			temp = yCellule1;
-			yCellule1=yCellule2;
-			yCellule2=temp;
+			yCellule1 = yCellule2;
+			yCellule2 = temp;
 		}
 		this.setCellules(this.creeBloc(xCellule1, yCellule1, xCellule2, yCellule2));
 		this.setxMax(xCellule2);
 		this.setyMax(yCellule2);
 	}
+
 	/**
 	 * @return the cellules
 	 */
@@ -57,12 +53,7 @@ public class Feuille {
 		this.cellules = cellules;
 	}
 
-	
-	private LinkedList<Cellule> getCellulePrec(Cellule c) {
-		this.cellules.get(c);
-	}
-	
-	
+
 	/**
 	 * @return the xMax
 	 */
@@ -89,40 +80,44 @@ public class Feuille {
 	 */
 	private void setyMax(int yMax) {
 		this.yMax = yMax;
-	}	
-	
+	}
 
-	
-
-	
-	public void setCellule(int x, int y,String formule) throws HorsFeuilleException, FormuleErroneeException, CelluleVideException {
+	public void setCellule(int x, int y, String formule)
+			throws HorsFeuilleException, FormuleErroneeException, CelluleVideException, CircuitException {
 		Cellule c = this.getCellule(x, y);
-		AnalyseFormule af = new AnalyseFormule(this,formule);	
+		AnalyseFormule af = new AnalyseFormule(this, formule);
 		c.setFormule(formule);
 		c.setContenu(af.getContenu());
 		this.cellules.put(c, af.getCellulesLie());
-	}
-	
-	private boolean estCycle(Cellule c) {
-		LinkedList<Cellule> pile = new LinkedList<Cellule>();
-		Set<Cellule> marquage = new LinkedHashSet<Cellule>();
-		pile.addFirst(c);
-		marquage.add(c);
-		while(!pile.isEmpty()) {
-			Cellule tetePile = pile.removeFirst();
-			LinkedList<Cellule> CellulesPrec = this.getCellulePrec(tetePile);
-			for(Cellule CellulePrec :  CellulesPrec) {
-				if(!marquage.contains(CellulePrec)) {
-					pile.addFirst(CellulePrec);
-					marquage.add(CellulePrec);
-				}
-			}
-			
+		if(!this.parcoursArbre(c, new LinkedHashSet<Cellule>())) {
+			this.cellules.put(c, null);
+			c.setContenu(null);
+			c.setFormule("Erreur");
+			throw new CircuitException();
 		}
 		
-		return false;
 	}
-	
+
+	private boolean parcoursArbre(Cellule debut, Set<Cellule> marquage) {
+		LinkedList<Cellule> listCellule = this.cellules.get(debut);
+		if (listCellule.isEmpty()) {
+			marquage.add(debut);
+			return true;
+		}
+		else if (marquage.contains(debut))
+			return false;
+		else {
+			marquage.add(debut);
+				boolean rtr = true;
+			for (Cellule c : listCellule) {
+				 rtr = rtr && this.parcoursArbre(c,marquage);
+			}
+			return rtr;
+		}
+	}
+
+
+
 	public Cellule getCellule(int x, int y) throws HorsFeuilleException {
 		Iterator<Cellule> it = this.cellules.keySet().iterator();
 		while (it.hasNext()) {
@@ -133,29 +128,27 @@ public class Feuille {
 		}
 		throw new HorsFeuilleException();
 	}
-	
-	public boolean estCelluleVide(int x, int y) throws HorsFeuilleException  {
-		if(this.getCellule(x, y).estVide())
+
+	public boolean estCelluleVide(int x, int y) throws HorsFeuilleException {
+		if (this.getCellule(x, y).estVide())
 			return true;
-		else 
+		else
 			return false;
-	}	
-	
-	protected TreeMap<Cellule, LinkedList<Cellule>> creeBloc(int xCellule1,int yCellule1,int xCellule2,int yCellule2) throws HorsFeuilleException {
-		if(xCellule1<0 || xCellule2<0 || yCellule1<0 || yCellule2<0)
+	}
+
+	protected TreeMap<Cellule, LinkedList<Cellule>> creeBloc(int xCellule1, int yCellule1, int xCellule2, int yCellule2)
+			throws HorsFeuilleException {
+		if (xCellule1 < 0 || xCellule2 < 0 || yCellule1 < 0 || yCellule2 < 0)
 			throw new HorsFeuilleException();
 		TreeMap<Cellule, LinkedList<Cellule>> cellules = new TreeMap<Cellule, LinkedList<Cellule>>();
 		for (int i = xCellule1; i <= xCellule2; i++) {
 			for (int j = yCellule1; j <= yCellule2; j++) {
-				cellules.put(new Cellule(i, j),null);
+				cellules.put(new Cellule(i, j), null);
 			}
 		}
 		return cellules;
 	}
-	
-	
-	
-	
+
 	public void affichageCellule() {
 		Set<Cellule> listCellule = this.getCellules();
 

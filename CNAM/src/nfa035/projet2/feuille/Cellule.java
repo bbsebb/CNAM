@@ -1,27 +1,26 @@
 package nfa035.projet2.feuille;
 
 import nfa035.projet2.cellule.Contenu;
+import nfa035.projet2.exceptions.FormuleErroneeException;
 
-public class Cellule implements Contenu,Comparable<Cellule>{
-	private int x,y;
+public class Cellule implements Contenu, Comparable<Cellule> {
+	private int x, y;
 	private Contenu contenu;
-	private String formule ;
+	private String formule;
 
-	
-	 Cellule(int x,int y) {
+	Cellule(int x, int y) {
 		this.setX(x);
 		this.setY(y);
 		this.setContenu(null);
 		this.setFormule(null);
 
 	}
-	
-	 Cellule(int x,int y,Contenu c,String formule) {
+
+	Cellule(int x, int y, Contenu c, String formule) {
 		this.setX(x);
 		this.setY(y);
 		this.setContenu(c);
 		this.setFormule(formule);
-
 
 	}
 
@@ -64,40 +63,40 @@ public class Cellule implements Contenu,Comparable<Cellule>{
 	/**
 	 * @param formule the formule to set
 	 */
-	 void setFormule(String formule) {
+	void setFormule(String formule) {
 		this.formule = formule;
 	}
 
 	/**
 	 * @return the contenu
 	 */
-	 Contenu getContenu() {
+	Contenu getContenu() {
 		return this.contenu;
 	}
 
 	/**
 	 * @param contenu the contenu to set
 	 */
-	 void setContenu(Contenu contenu) {
+	void setContenu(Contenu contenu) {
 		this.contenu = contenu;
 	}
 
-
-
 	boolean estVide() {
-		if(this.getContenu() == null) 
+		if (this.getContenu() == null)
 			return true;
 		else
 			return false;
 	}
+
 	@Override
 	public float getResultat() {
 		// TODO Auto-generated method stub
-		return this.getContenu().getResultat();
+		if (this.getContenu() == null)
+			return 0f;
+		else
+			return this.getContenu().getResultat();
 	}
-	
 
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -109,21 +108,21 @@ public class Cellule implements Contenu,Comparable<Cellule>{
 
 	@Override
 	public int compareTo(Cellule o) {
-		Cellule c = (Cellule)o;
+		Cellule c = (Cellule) o;
 		int indiceComparaison = 0;
-		if(this.getX() > c.getX())
+		if (this.getX() > c.getX())
 			indiceComparaison = 1;
 		else if (this.getX() < c.getX())
 			indiceComparaison = -1;
 		else {
-			if(this.getY() > c.getY())
+			if (this.getY() > c.getY())
 				indiceComparaison = 1;
 			else if (this.getY() < c.getY())
 				indiceComparaison = -1;
-			else 
+			else
 				indiceComparaison = 0;
 		}
 		return indiceComparaison;
 	}
-	
+
 }

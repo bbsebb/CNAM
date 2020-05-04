@@ -287,13 +287,6 @@ public class AnalyseFormule {
 		throw new FormuleErroneeException();
 	}
 
-	private int[] stringToCoordonneeCellule(String str) {
-		int[] rtr = new int[2];
-		str = str.trim().toLowerCase();
-		String[] coordonnee = str.split("\\.");
-		rtr[0] = (int) this.stringToValeur(coordonnee[0]);
-		rtr[1] = (int) this.stringToValeur(coordonnee[1]);
-		return rtr;
-	}
+
 
 }
