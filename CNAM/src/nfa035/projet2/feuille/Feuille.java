@@ -3,6 +3,7 @@ package nfa035.projet2.feuille;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -56,6 +57,12 @@ public class Feuille {
 		this.cellules = cellules;
 	}
 
+	
+	private LinkedList<Cellule> getCellulePrec(Cellule c) {
+		this.cellules.get(c);
+	}
+	
+	
 	/**
 	 * @return the xMax
 	 */
@@ -84,12 +91,36 @@ public class Feuille {
 		this.yMax = yMax;
 	}	
 	
+
+	
+
+	
 	public void setCellule(int x, int y,String formule) throws HorsFeuilleException, FormuleErroneeException, CelluleVideException {
 		Cellule c = this.getCellule(x, y);
 		AnalyseFormule af = new AnalyseFormule(this,formule);	
 		c.setFormule(formule);
 		c.setContenu(af.getContenu());
-		this.cellules.put(c,af.getCellulesLie());
+		this.cellules.put(c, af.getCellulesLie());
+	}
+	
+	private boolean estCycle(Cellule c) {
+		LinkedList<Cellule> pile = new LinkedList<Cellule>();
+		Set<Cellule> marquage = new LinkedHashSet<Cellule>();
+		pile.addFirst(c);
+		marquage.add(c);
+		while(!pile.isEmpty()) {
+			Cellule tetePile = pile.removeFirst();
+			LinkedList<Cellule> CellulesPrec = this.getCellulePrec(tetePile);
+			for(Cellule CellulePrec :  CellulesPrec) {
+				if(!marquage.contains(CellulePrec)) {
+					pile.addFirst(CellulePrec);
+					marquage.add(CellulePrec);
+				}
+			}
+			
+		}
+		
+		return false;
 	}
 	
 	public Cellule getCellule(int x, int y) throws HorsFeuilleException {

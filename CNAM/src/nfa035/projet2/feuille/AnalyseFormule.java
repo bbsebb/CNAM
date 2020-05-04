@@ -17,24 +17,31 @@ public class AnalyseFormule {
 	private Feuille feuille;
 	private Contenu contenu;
 	private LinkedList<Cellule> listCellules;
+
 	public AnalyseFormule(Feuille feuille, String formule) throws FormuleErroneeException, HorsFeuilleException {
 		this.setFeuille(feuille);
 		this.setFormule(formule);
-		listCellules = new LinkedList<Cellule>();
+		this.setCellulesLie(new LinkedList<Cellule>());
 		this.setContenu(this.formuleToContenu());
 	}
-	
+
 	public Contenu getContenu() {
 		return this.contenu;
 	}
-	
+
 	private void setContenu(Contenu contenu) {
 		this.contenu = contenu;
 	}
-	LinkedList<Cellule> getCellulesLie() { 
+
+	LinkedList<Cellule> getCellulesLie() {
 		return this.listCellules;
-	 }
-	 private Contenu formuleToContenu() throws FormuleErroneeException, HorsFeuilleException{
+	}
+
+	private void setCellulesLie(LinkedList<Cellule> ll) {
+		this.listCellules = ll;
+	}
+
+	private Contenu formuleToContenu() throws FormuleErroneeException, HorsFeuilleException {
 		String f = this.getFormule();
 		if (this.getFormule() == null || this.getFormule().isEmpty())
 			return (Contenu) null;
@@ -111,7 +118,7 @@ public class AnalyseFormule {
 
 	}
 
-	private boolean estOperation(String str)  {
+	private boolean estOperation(String str) {
 
 		str = str.trim().toLowerCase();
 		String[] operandes = new String[0];
@@ -122,11 +129,11 @@ public class AnalyseFormule {
 			// TODO Auto-generated catch block
 			return false;
 		}
-		if(str.charAt(0) == '-' && (str.charAt(1)>47 && str.charAt(1)<58 )) {
-			operandes = str.substring(1).split(operateur.toRegex(),2);
+		if (str.charAt(0) == '-' && (str.charAt(1) > 47 && str.charAt(1) < 58)) {
+			operandes = str.substring(1).split(operateur.toRegex(), 2);
 			operandes[0] = str.charAt(0) + operandes[0];
-		} else if(str.charAt(0)>47 && str.charAt(0)<58 )
-			operandes = str.split(operateur.toRegex(),2);
+		} else if (str.charAt(0) > 47 && str.charAt(0) < 58)
+			operandes = str.split(operateur.toRegex(), 2);
 		else
 			return false;
 		if ((estCellule(operandes[0]) || estValeur(operandes[0]))
@@ -176,7 +183,7 @@ public class AnalyseFormule {
 
 	}
 
-	private Contenu formuleToValeur(String str)  {
+	private Contenu formuleToValeur(String str) {
 		return (Contenu) new Valeur(this.stringToValeur(str), this.getFormule());
 	}
 
@@ -190,10 +197,10 @@ public class AnalyseFormule {
 			throw new FormuleErroneeException();
 		else {
 			Cellule c = this.getFeuille().getCellule(x, y);
-			this.listCellules.add(c);
+			this.getCellulesLie().add(c);
 			return (Contenu) c;
 		}
-			
+
 	}
 
 	private Contenu formuleToOperation(String str) throws FormuleErroneeException, HorsFeuilleException {
@@ -201,11 +208,11 @@ public class AnalyseFormule {
 		Operateur operateur = this.stringToOperateur(str);
 		Contenu operande1, operande2;
 		String[] operandes;
-		if(str.charAt(0) == '-') {
-			operandes = str.substring(1).split(operateur.toRegex(),2);
+		if (str.charAt(0) == '-') {
+			operandes = str.substring(1).split(operateur.toRegex(), 2);
 			operandes[0] = str.charAt(0) + operandes[0];
-		} else 
-			operandes = str.split(operateur.toRegex(),2);
+		} else
+			operandes = str.split(operateur.toRegex(), 2);
 		if (this.estCellule(operandes[0]))
 			operande1 = (Contenu) this.formuleToCellule(operandes[0]);
 		else if (this.estValeur(operandes[0]))
@@ -231,11 +238,12 @@ public class AnalyseFormule {
 		char[] chaine = this.formule.toCharArray();
 		Bloc b = new Bloc(chaine[pointeur] - 48, chaine[pointeur + 2] - 48, chaine[pointeur + 4] - 48,
 				chaine[pointeur + 6] - 48, this.getFeuille());
-		if(b.estSansCelluleVide()) {
-		if (this.estMoyenne(str))
-			return (Contenu) new Moyenne(b, this.getFormule());
-		else
-			return (Contenu) new Somme(b, this.getFormule());
+		if (b.estSansCelluleVide()) {
+			this.setCellulesLie(new LinkedList<Cellule>(b.getCellules()));
+			if (this.estMoyenne(str))
+				return (Contenu) new Moyenne(b, this.getFormule());
+			else
+				return (Contenu) new Somme(b, this.getFormule());
 		} else
 			throw new CelluleVideException();
 
@@ -269,7 +277,7 @@ public class AnalyseFormule {
 
 	private Operateur stringToOperateur(String str) throws FormuleErroneeException {
 		char[] chaine = str.toCharArray();
-		for(int i =(str.charAt(0)=='-')? 1:0;i<chaine.length;i++) {
+		for (int i = (str.charAt(0) == '-') ? 1 : 0; i < chaine.length; i++) {
 			for (Operateur op : Operateur.values()) {
 				if (chaine[i] == op.toChar()) {
 					return op;

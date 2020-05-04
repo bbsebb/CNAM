@@ -6,12 +6,14 @@ public class Cellule implements Contenu,Comparable<Cellule>{
 	private int x,y;
 	private Contenu contenu;
 	private String formule ;
+
 	
 	 Cellule(int x,int y) {
 		this.setX(x);
 		this.setY(y);
 		this.setContenu(null);
 		this.setFormule(null);
+
 	}
 	
 	 Cellule(int x,int y,Contenu c,String formule) {
@@ -19,6 +21,8 @@ public class Cellule implements Contenu,Comparable<Cellule>{
 		this.setY(y);
 		this.setContenu(c);
 		this.setFormule(formule);
+
+
 	}
 
 	/**
@@ -78,7 +82,9 @@ public class Cellule implements Contenu,Comparable<Cellule>{
 		this.contenu = contenu;
 	}
 
-	 boolean estVide() {
+
+
+	boolean estVide() {
 		if(this.getContenu() == null) 
 			return true;
 		else
