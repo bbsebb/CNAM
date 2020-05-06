@@ -4,7 +4,7 @@ public class programme {
 	public static void main(String[] args) {
 			String path = "src/nfa032/projet/img/chouette2.ppm";
 			Image img = new Image(path);
-			System.out.println("test");
+			
 			
 			img.enregistrerImg("src/nfa032/projet/img/test3.ppm");
 			img.foncerImg("bleu");
@@ -24,9 +24,10 @@ public class programme {
 			img.chargerImg(path);
 			img.mettreEnNB();
 			img.enregistrerImg("src/nfa032/projet/img/testNB.ppm");
-			img.chargerImg(path);
-			Image img2 = img.recadrer(10,150,20,100);
-			img2.enregistrerImg("src/nfa032/projet/img/testRec.ppm");
+			img.chargerImg("src/nfa032/projet/img/testRec.ppm");
+			 img.recadrer(1,2,1,2);
+			img.enregistrerImg("src/nfa032/projet/img/testRec2.ppm");
+			System.out.println("test");
 	}
 	
 }

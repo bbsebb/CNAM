@@ -142,32 +142,53 @@ public class Image {
 		}
 	}
 
-	public Image recadrer(int l1,int l2, int c1, int c2) {
-		int compteurColonne = 0;
-		int compteurLigne = 0;
+	public void recadrer(int l1,int l2, int c1, int c2) {
+		int compteurColonne = 1;
+		int compteurLigne = 1;
 		Point p = this.getPremierPoint();
-		Image imgRecadrer = new Image();
-		if(l1<l2 && l2<= this.getHauteur() && c1<c2 && c2<=this.getLargeur()) {
-			while(p != null) {
-				compteurColonne++;
-				if(compteurColonne == c2) {
-					compteurLigne++;
-					compteurColonne = 1;
-				}
-				if(compteurLigne == l1 && compteurColonne == c1) {
+		Point pTemp = null;
+		if(l1<l2 && l2<= this.getLargeur() && c1<c2 && c2<=this.getHauteur()) {
+			while(p != null ) {
+				
+				for (int i = p.getNbrId(); i >= 1; i--) {
+					// Premier point
+					if(compteurColonne == c1 && compteurLigne==l1) {
+						Point p2 = new Point(p.getRouge(),p.getVert(),p.getBleu());
+						p2.setNbrId(i);
+						p2.setSuivant(p.getSuivant());
+						this.setPremierPoint(p2);
+					}
+					//Dernier point de chaque ligne sauf la dernière
+					if(compteurColonne == c2 && compteurLigne>=l1 && compteurLigne<l2) {
+						pTemp =p;
+						pTemp.setNbrId(p.getNbrId()-(i-1));
+					}					
+					//Premier point de chaque ligne sauf la première
+					if(compteurColonne == c1 && compteurLigne>l1 && compteurLigne<=l2) {
+						Point p1 = new Point(p.getRouge(),p.getVert(),p.getBleu());
+						p1.setNbrId(i);
+						p1.setSuivant(p.getSuivant());
+						pTemp.setSuivant(p1);
+					}	
+					//Dernier Point
+					if(compteurColonne == c2 && compteurLigne==l2) {
+						p.setSuivant(null);
+						p.setNbrId(1);
+					}
 					
-					imgRecadrer.insererDebut(p);
-				} else if(compteurLigne<=l2 && compteurColonne<=c2) {
-					imgRecadrer.insererFin(p);
-				}	
-				p  = p.getSuivant();
+					compteurColonne++;
+					if (compteurColonne == this.getLargeur()+1) {				
+						compteurColonne = 1;
+						compteurLigne++;
+					}
+				}
+				p = p.getSuivant();
 			}
-			imgRecadrer.setDescription(this.getDescription());
-			imgRecadrer.setName(this.getName());
-			imgRecadrer.setHauteur(c2-c1);
-			imgRecadrer.setLargeur(l2-l1);
+
+			this.setHauteur(c2-c1);
+			this.setLargeur(l2-l1);
 		}
-		return imgRecadrer;
+		
 	}
 	
 	private void reset() {

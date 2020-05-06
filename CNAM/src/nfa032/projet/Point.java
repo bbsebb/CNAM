@@ -5,6 +5,8 @@ public class Point {
 	private int nbrId;
 	private Point PointSuivant;
 
+
+	
 	Point(int rouge, int vert, int bleu) {
 		this.setRouge(rouge);
 		this.setVert(vert);
