@@ -13,6 +13,11 @@ public class Image {
 	private int largeur, hauteur, maxCouleur;
 	private Point premierPoint, dernierPoint;
 
+	public Image() {
+		this.setPremierPoint(null);
+		this.setDernierPoint(null);
+	}
+	
 	public Image(String path) {
 		this.setPremierPoint(null);
 		this.setDernierPoint(null);
@@ -109,7 +114,13 @@ public class Image {
 	public void setDernierPoint(Point dernierPoint) {
 		this.dernierPoint = dernierPoint;
 	}
-
+	public void majDernierPoint() {
+		Point p = this.getPremierPoint();
+		while(p.getSuivant() != null) {
+			p = p.getSuivant();
+		}
+		this.dernierPoint = p;
+	}
 	public Point getDernierPoint() {
 		return this.dernierPoint;
 	}
@@ -131,9 +142,88 @@ public class Image {
 		}
 	}
 
+	public Image recadrer(int l1,int l2, int c1, int c2) {
+		int compteurColonne = 0;
+		int compteurLigne = 0;
+		Point p = this.getPremierPoint();
+		Image imgRecadrer = new Image();
+		if(l1<l2 && l2<= this.getHauteur() && c1<c2 && c2<=this.getLargeur()) {
+			while(p != null) {
+				compteurColonne++;
+				if(compteurColonne == c2) {
+					compteurLigne++;
+					compteurColonne = 1;
+				}
+				if(compteurLigne == l1 && compteurColonne == c1) {
+					
+					imgRecadrer.insererDebut(p);
+				} else if(compteurLigne<=l2 && compteurColonne<=c2) {
+					imgRecadrer.insererFin(p);
+				}	
+				p  = p.getSuivant();
+			}
+			imgRecadrer.setDescription(this.getDescription());
+			imgRecadrer.setName(this.getName());
+			imgRecadrer.setHauteur(c2-c1);
+			imgRecadrer.setLargeur(l2-l1);
+		}
+		return imgRecadrer;
+	}
+	
 	private void reset() {
 		this.setDernierPoint(null);
 		this.setPremierPoint(null);
+	}
+	
+	public void mettreEnNB() {
+		Point p = this.getPremierPoint();
+		while(p != null) {
+			p.mettreEnNB();
+			p = p.getSuivant();
+		}
+	}
+	
+	public void foncerImg(String couleur) {
+		Point p = this.getPremierPoint();
+		int intensiteMax = this.getMaxCouleur();
+		while (p.getSuivant() != null) {
+			switch (couleur) {
+			case "bleu":
+				if (p.estBleu())
+					p.foncerPoint(intensiteMax);
+				break;
+			case "rouge":
+				if (p.estRouge())
+					p.foncerPoint(intensiteMax);
+				break;
+			case "vert":
+				if (p.estVert())
+					p.foncerPoint(intensiteMax);
+				break;
+			}
+			p = p.getSuivant();
+		}
+	}
+	public void eclairecirImg(String couleur) {
+		Point p = this.getPremierPoint();
+		int intensiteMax = this.getMaxCouleur();
+		while (p.getSuivant() != null) {
+			switch (couleur) {
+			case "bleu":
+				if (p.estBleu())
+					p.eclairecirPoint(intensiteMax);
+				break;
+			case "rouge":
+				if (p.estRouge())
+					p.eclairecirPoint(intensiteMax);
+				break;
+			case "vert":
+				if (p.estVert())
+					p.eclairecirPoint(intensiteMax);
+				break;
+			}
+			p = p.getSuivant();
+		}
 	}
 
 	public void chargerImg(String path) {
@@ -166,7 +256,7 @@ public class Image {
 					estNbr = true;
 				}
 				if (estNbr && (c < 48 || c > 57)) {
-					numCouleur = (int) (factoriel(compteurChiffre - 3) * numCouleur);
+					numCouleur = (int) ( numCouleur / factoriel(compteurChiffre+1 ));
 					compteurChiffre = 3;
 					couleurs[compteurCouleur] = numCouleur;
 					numCouleur = 0;
@@ -176,7 +266,7 @@ public class Image {
 				if (compteurCouleur == 3) {
 
 					Point p = new Point(couleurs[0], couleurs[1], couleurs[2]);
-					if (pPrec != null && pPrec.egal(p)) 
+					if (pPrec != null && pPrec.egal(p))
 						pPrec.setNbrId(pPrec.getNbrId() + 1);
 					else {
 						this.insererFin(p);
@@ -214,14 +304,14 @@ public class Image {
 			redacteur.write(this.getMaxCouleur() + "\n");
 			int compteur = 0;
 			Point p = this.getPremierPoint();
-			while (p.getSuivant() != null) {
-				for (int i = p.getNbrId(); i >=1; i--) {
+			while (p != null) {
+				for (int i = p.getNbrId(); i >= 1; i--) {
 					redacteur.write(p.getRouge() + "  " + p.getVert() + "  " + p.getBleu() + "  ");
-					if(compteur == this.getLargeur()) {
-						redacteur.write("\n");
-						compteur = 1;
-					}
 					compteur++;
+					if (compteur == this.getLargeur()) {
+						redacteur.write("\n");
+						compteur = 0;
+					}
 				}
 
 				p = p.getSuivant();

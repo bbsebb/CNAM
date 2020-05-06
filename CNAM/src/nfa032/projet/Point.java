@@ -83,18 +83,27 @@ public class Point {
 		PointSuivant = pointSuivant;
 	}
 
-	public string dominante() {
-		if(this.getBleu()>this.getRouge()) {
-			if(this.getRouge()>this.getVert())
-				return "bleu";
-		} else if(this.getBleu()<this.getRouge())  {
-			if(this.getRouge()>this.getVert()) 
-				return "rouge";
-		}
+	public boolean estRouge() {
+		if(this.getRouge() >= this.getBleu() && this.getRouge() >= this.getVert() )
+			return true;
+		else
+			return false;
+	}
+	public boolean estVert() {
+		if(this.getVert() >= this.getBleu() && this.getVert() >= this.getRouge() )
+			return true;
+		else
+			return false;
+	}
+	public boolean estBleu() {
+		if(this.getBleu() >= this.getVert() && this.getBleu() >= this.getRouge() )
+			return true;
+		else
+			return false;
 	}
 	
-	public void foncerPoint(int intensiteMax) {
-		int augmentation = (int) (intensiteMax / 10);
+	public void eclairecirPoint(int intensiteMax) {
+		int augmentation = (int) (intensiteMax / 20);
 		if (this.getBleu() + augmentation > intensiteMax)
 			this.setBleu(intensiteMax);
 		else
@@ -108,7 +117,29 @@ public class Point {
 		else
 			this.setRouge(this.getRouge() + augmentation);
 	}
+	public void foncerPoint(int intensiteMax) {
+		int diminution = (int) (intensiteMax / 20);
+		if (this.getBleu() - diminution < 0)
+			this.setBleu(0);
+		else
+			this.setBleu(this.getBleu() - diminution);
+		if (this.getVert() - diminution < 0)
+			this.setVert(0);
+		else
+			this.setVert(this.getVert() - diminution);
+		if (this.getRouge() - diminution < 0)
+			this.setRouge(0);
+		else
+			this.setRouge(this.getRouge() - diminution);
+	}
 
+	public void mettreEnNB() {
+		int nb = (this.getBleu()+this.getRouge()+this.getVert())/3;
+		this.setBleu(nb);
+		this.setRouge(nb);
+		this.setVert(nb);
+	}
+	
 	public boolean egal(Point p) {
 		if (this.getRouge() == p.getRouge() && this.getVert() == p.getVert() && this.getBleu() == p.getBleu())
 			return true;
