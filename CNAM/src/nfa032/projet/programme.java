@@ -1,8 +1,10 @@
 package nfa032.projet;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 public class programme {
-
+	public static void main(String[] args) {
+		
+			Image img = new Image("src/nfa032/projet/img/test.ppm");
+			System.out.println("test");
+	}
+	
 }
