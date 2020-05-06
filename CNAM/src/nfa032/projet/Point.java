@@ -1,14 +1,14 @@
 package nfa032.projet;
 
 public class Point {
-	private int rouge,vert,jaune;
+	private int rouge,vert,bleu;
 	private int nbrId;
 	private Point PointSuivant;
 	
-	Point(int rouge,int vert,int jaune) {
+	Point(int rouge,int vert,int bleu) {
 		this.setRouge(rouge);
 		this.setVert(vert);
-		this.setJaune(jaune);
+		this.setBleu(bleu);
 		this.setNbrId(1);
 		this.setSuivant(null);
 	}
@@ -37,16 +37,16 @@ public class Point {
 		this.nbrId = nbrId;
 	}
 	/**
-	 * @return the jaune
+	 * @return the bleu
 	 */
-	public int getJaune() {
-		return jaune;
+	public int getBleu() {
+		return bleu;
 	}
 	/**
-	 * @param jaune the jaune to set
+	 * @param bleu the bleu to set
 	 */
-	public void setJaune(int jaune) {
-		this.jaune = jaune;
+	public void setBleu(int bleu) {
+		this.bleu = bleu;
 	}
 	/**
 	 * @return the bleu
@@ -74,7 +74,7 @@ public class Point {
 	}
 	
 	public boolean egal(Point p) {
-		if(this.getRouge() == p.getRouge() && this.getVert() == p.getVert() && this.getJaune() == p.getJaune())
+		if(this.getRouge() == p.getRouge() && this.getVert() == p.getVert() && this.getBleu() == p.getBleu())
 			return true;
 		else
 			return false;

@@ -1,6 +1,7 @@
 package nfa032.projet;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -129,72 +130,70 @@ public class Image {
 			this.setDernierPoint(p);
 		}
 	}
-	
+
 	private void reset() {
 		this.setDernierPoint(null);
 		this.setPremierPoint(null);
 	}
-	
+
 	public void chargerImg(String path) {
 		this.reset();
-		Path chemin =  Paths.get(path);
-		BufferedReader  lecteur = null;
+		Path chemin = Paths.get(path);
+		BufferedReader lecteur = null;
 		try {
-			lecteur = 	Files.newBufferedReader(chemin, StandardCharsets.UTF_8);
-			
-			
+			lecteur = Files.newBufferedReader(chemin, StandardCharsets.US_ASCII);
+
 			this.setName(lecteur.readLine());
 			this.setDescription(lecteur.readLine());
-			int[] dimension = stringToInt(lecteur.readLine(),2);
+			int[] dimension = stringToInt(lecteur.readLine(), 2);
 			this.setLargeur(dimension[1]);
 			this.setHauteur(dimension[0]);
-			this.setMaxCouleur(stringToInt(lecteur.readLine(),1)[0]);
-			
+			this.setMaxCouleur(stringToInt(lecteur.readLine(), 1)[0]);
+
 			int c = lecteur.read();
-			int numCouleur= 0;
+			int numCouleur = 0;
 			int compteurChiffre = 3;
 			int compteurCouleur = 0;
 			int[] couleurs = new int[3];
 			boolean estNbr = false;
 			Point pPrec = null;
-			while(c!=-1) {
-		//		System.out.print((char) c);
-				if(c>47 && c<58) {
-				//	System.out.print((char)c);
-					numCouleur = (int) (factoriel(compteurChiffre) * (c-48))+numCouleur;
-					compteurChiffre --;
+			while (c != -1) {
+				// System.out.print((char) c);
+				if (c > 47 && c < 58) {
+					// System.out.print((char)c);
+					numCouleur = (int) (factoriel(compteurChiffre) * (c - 48)) + numCouleur;
+					compteurChiffre--;
 					estNbr = true;
 				}
-				if(estNbr && (c<48 || c>57)) {
-					numCouleur = (int) (factoriel(compteurChiffre-3)*numCouleur);
+				if (estNbr && (c < 48 || c > 57)) {
+					numCouleur = (int) (factoriel(compteurChiffre - 3) * numCouleur);
 					compteurChiffre = 3;
 					couleurs[compteurCouleur] = numCouleur;
 					numCouleur = 0;
-					estNbr=false;
-					compteurCouleur ++;
+					estNbr = false;
+					compteurCouleur++;
 				}
-				if(compteurCouleur == 2) {
-					
-					Point p = new Point(couleurs[0],couleurs[1],couleurs[2]);
-					if(pPrec != null && pPrec.egal(p)) 
+				if (compteurCouleur == 3) {
+
+					Point p = new Point(couleurs[0], couleurs[1], couleurs[2]);
+					if (pPrec != null && pPrec.egal(p)) 
 						pPrec.setNbrId(pPrec.getNbrId() + 1);
-					else
+					else {
 						this.insererFin(p);
-					pPrec = p;
-					compteurCouleur=0;
+						pPrec = p;
+					}
+					compteurCouleur = 0;
 				}
-				
+
 				c = lecteur.read();
-				
+
 			}
-				
-			
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			if(lecteur!=null)
+			if (lecteur != null)
 				try {
 					lecteur.close();
 				} catch (IOException e) {
@@ -203,38 +202,72 @@ public class Image {
 				}
 		}
 	}
-	
+
 	public void enregistrerImg(String path) {
-		
+		Path chemin = Paths.get(path);
+		BufferedWriter redacteur = null;
+		try {
+			redacteur = Files.newBufferedWriter(chemin, StandardCharsets.US_ASCII);
+			redacteur.write(this.getName() + "\n");
+			redacteur.write(this.getDescription() + "\n");
+			redacteur.write(this.getLargeur() + " " + this.getHauteur() + "\n");
+			redacteur.write(this.getMaxCouleur() + "\n");
+			int compteur = 0;
+			Point p = this.getPremierPoint();
+			while (p.getSuivant() != null) {
+				for (int i = p.getNbrId(); i >=1; i--) {
+					redacteur.write(p.getRouge() + "  " + p.getVert() + "  " + p.getBleu() + "  ");
+					if(compteur == this.getLargeur()) {
+						redacteur.write("\n");
+						compteur = 1;
+					}
+					compteur++;
+				}
+
+				p = p.getSuivant();
+			}
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (redacteur != null)
+				try {
+					redacteur.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
 	}
-	
+
 	static double factoriel(int n) {
-		double rtr =1;
-		if(n==0)
+		double rtr = 1;
+		if (n == 0)
 			return rtr;
-		else if(n>0)
-			return rtr =  factoriel(n-1) * 10;
-		else 
-			return rtr = factoriel(n+1) / 10;
+		else if (n > 0)
+			return rtr = factoriel(n - 1) * 10;
+		else
+			return rtr = factoriel(n + 1) / 10;
 	}
-	
-	static int[] stringToInt(String str,int nbrNbr) {
+
+	static int[] stringToInt(String str, int nbrNbr) {
 		str = str.trim();
 		char[] chaine = str.toCharArray();
 		int[] nombre = new int[nbrNbr];
 		int compteurNbr = 0;
 		int compteur = 0;
 		int nbr = 0;
-		for(int i =chaine.length-1; i >=0 ;i--) {
-			if(chaine[i]>47 && chaine[i]<58) {
-				nbr = (int) factoriel(compteur) * (chaine[i]-48)+nbr;
+		for (int i = chaine.length - 1; i >= 0; i--) {
+			if (chaine[i] > 47 && chaine[i] < 58) {
+				nbr = (int) factoriel(compteur) * (chaine[i] - 48) + nbr;
 				compteur++;
-			} 
-			if((chaine[i]<=47 || chaine[i]>=58) || i==0) {
+			}
+			if ((chaine[i] <= 47 || chaine[i] >= 58) || i == 0) {
 				nombre[compteurNbr] = nbr;
 				nbr = 0;
 				compteur = 0;
-				compteurNbr ++;
+				compteurNbr++;
 			}
 		}
 		return nombre;

@@ -5,6 +5,7 @@ public class programme {
 		
 			Image img = new Image("src/nfa032/projet/img/test.ppm");
 			System.out.println("test");
+			img.enregistrerImg("src/nfa032/projet/img/test2.ppm");
 	}
 	
 }
