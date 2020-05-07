@@ -18,11 +18,7 @@ public class Image {
 		this.setDernierPoint(null);
 	}
 	
-	public Image(String path) {
-		this.setPremierPoint(null);
-		this.setDernierPoint(null);
-		this.chargerImg(path);
-	}
+
 
 	/**
 	 * @return the name
@@ -247,12 +243,9 @@ public class Image {
 		}
 	}
 
-	public void chargerImg(String path) {
+	public void chargerImg(BufferedReader lecteur) throws IOException {
 		this.reset();
-		Path chemin = Paths.get(path);
-		BufferedReader lecteur = null;
-		try {
-			lecteur = Files.newBufferedReader(chemin, StandardCharsets.US_ASCII);
+		
 
 			this.setName(lecteur.readLine());
 			this.setDescription(lecteur.readLine());
@@ -296,22 +289,10 @@ public class Image {
 					compteurCouleur = 0;
 				}
 
-				c = lecteur.read();
+				
 
 			}
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (lecteur != null)
-				try {
-					lecteur.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		}
 	}
 
 	public void enregistrerImg(String path) {
