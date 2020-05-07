@@ -157,6 +157,7 @@ public class Image {
 						p2.setNbrId(i);
 						p2.setSuivant(p.getSuivant());
 						this.setPremierPoint(p2);
+						p=p2;
 					}
 					//Dernier point de chaque ligne sauf la dernière
 					if(compteurColonne == c2 && compteurLigne>=l1 && compteurLigne<l2) {
@@ -168,12 +169,13 @@ public class Image {
 						Point p1 = new Point(p.getRouge(),p.getVert(),p.getBleu());
 						p1.setNbrId(i);
 						p1.setSuivant(p.getSuivant());
+						p=p1;
 						pTemp.setSuivant(p1);
 					}	
 					//Dernier Point
 					if(compteurColonne == c2 && compteurLigne==l2) {
 						p.setSuivant(null);
-						p.setNbrId(1);
+						p.setNbrId(p.getNbrId()-(i-1));
 					}
 					
 					compteurColonne++;
@@ -185,8 +187,8 @@ public class Image {
 				p = p.getSuivant();
 			}
 
-			this.setHauteur(c2-c1);
-			this.setLargeur(l2-l1);
+			this.setHauteur(c2-c1+1);
+			this.setLargeur(l2-l1+1);
 		}
 		
 	}

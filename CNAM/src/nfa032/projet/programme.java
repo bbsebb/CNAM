@@ -24,8 +24,8 @@ public class programme {
 			img.chargerImg(path);
 			img.mettreEnNB();
 			img.enregistrerImg("src/nfa032/projet/img/testNB.ppm");
-			img.chargerImg("src/nfa032/projet/img/testRec.ppm");
-			 img.recadrer(1,2,1,2);
+			img.chargerImg(path);
+			 img.recadrer(20,100,20,100);
 			img.enregistrerImg("src/nfa032/projet/img/testRec2.ppm");
 			System.out.println("test");
 	}
