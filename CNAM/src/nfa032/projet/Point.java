@@ -1,12 +1,22 @@
 package nfa032.projet;
 
+/**
+ * Point represente un ou plusieurs pixel identique d'une image ppm.
+ * @author bbsebb
+ *
+ */
 public class Point {
 	private int rouge, vert, bleu;
 	private int nbrId;
 	private Point PointSuivant;
 
 
-	
+	/**
+	 * Constructeur par défaut
+	 * @param rouge est l'intensité du rouge
+	 * @param vert est l'intensité du vert
+	 * @param bleu est l'intensité du bleu 
+	 */
 	Point(int rouge, int vert, int bleu) {
 		this.setRouge(rouge);
 		this.setVert(vert);
@@ -18,93 +28,109 @@ public class Point {
 	/**
 	 * @return the rouge
 	 */
-	public int getRouge() {
+	 int getRouge() {
 		return rouge;
 	}
 
 	/**
 	 * @param rouge the rouge to set
 	 */
-	public void setRouge(int rouge) {
+	 void setRouge(int rouge) {
 		this.rouge = rouge;
 	}
 
 	/**
-	 * @return the nbrSuivant
+	 * @return le nombre de pixel identique que représent cette instance.
 	 */
-	public int getNbrId() {
+	 int getNbrId() {
 		return nbrId;
 	}
 
 	/**
-	 * @param nbrSuivant the nbrSuivant to set
+	 * @param nbrSuivant est le nombre de pixel identique que représent cette instance.
 	 */
-	public void setNbrId(int nbrId) {
+	 void setNbrId(int nbrId) {
 		this.nbrId = nbrId;
 	}
 
 	/**
 	 * @return the bleu
 	 */
-	public int getBleu() {
+	 int getBleu() {
 		return bleu;
 	}
 
 	/**
 	 * @param bleu the bleu to set
 	 */
-	public void setBleu(int bleu) {
+	 void setBleu(int bleu) {
 		this.bleu = bleu;
 	}
 
 	/**
 	 * @return the bleu
 	 */
-	public int getVert() {
+	 int getVert() {
 		return vert;
 	}
 
 	/**
 	 * @param bleu the bleu to set
 	 */
-	public void setVert(int bleu) {
+	 void setVert(int bleu) {
 		this.vert = bleu;
 	}
 
 	/**
 	 * @return the pointSuivant
 	 */
-	public Point getSuivant() {
+	 Point getSuivant() {
 		return PointSuivant;
 	}
 
 	/**
 	 * @param pointSuivant the pointSuivant to set
 	 */
-	public void setSuivant(Point pointSuivant) {
+	 void setSuivant(Point pointSuivant) {
 		PointSuivant = pointSuivant;
 	}
 
-	public boolean estRouge() {
+	 /**
+	  * 
+	  * @return vrai si le point est à dominante rouge
+	  */
+	 boolean estRouge() {
 		if(this.getRouge() >= this.getBleu() && this.getRouge() >= this.getVert() )
 			return true;
 		else
 			return false;
 	}
-	public boolean estVert() {
+	 /**
+	  * 
+	  * @return vrai si le point est à dominante vert
+	  */
+	 boolean estVert() {
 		if(this.getVert() >= this.getBleu() && this.getVert() >= this.getRouge() )
 			return true;
 		else
 			return false;
 	}
-	public boolean estBleu() {
+	 /**
+	  * 
+	  * @return vrai si le point est à dominante bleu
+	  */
+	 boolean estBleu() {
 		if(this.getBleu() >= this.getVert() && this.getBleu() >= this.getRouge() )
 			return true;
 		else
 			return false;
 	}
 	
-	public void eclairecirPoint(int intensiteMax) {
+	 /**
+	  * Eclairci le point vers sa dominante de 20% de son intensité maximale
+	  * @param intensiteMax est l'intensité maximale de la couleur
+	  */
+	 void eclairecirPoint(int intensiteMax) {
 		int augmentation = (int) (intensiteMax / 20);
 		if (this.getBleu() + augmentation > intensiteMax)
 			this.setBleu(intensiteMax);
@@ -119,7 +145,12 @@ public class Point {
 		else
 			this.setRouge(this.getRouge() + augmentation);
 	}
-	public void foncerPoint(int intensiteMax) {
+	 
+	 /**
+	  * Fonce le point vers sa dominante de 20% de son intensité maximale
+	  * @param intensiteMax est l'intensité maximale de la couleur
+	  */ 
+	 void foncerPoint(int intensiteMax) {
 		int diminution = (int) (intensiteMax / 20);
 		if (this.getBleu() - diminution < 0)
 			this.setBleu(0);
@@ -135,14 +166,34 @@ public class Point {
 			this.setRouge(this.getRouge() - diminution);
 	}
 
-	public void mettreEnNB() {
+	 /**
+	  * Met le point en noir & blanc
+	  */
+	 void mettreEnNB() {
 		int nb = (this.getBleu()+this.getRouge()+this.getVert())/3;
 		this.setBleu(nb);
 		this.setRouge(nb);
 		this.setVert(nb);
 	}
+	 
+	 void mettreNegatif(int intensiteMax) {
+		 	this.setBleu(intensiteMax-this.getBleu());
+			this.setRouge(intensiteMax-this.getRouge());
+			this.setVert(intensiteMax-this.getVert());
+	 }
 	
-	public boolean egal(Point p) {
+	 /**
+	  * <p>Verifie si deux point sont égaux</p>
+	  * <p>Ils sont égaux si : </p>
+	  * <ul>
+	  * <li>Leur composante rouge est égale</li>
+	  * <li>Leur composante verte est égale</li>
+	  * <li>Leur composante bleu est égale</li>
+	  * </il>
+	  * @param p est le point à comparer
+	  * @return vrai si les points sont égaux, faux sinon.
+	  */
+	 boolean egal(Point p) {
 		if (this.getRouge() == p.getRouge() && this.getVert() == p.getVert() && this.getBleu() == p.getBleu())
 			return true;
 		else
