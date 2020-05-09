@@ -1,5 +1,6 @@
 package nfa035.projet2.cellule;
 
+import nfa035.projet2.exceptions.ErreurAffichage;
 import nfa035.projet2.feuille.Bloc;
 
 public abstract class Fonction implements Contenu{
@@ -36,5 +37,5 @@ public abstract class Fonction implements Contenu{
 			this.formule = formule;
 		}
 		@Override
-		public abstract float getResultat();
+		public abstract float getResultat() throws ErreurAffichage;
 }

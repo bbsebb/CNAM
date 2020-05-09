@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import nfa035.projet2.cellule.Contenu;
 import nfa035.projet2.exceptions.CircuitException;
+import nfa035.projet2.exceptions.ErreurAffichage;
 
 public class Cellule implements Contenu, Comparable<Cellule> {
 	private int x, y;
@@ -17,7 +18,6 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 		this.setY(y);
 		this.setContenu(null);
 		this.setFormule(null);
-		
 
 	}
 
@@ -69,7 +69,10 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 	 * @param formule the formule to set
 	 */
 	void setFormule(String formule) {
-		this.formule = formule;
+		if (formule == null)
+			this.formule = "";
+		else
+			this.formule = formule;
 	}
 
 	/**
@@ -95,13 +98,21 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 
 	/**
 	 * @param cellulesLie the cellulesLie to set
-	 * @throws CircuitException 
+	 * @throws CircuitException
 	 */
 	public void setCellulesLie(LinkedList<Cellule> cellulesLie) throws CircuitException {
-		this.cellulesLie = cellulesLie;
-		if(!this.parcoursArbre(new LinkedHashSet<Cellule>())) {
-			throw new CircuitException();
+		if (cellulesLie != null) {
+			this.cellulesLie = cellulesLie;
+			if (!this.parcoursArbre(new LinkedHashSet<Cellule>())) {
+				throw new CircuitException();
+			}
+		} else {
+			this.cellulesLie.clear();
 		}
+	}
+
+	public void clearCellulesLie() {
+		this.cellulesLie.clear();
 	}
 
 	boolean estVide() {
@@ -112,29 +123,29 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 	}
 
 	@Override
-	public float getResultat() {
+	public float getResultat() throws ErreurAffichage {
 		// TODO Auto-generated method stub
 		if (this.getContenu() == null)
-			return 0f;
+			throw new ErreurAffichage();
 		else
 			return this.getContenu().getResultat();
 	}
 
-	private boolean parcoursArbre(LinkedHashSet<Cellule> marquage ) {
-		
+	private boolean parcoursArbre(LinkedHashSet<Cellule> marquage) {
+
 		LinkedList<Cellule> listCellule = this.getCellulesLie();
 		boolean rtr = true;
 		if (listCellule.isEmpty()) {
 			marquage.add(this);
-			rtr =  true;
+			rtr = true;
 		} else if (marquage.contains(this))
-			rtr =  false;
+			rtr = false;
 		else {
 			marquage.add(this);
 			rtr = true;
 			for (Cellule c : listCellule) {
 				rtr = rtr && c.parcoursArbre(marquage);
-			}	
+			}
 		}
 		return rtr;
 	}

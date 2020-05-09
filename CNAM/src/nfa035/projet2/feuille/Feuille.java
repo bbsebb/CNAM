@@ -1,14 +1,13 @@
 package nfa035.projet2.feuille;
 
 import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
-import nfa035.projet2.exceptions.CelluleVideException;
+import nfa035.projet2.cellule.Contenu;
+import nfa035.projet2.cellule.Erreur;
 import nfa035.projet2.exceptions.CircuitException;
+import nfa035.projet2.exceptions.ErreurAffichage;
 import nfa035.projet2.exceptions.FormuleErroneeException;
 import nfa035.projet2.exceptions.HorsFeuilleException;
 
@@ -54,7 +53,6 @@ public class Feuille {
 		this.cellules = cellules;
 	}
 
-
 	/**
 	 * @return the xMax
 	 */
@@ -83,18 +81,21 @@ public class Feuille {
 		this.yMax = yMax;
 	}
 
-	public void setCellule(int x, int y, String formule)
-			throws HorsFeuilleException, FormuleErroneeException, CelluleVideException, CircuitException {
+	public void setCellule(int x, int y, String formule) throws HorsFeuilleException {
 		Cellule c = this.getCellule(x, y);
-		AnalyseFormule af = new AnalyseFormule(this, formule);
-		c.setFormule(formule);
-		c.setContenu(af.getContenu());
-		c.setCellulesLie(af.getCellulesLie());
-				
+		try {
+
+			AnalyseFormule af = new AnalyseFormule(this, formule);
+			c.setFormule(formule);
+			c.setContenu(af.getContenu());
+			c.setCellulesLie(af.getCellulesLie());
+		} catch (HorsFeuilleException | FormuleErroneeException | CircuitException e) {
+			// TODO Auto-generated catch block
+			c.setFormule("Err");
+			c.setContenu((Contenu) new Erreur());
+			c.clearCellulesLie();
+		}
 	}
-
-
-
 
 	public Cellule getCellule(int x, int y) throws HorsFeuilleException {
 		Iterator<Cellule> it = this.getCellules().iterator();
@@ -118,7 +119,7 @@ public class Feuille {
 			throws HorsFeuilleException {
 		if (xCellule1 < 0 || xCellule2 < 0 || yCellule1 < 0 || yCellule2 < 0)
 			throw new HorsFeuilleException();
-		this.setCellules( new TreeSet<Cellule>());
+		this.setCellules(new TreeSet<Cellule>());
 		for (int i = xCellule1; i <= xCellule2; i++) {
 			for (int j = yCellule1; j <= yCellule2; j++) {
 				this.getCellules().add(new Cellule(i, j));
@@ -132,10 +133,15 @@ public class Feuille {
 
 		for (Cellule c : listCellule) {
 			float resultat = 0;
-			if (c.getContenu() != null)
-				resultat = c.getContenu().getResultat();
-			System.out
-					.println(c.getX() + " " + c.getY() + " -> Formule : " + c.getFormule() + " Resultat : " + resultat);
+				try {
+					resultat = c.getResultat();
+					System.out.println(
+							c.getX() + " " + c.getY() + " -> Formule : " + c.getFormule() + " Resultat : " + resultat);
+				} catch (ErreurAffichage e) {
+					// TODO Auto-generated catch block
+					System.out.println(c.getX() + " " + c.getY() + " -> Formule : " + c.getFormule() + " Resultat : ");
+				}
+
 		}
 	}
 }

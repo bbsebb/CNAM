@@ -2,6 +2,7 @@ package nfa035.projet2.cellule;
 
 import java.util.Set;
 
+import nfa035.projet2.exceptions.ErreurAffichage;
 import nfa035.projet2.feuille.Bloc;
 import nfa035.projet2.feuille.Cellule;
 
@@ -11,7 +12,7 @@ public class Moyenne extends Fonction {
 	}
 
 	@Override
-	public float getResultat() {
+	public float getResultat() throws ErreurAffichage {
 		Set<Cellule> cellules = this.getBloc().getCellules();
 		float rtr = 0;
 		int compteur = 0;

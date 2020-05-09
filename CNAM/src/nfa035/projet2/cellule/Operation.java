@@ -1,5 +1,7 @@
 package nfa035.projet2.cellule;
 
+import nfa035.projet2.exceptions.ErreurAffichage;
+
 public class Operation implements Contenu{
 	private Contenu operande1,operande2;
 	private Operateur operateur;
@@ -82,7 +84,7 @@ public class Operation implements Contenu{
 
 
 	@Override
-	public float getResultat() {
+	public float getResultat() throws ErreurAffichage {
 		// TODO Auto-generated method stub
 		float resultat = 0;
 		switch (this.getOperateur().toChar()) {
