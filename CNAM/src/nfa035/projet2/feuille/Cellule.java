@@ -1,17 +1,23 @@
 package nfa035.projet2.feuille;
 
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+
 import nfa035.projet2.cellule.Contenu;
+import nfa035.projet2.exceptions.CircuitException;
 
 public class Cellule implements Contenu, Comparable<Cellule> {
 	private int x, y;
 	private Contenu contenu;
 	private String formule;
+	private LinkedList<Cellule> cellulesLie = new LinkedList<Cellule>();
 
 	Cellule(int x, int y) {
 		this.setX(x);
 		this.setY(y);
 		this.setContenu(null);
 		this.setFormule(null);
+		
 
 	}
 
@@ -80,6 +86,24 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 		this.contenu = contenu;
 	}
 
+	/**
+	 * @return the cellulesLie
+	 */
+	public LinkedList<Cellule> getCellulesLie() {
+		return cellulesLie;
+	}
+
+	/**
+	 * @param cellulesLie the cellulesLie to set
+	 * @throws CircuitException 
+	 */
+	public void setCellulesLie(LinkedList<Cellule> cellulesLie) throws CircuitException {
+		this.cellulesLie = cellulesLie;
+		if(!this.parcoursArbre(new LinkedHashSet<Cellule>())) {
+			throw new CircuitException();
+		}
+	}
+
 	boolean estVide() {
 		if (this.getContenu() == null)
 			return true;
@@ -94,6 +118,25 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 			return 0f;
 		else
 			return this.getContenu().getResultat();
+	}
+
+	private boolean parcoursArbre(LinkedHashSet<Cellule> marquage ) {
+		
+		LinkedList<Cellule> listCellule = this.getCellulesLie();
+		boolean rtr = true;
+		if (listCellule.isEmpty()) {
+			marquage.add(this);
+			rtr =  true;
+		} else if (marquage.contains(this))
+			rtr =  false;
+		else {
+			marquage.add(this);
+			rtr = true;
+			for (Cellule c : listCellule) {
+				rtr = rtr && c.parcoursArbre(marquage);
+			}	
+		}
+		return rtr;
 	}
 
 	@Override
