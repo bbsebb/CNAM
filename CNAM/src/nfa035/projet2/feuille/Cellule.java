@@ -1,7 +1,6 @@
 package nfa035.projet2.feuille;
 
 import nfa035.projet2.cellule.Contenu;
-import nfa035.projet2.exceptions.FormuleErroneeException;
 
 public class Cellule implements Contenu, Comparable<Cellule> {
 	private int x, y;

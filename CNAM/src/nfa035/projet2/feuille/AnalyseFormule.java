@@ -2,13 +2,13 @@ package nfa035.projet2.feuille;
 
 import java.util.LinkedList;
 
-import nfa035.projet2.cellule.CelluleVideException;
 import nfa035.projet2.cellule.Contenu;
 import nfa035.projet2.cellule.Moyenne;
 import nfa035.projet2.cellule.Operateur;
 import nfa035.projet2.cellule.Operation;
 import nfa035.projet2.cellule.Somme;
 import nfa035.projet2.cellule.Valeur;
+import nfa035.projet2.exceptions.CelluleVideException;
 import nfa035.projet2.exceptions.FormuleErroneeException;
 import nfa035.projet2.exceptions.HorsFeuilleException;
 

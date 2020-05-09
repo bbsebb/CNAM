@@ -1,6 +1,6 @@
 package nfa035.projet2;
 
-import nfa035.projet2.cellule.CelluleVideException;
+import nfa035.projet2.exceptions.CelluleVideException;
 import nfa035.projet2.exceptions.CircuitException;
 import nfa035.projet2.exceptions.FormuleErroneeException;
 import nfa035.projet2.exceptions.HorsFeuilleException;

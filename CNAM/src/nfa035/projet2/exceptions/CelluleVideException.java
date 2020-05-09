@@ -1,4 +1,4 @@
-package nfa035.projet2.cellule;
+package nfa035.projet2.exceptions;
 
 public class CelluleVideException extends Exception{
 
