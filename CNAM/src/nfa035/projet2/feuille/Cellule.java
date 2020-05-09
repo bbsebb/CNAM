@@ -4,6 +4,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 import nfa035.projet2.cellule.Contenu;
+import nfa035.projet2.cellule.Erreur;
 import nfa035.projet2.exceptions.CircuitException;
 import nfa035.projet2.exceptions.ErreurAffichage;
 

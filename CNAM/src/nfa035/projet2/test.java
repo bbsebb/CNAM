@@ -24,6 +24,7 @@ public class test {
 		f.setCellule(0, 1, "1.0+1.1");
 		f.affichageCellule();
 		f.setCellule(0, 1, "3");
+		f.setCellule(1,1, "Somme(0.0;0.1)");
 		System.out.println("------------------");
 		f.affichageCellule();
 		} catch (HorsFeuilleException e) {

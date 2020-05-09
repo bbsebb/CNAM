@@ -57,7 +57,7 @@ public class Bloc extends Feuille{
 		TreeSet<Cellule> cellules = new TreeSet<Cellule>();
 		for (int i = xCellule1; i <= xCellule2; i++) {
 			for (int j = yCellule1; j <= yCellule2; j++) {
-				this.getCellules().add(this.getFeuille().getCellule(i, j));
+				cellules.add(this.getFeuille().getCellule(i, j));
 			}
 		}
 		return cellules;

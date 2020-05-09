@@ -18,7 +18,7 @@ public class AnalyseFormule {
 	private Contenu contenu;
 	private LinkedList<Cellule> listCellules;
 
-	public AnalyseFormule(Feuille feuille, String formule) throws FormuleErroneeException, HorsFeuilleException {
+	public AnalyseFormule(Feuille feuille, String formule) throws FormuleErroneeException, HorsFeuilleException, CelluleVideException {
 		this.setFeuille(feuille);
 		this.setFormule(formule);
 		this.setCellulesLie(new LinkedList<Cellule>());
@@ -41,7 +41,7 @@ public class AnalyseFormule {
 		this.listCellules = ll;
 	}
 
-	private Contenu formuleToContenu() throws FormuleErroneeException, HorsFeuilleException {
+	private Contenu formuleToContenu() throws FormuleErroneeException, HorsFeuilleException, CelluleVideException {
 		String f = this.getFormule();
 		if (this.getFormule() == null || this.getFormule().isEmpty())
 			return (Contenu) null;
@@ -52,12 +52,7 @@ public class AnalyseFormule {
 		else if (this.estOperation(f))
 			return this.formuleToOperation(f);
 		else if (this.estFonction(f))
-			try {
 				return this.formuleToFonction(f);
-			} catch (CelluleVideException e) {
-				// TODO Auto-generated catch block
-				throw new FormuleErroneeException();
-			}
 		else
 			throw new FormuleErroneeException();
 	}
@@ -187,14 +182,14 @@ public class AnalyseFormule {
 		return (Contenu) new Valeur(this.stringToValeur(str), this.getFormule());
 	}
 
-	private Contenu formuleToCellule(String str) throws HorsFeuilleException, FormuleErroneeException {
+	private Contenu formuleToCellule(String str) throws HorsFeuilleException,  CelluleVideException {
 		int x, y;
 		str = str.trim().toLowerCase();
 		String[] coordonnee = str.split("\\.");
 		x = (int) this.stringToValeur(coordonnee[0]);
 		y = (int) this.stringToValeur(coordonnee[1]);
 		if (this.getFeuille().estCelluleVide(x, y))
-			throw new FormuleErroneeException();
+			throw new CelluleVideException();
 		else {
 			Cellule c = this.getFeuille().getCellule(x, y);
 			this.getCellulesLie().add(c);
@@ -203,7 +198,7 @@ public class AnalyseFormule {
 
 	}
 
-	private Contenu formuleToOperation(String str) throws FormuleErroneeException, HorsFeuilleException {
+	private Contenu formuleToOperation(String str) throws FormuleErroneeException, HorsFeuilleException, CelluleVideException {
 		str = str.trim().toLowerCase();
 		Operateur operateur = this.stringToOperateur(str);
 		Contenu operande1, operande2;

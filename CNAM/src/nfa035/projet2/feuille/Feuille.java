@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 import nfa035.projet2.cellule.Contenu;
 import nfa035.projet2.cellule.Erreur;
+import nfa035.projet2.exceptions.CelluleVideException;
 import nfa035.projet2.exceptions.CircuitException;
 import nfa035.projet2.exceptions.ErreurAffichage;
 import nfa035.projet2.exceptions.FormuleErroneeException;
@@ -89,10 +90,10 @@ public class Feuille {
 			c.setFormule(formule);
 			c.setContenu(af.getContenu());
 			c.setCellulesLie(af.getCellulesLie());
-		} catch (HorsFeuilleException | FormuleErroneeException | CircuitException e) {
+		} catch (HorsFeuilleException | FormuleErroneeException | CircuitException | CelluleVideException e) {
 			// TODO Auto-generated catch block
-			c.setFormule("Err");
-			c.setContenu((Contenu) new Erreur());
+			c.setFormule(formule);
+			c.setContenu((Contenu) new Erreur(e.getMessage()));
 			c.clearCellulesLie();
 		}
 	}
@@ -133,15 +134,19 @@ public class Feuille {
 
 		for (Cellule c : listCellule) {
 			float resultat = 0;
+			String str = c.getX() + " " + c.getY() + " -> Formule : " + c.getFormule() + " Resultat : ";
+			if (c.estVide()) {
+				str += "";
+			} else {
 				try {
 					resultat = c.getResultat();
-					System.out.println(
-							c.getX() + " " + c.getY() + " -> Formule : " + c.getFormule() + " Resultat : " + resultat);
+					str += resultat;
 				} catch (ErreurAffichage e) {
 					// TODO Auto-generated catch block
-					System.out.println(c.getX() + " " + c.getY() + " -> Formule : " + c.getFormule() + " Resultat : ");
+					str += e.getMessage() ;
 				}
-
+			}
+			System.out.println(str);
 		}
 	}
 }
