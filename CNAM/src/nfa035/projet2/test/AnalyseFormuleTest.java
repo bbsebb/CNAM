@@ -1,4 +1,4 @@
-package projetNFA035;
+package nfa035.projet2.test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -58,7 +58,7 @@ class AnalyseFormuleTest {
 
 	}
 	@ParameterizedTest
-	@ValueSource(strings = { "1,,5", "15++6", "--5","1.1","12345 6789", "12,345,6789", "12,6a789",
+	@ValueSource(strings = { "1,,5", "15++6", "--5","12345 6789", "12,345,6789", "12,6a789",
 			"Soeme(0.0;0.1)", "Somme(1.1;22.)","Somme(0.0;0.1","Soeme(0.0;0.1)", "Moyenne(0.0;01.)","Moyenne(0.0;0.1","Moyenne0.0;0.1)",
 			"Moyene(0.0;0.1)","1.2 ** 20,5", "20,20+3.4+", " /2136,2 ","1.2 3.4","5,,5*2,3","5,5++2,3","5..5*2,3","5,5+ADD","35,27+-2.3","35,27+2.3+"})
 	void testgetContenuThrowFormuleErronee(String valeur) throws  FormuleErroneeException, HorsFeuilleException {
@@ -73,7 +73,7 @@ class AnalyseFormuleTest {
 	}
 	
 	@ParameterizedTest
-	@ValueSource(strings = { "Somme(0.1;1.1)","Moyenne(0.1;1.1)" })
+	@ValueSource(strings = { "Somme(0.1;1.1)","Moyenne(0.1;1.1)" ,"1.1"})
 	void testgetContenuThrowCelluleVide(String valeur) throws  FormuleErroneeException, HorsFeuilleException {
 		
 		assertThrows(CelluleVideException .class, () ->new AnalyseFormule(f,valeur) );
