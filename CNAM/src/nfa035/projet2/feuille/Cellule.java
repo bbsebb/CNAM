@@ -4,7 +4,6 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 import nfa035.projet2.cellule.Contenu;
-import nfa035.projet2.cellule.Erreur;
 import nfa035.projet2.exceptions.CircuitException;
 import nfa035.projet2.exceptions.ErreurAffichage;
 
@@ -33,7 +32,7 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 	/**
 	 * @return the x
 	 */
-	public int getX() {
+	int getX() {
 		return this.x;
 	}
 
@@ -47,7 +46,7 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 	/**
 	 * @return the y
 	 */
-	public int getY() {
+	int getY() {
 		return this.y;
 	}
 
@@ -93,7 +92,7 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 	/**
 	 * @return the cellulesLie
 	 */
-	public LinkedList<Cellule> getCellulesLie() {
+	LinkedList<Cellule> getCellulesLie() {
 		return cellulesLie;
 	}
 
@@ -101,7 +100,7 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 	 * @param cellulesLie the cellulesLie to set
 	 * @throws CircuitException
 	 */
-	public void setCellulesLie(LinkedList<Cellule> cellulesLie) throws CircuitException {
+	void setCellulesLie(LinkedList<Cellule> cellulesLie) throws CircuitException {
 		if (cellulesLie != null) {
 			this.cellulesLie = cellulesLie;
 			if (!this.parcoursArbre(new LinkedHashSet<Cellule>())) {
@@ -112,7 +111,7 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 		}
 	}
 
-	public void clearCellulesLie() {
+	void clearCellulesLie() {
 		this.cellulesLie.clear();
 	}
 

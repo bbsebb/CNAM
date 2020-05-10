@@ -26,19 +26,7 @@ public class Feuille {
 		this.setyMax(nbrColonne - 1);
 	}
 
-	protected Feuille(int xCellule1, int yCellule1, int xCellule2, int yCellule2) throws HorsFeuilleException {
-		if (xCellule1 > xCellule2 || yCellule1 > yCellule2) {
-			int temp = xCellule1;
-			xCellule1 = xCellule2;
-			xCellule2 = temp;
-			temp = yCellule1;
-			yCellule1 = yCellule2;
-			yCellule2 = temp;
-		}
-		this.setCellules(this.creeBloc(xCellule1, yCellule1, xCellule2, yCellule2));
-		this.setxMax(xCellule2);
-		this.setyMax(yCellule2);
-	}
+
 
 	/**
 	 * @return the cellules
@@ -116,7 +104,7 @@ public class Feuille {
 			return false;
 	}
 
-	protected TreeSet<Cellule> creeBloc(int xCellule1, int yCellule1, int xCellule2, int yCellule2)
+	private TreeSet<Cellule> creeBloc(int xCellule1, int yCellule1, int xCellule2, int yCellule2)
 			throws HorsFeuilleException {
 		if (xCellule1 < 0 || xCellule2 < 0 || yCellule1 < 0 || yCellule2 < 0)
 			throw new HorsFeuilleException();
