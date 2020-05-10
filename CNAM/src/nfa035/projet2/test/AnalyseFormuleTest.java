@@ -1,6 +1,8 @@
 package nfa035.projet2.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -31,13 +33,13 @@ class AnalyseFormuleTest {
 	@ParameterizedTest
 	@CsvSource(value = {
 			"1,0:1.0"," 0325,25 :325.25"," 569,01234 :569.01234","123456:123456","-1:-1","-1,1:-1.1","0,0:0","35,-2,3:32.7",
-			"1,2 * 20,5:24.6", "20,20+3,4:23.6", " 21/36,2:0.58011049723 ","1,2-3,4:-2.2","-1*5,2:-5.2","0*-3,5:0","-0*5:0","-2,2*-2,2:4.84","0.0+0.1:-1.5","0.1*0.0:-4.5",
+			"1,2 * 20,5:24.6", "20,20+3,4:23.6", " 21/36,2:0.58011049723 ","1,2-3,4:-2.2","-1*5,2:-5.2","0*-3,5:-0","-0*5:-0","-2,2*-2,2:4.84","0.0+0.1:-1.5","0.1*0.0:-4.5",
 			"Somme(0.0;0.1):-1.5"," Moyenne(0.0;0.1) :-0.75","somme(0.0;1.0):3.5"
 			}, delimiter = ':')
 	void testgetContenuTrue(String valeur,String valeurAttendu) throws  FormuleErroneeException, HorsFeuilleException,  ErreurAffichage, CelluleVideException{
 		AnalyseFormule af= new AnalyseFormule(f,valeur);
 
-			assertTrue(Float.valueOf(valeurAttendu)==af.getContenu().getResultat());
+			assertEquals(Float.valueOf(valeurAttendu),af.getContenu().getResultat());
 
 	}
 	
@@ -45,7 +47,8 @@ class AnalyseFormuleTest {
 	@Test
 	void testgetContenuNull() throws  FormuleErroneeException, HorsFeuilleException, CelluleVideException {
 		AnalyseFormule af= new AnalyseFormule(f,"");
-		assertTrue(null==af.getContenu());
+		assertEquals(null,af.getContenu());
+	
 	}
 	
 	
@@ -54,7 +57,7 @@ class AnalyseFormuleTest {
 	void testgetContenuFalse(String valeur,String valeurAttendu) throws  FormuleErroneeException, HorsFeuilleException,  ErreurAffichage, CelluleVideException {
 		AnalyseFormule af= new AnalyseFormule(f,valeur);
 
-			assertFalse(Float.valueOf(valeurAttendu)==af.getContenu().getResultat());
+			assertNotEquals(Float.valueOf(valeurAttendu),af.getContenu().getResultat());
 
 	}
 	@ParameterizedTest
