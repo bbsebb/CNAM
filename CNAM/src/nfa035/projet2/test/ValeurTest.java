@@ -3,12 +3,14 @@
  */
 package nfa035.projet2.test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import nfa035.projet2.cellule.Valeur;
 
@@ -17,7 +19,7 @@ import nfa035.projet2.cellule.Valeur;
  *
  */
 class ValeurTest {
-	Valeur v1 ;
+	static Valeur v1 ;
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -34,23 +36,27 @@ class ValeurTest {
 	void testValeur(String str,float value) {
 		Valeur v = new Valeur(value,str);
 		assertEquals(v.getFormule(),str);
-		assertEquals(v.getResultat(),value);
+		assertEquals(v.getResultat(),Float.valueOf(value));
 	}
 
 	/**
 	 * Test method for {@link nfa035.projet2.cellule.Valeur#getResultat()}.
 	 */
-	@Test
-	void testGetResultat() {
-		fail("Not yet implemented");
+	@ParameterizedTest
+	@ValueSource(floats = {1.1f,1f,-1,-1.1475f})
+	void testGetResultat(float value) {
+		Valeur v = new Valeur(value,"test");
+		assertEquals(v.getResultat(),value);
 	}
 
 	/**
 	 * Test method for {@link nfa035.projet2.cellule.Valeur#getFormule()}.
 	 */
-	@Test
-	void testGetFormule() {
-		fail("Not yet implemented");
+	@ParameterizedTest
+	@ValueSource(strings = {"1,5","-1,5","1","1,8577"})
+	void testGetFormule(String str) {
+		Valeur v = new Valeur(1.5f,str);
+		assertEquals(v.getFormule(),str);
 	}
 
 }

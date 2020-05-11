@@ -95,6 +95,8 @@ public class Operation implements Contenu{
 				resultat = this.getOperande1().getResultat() - this.getOperande2().getResultat();
 				break;
 			case '/':
+				if(this.getOperande2().getResultat() == 0) 
+					throw new ErreurAffichage("DIV/0");
 				resultat = this.getOperande1().getResultat() / this.getOperande2().getResultat();
 				break;
 			case '*': 

@@ -45,13 +45,13 @@ public class AnalyseFormule {
 		String f = this.getFormule();
 		if (this.getFormule() == null || this.getFormule().isEmpty())
 			return (Contenu) null;
-		else if (this.estValeur(f))
+		else if (estValeur(f))
 			return this.formuleToValeur(f);
-		else if (this.estCellule(f))
+		else if (estCellule(f))
 			return this.formuleToCellule(f);
-		else if (this.estOperation(f))
+		else if (estOperation(f))
 			return this.formuleToOperation(f);
-		else if (this.estFonction(f))
+		else if (estFonction(f))
 				return this.formuleToFonction(f);
 		else
 			throw new FormuleErroneeException();
@@ -73,7 +73,7 @@ public class AnalyseFormule {
 		this.feuille = feuille;
 	}
 
-	private boolean estValeur(String str) {
+	public static boolean estValeur(String str) {
 		str = str.trim().toLowerCase();
 		if (str.isEmpty())
 			return false;
@@ -97,29 +97,30 @@ public class AnalyseFormule {
 		return true;
 	}
 
-	private boolean estCellule(String str) {
+	public static boolean estCellule(String str) {
 		str = str.trim().toLowerCase();
+		boolean rtr = true;
 		String[] coordonnee = str.split("\\.");
-		if (coordonnee.length != 2)
-			return false;
+		if (coordonnee.length != 2 || coordonnee[0].length() == 0 || coordonnee[1].length() == 0)
+			rtr = false;
 		for (String c : coordonnee) {
 			char[] chaine = c.toCharArray();
 			for (char car : chaine) {
 				if (car < 48 || car > 57)
-					return false;
+					rtr = false;
 			}
 		}
-		return true;
+		return rtr;
 
 	}
 
-	private boolean estOperation(String str) {
+	public static boolean estOperation(String str) {
 
 		str = str.trim().toLowerCase();
 		String[] operandes = new String[0];
 		Operateur operateur;
 		try {
-			operateur = this.stringToOperateur(str);
+			operateur = stringToOperateur(str);
 		} catch (FormuleErroneeException e) {
 			// TODO Auto-generated catch block
 			return false;
@@ -139,14 +140,14 @@ public class AnalyseFormule {
 
 	}
 
-	private boolean estFonction(String str) {
-		if (this.estSomme(str) || this.estMoyenne(str))
+	public static boolean estFonction(String str) {
+		if (estSomme(str) || estMoyenne(str))
 			return true;
 		else
 			return false;
 	}
 
-	private boolean estSomme(String str) {
+	private static boolean estSomme(String str) {
 		str = str.trim().toLowerCase();
 		char[] cible = "somme(".toCharArray();
 		char[] chaine = str.toCharArray();
@@ -162,7 +163,7 @@ public class AnalyseFormule {
 
 	}
 
-	private boolean estMoyenne(String str) {
+	private static boolean estMoyenne(String str) {
 		str = str.trim().toLowerCase();
 		char[] cible = "moyenne(".toCharArray();
 		char[] chaine = str.toCharArray();
@@ -200,7 +201,7 @@ public class AnalyseFormule {
 
 	private Contenu formuleToOperation(String str) throws FormuleErroneeException, HorsFeuilleException, CelluleVideException {
 		str = str.trim().toLowerCase();
-		Operateur operateur = this.stringToOperateur(str);
+		Operateur operateur = stringToOperateur(str);
 		Contenu operande1, operande2;
 		String[] operandes;
 		if (str.charAt(0) == '-') {
@@ -208,15 +209,15 @@ public class AnalyseFormule {
 			operandes[0] = str.charAt(0) + operandes[0];
 		} else
 			operandes = str.split(operateur.toRegex(), 2);
-		if (this.estCellule(operandes[0]))
+		if (estCellule(operandes[0]))
 			operande1 = (Contenu) this.formuleToCellule(operandes[0]);
-		else if (this.estValeur(operandes[0]))
+		else if (estValeur(operandes[0]))
 			operande1 = this.formuleToValeur(operandes[0]);
 		else
 			throw new FormuleErroneeException();
-		if (this.estCellule(operandes[1]))
+		if (estCellule(operandes[1]))
 			operande2 = (Contenu) this.formuleToCellule(operandes[1]);
-		else if (this.estValeur(operandes[1]))
+		else if (estValeur(operandes[1]))
 			operande2 = this.formuleToValeur(operandes[1]);
 		else
 			throw new FormuleErroneeException();
@@ -226,16 +227,17 @@ public class AnalyseFormule {
 	private Contenu formuleToFonction(String str) throws HorsFeuilleException, CelluleVideException {
 		str = str.trim().toLowerCase();
 		int pointeur;
-		if (this.estMoyenne(str))
+		if (estMoyenne(str))
 			pointeur = 8;
 		else
 			pointeur = 6;
+		str.substring(pointeur).split(";");
 		char[] chaine = this.formule.toCharArray();
 		Bloc b = new Bloc(chaine[pointeur] - 48, chaine[pointeur + 2] - 48, chaine[pointeur + 4] - 48,
 				chaine[pointeur + 6] - 48, this.getFeuille());
 		if (b.estSansCelluleVide()) {
 			this.setCellulesLie(new LinkedList<Cellule>(b.getCellules()));
-			if (this.estMoyenne(str))
+			if (estMoyenne(str))
 				return (Contenu) new Moyenne(b, this.getFormule());
 			else
 				return (Contenu) new Somme(b, this.getFormule());
@@ -270,7 +272,7 @@ public class AnalyseFormule {
 
 	}
 
-	private Operateur stringToOperateur(String str) throws FormuleErroneeException {
+	private static Operateur stringToOperateur(String str) throws FormuleErroneeException {
 		char[] chaine = str.toCharArray();
 		for (int i = (str.charAt(0) == '-') ? 1 : 0; i < chaine.length; i++) {
 			for (Operateur op : Operateur.values()) {
