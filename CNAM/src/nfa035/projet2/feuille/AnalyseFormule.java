@@ -231,10 +231,8 @@ public class AnalyseFormule {
 			pointeur = 8;
 		else
 			pointeur = 6;
-		str.substring(pointeur).split(";");
-		char[] chaine = this.formule.toCharArray();
-		Bloc b = new Bloc(chaine[pointeur] - 48, chaine[pointeur + 2] - 48, chaine[pointeur + 4] - 48,
-				chaine[pointeur + 6] - 48, this.getFeuille());
+		String[] limiteCellule = str.substring(pointeur).split(";");
+		Bloc b =  this.getFeuille().creeBloc((Cellule)this.formuleToCellule(limiteCellule[0]),(Cellule)this.formuleToCellule(limiteCellule[1]));
 		if (b.estSansCelluleVide()) {
 			this.setCellulesLie(new LinkedList<Cellule>(b.getCellules()));
 			if (estMoyenne(str))

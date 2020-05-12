@@ -21,7 +21,7 @@ public class Feuille {
 	}
 
 	public Feuille(int nbrLigne, int nbrColonne) throws HorsFeuilleException {
-		this.setCellules(this.creeBloc(0, 0, nbrLigne - 1, nbrColonne - 1));
+		this.setCellules(this.creeFeuille(0, 0, nbrLigne - 1, nbrColonne - 1));
 		this.setxMax(nbrLigne - 1);
 		this.setyMax(nbrColonne - 1);
 	}
@@ -104,7 +104,7 @@ public class Feuille {
 			return false;
 	}
 
-	private TreeSet<Cellule> creeBloc(int xCellule1, int yCellule1, int xCellule2, int yCellule2)
+	private TreeSet<Cellule> creeFeuille(int xCellule1, int yCellule1, int xCellule2, int yCellule2)
 			throws HorsFeuilleException {
 		if (xCellule1 < 0 || xCellule2 < 0 || yCellule1 < 0 || yCellule2 < 0)
 			throw new HorsFeuilleException();
@@ -115,6 +115,23 @@ public class Feuille {
 			}
 		}
 		return cellules;
+	}
+	
+	public Bloc creeBloc(Cellule c1, Cellule c2) throws HorsFeuilleException {
+		if(this.getCellules().contains(c1) && this.getCellules().contains(c2))
+			return creeBloc(c1.getX(),c1.getY(),c2.getX(),c2.getY());
+		else
+			throw new HorsFeuilleException();
+	}
+	
+	public Bloc creeBloc(int xCellule1, int yCellule1, int xCellule2, int yCellule2) throws HorsFeuilleException {
+		TreeSet<Cellule> cellules = new TreeSet<Cellule>();
+		for (int i = xCellule1; i <= xCellule2; i++) {
+			for (int j = yCellule1; j <= yCellule2; j++) {
+				cellules.add(this.getCellule(i, j));
+			}
+		}
+		return new Bloc(cellules);
 	}
 
 	public void affichageCellule() {
