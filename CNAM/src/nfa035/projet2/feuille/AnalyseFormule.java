@@ -3,6 +3,7 @@ package nfa035.projet2.feuille;
 import java.util.LinkedList;
 
 import nfa035.projet2.cellule.Contenu;
+import nfa035.projet2.cellule.Fonction;
 import nfa035.projet2.cellule.Moyenne;
 import nfa035.projet2.cellule.Operateur;
 import nfa035.projet2.cellule.Operation;
@@ -148,34 +149,40 @@ public class AnalyseFormule {
 	}
 
 	private static boolean estSomme(String str) {
+		boolean rtr = true ;
 		str = str.trim().toLowerCase();
-		char[] cible = "somme(".toCharArray();
-		char[] chaine = str.toCharArray();
-		if (chaine.length == 14 && chaine[9] == ';' && chaine[13] == ')') {
-			for (int i = 0; i < cible.length; i++) {
-				if (cible[i] != chaine[i])
-					return false;
-			}
-			if (estCellule(str.substring(6, 9)) && estCellule(str.substring(10, 13)))
-				return true;
+		if(str.startsWith("somme(") && str.endsWith(")")) {
+			str = str.substring(6, str.length()-1);
+		} else
+			rtr = false;
+		
+		String operandes[] = str.split(";");
+		if(operandes.length != 2) {
+			if (!estCellule(operandes[0]) || !estCellule(operandes[1]))
+				rtr = false;
 		}
-		return false;
+		
+		return rtr;
+		
+		
 
 	}
 
 	private static boolean estMoyenne(String str) {
+		boolean rtr = true ;
 		str = str.trim().toLowerCase();
-		char[] cible = "moyenne(".toCharArray();
-		char[] chaine = str.toCharArray();
-		if (chaine.length == 16 && chaine[11] == ';' && chaine[15] == ')') {
-			for (int i = 0; i < cible.length; i++) {
-				if (cible[i] != chaine[i])
-					return false;
-			}
-			if (estCellule(str.substring(8, 11)) && estCellule(str.substring(12, 15)))
-				return true;
+		if(str.startsWith("moyenne(") && str.endsWith(")")) {
+			str = str.substring(8, str.length()-1);
+		} else
+			rtr = false;
+		
+		String operandes[] = str.split(";");
+		if(operandes.length != 2) {
+			if (!estCellule(operandes[0]) || !estCellule(operandes[1]))
+				rtr = false;
 		}
-		return false;
+		
+		return rtr;
 
 	}
 
@@ -224,25 +231,37 @@ public class AnalyseFormule {
 		return (Contenu) new Operation(operande1, operande2, operateur, this.getFormule());
 	}
 
-	private Contenu formuleToFonction(String str) throws HorsFeuilleException, CelluleVideException {
+	private Contenu formuleToFonction(String str) throws HorsFeuilleException, CelluleVideException, FormuleErroneeException {
+		Bloc b;
+		Fonction f;
 		str = str.trim().toLowerCase();
-		int pointeur;
-		if (estMoyenne(str))
-			pointeur = 8;
-		else
-			pointeur = 6;
-		String[] limiteCellule = str.substring(pointeur).split(";");
-		Bloc b =  this.getFeuille().creeBloc((Cellule)this.formuleToCellule(limiteCellule[0]),(Cellule)this.formuleToCellule(limiteCellule[1]));
+		if(estMoyenne(str)) {
+			str = str.substring(8, str.length()-1);
+		} else if (estSomme(str)) {
+			str = str.substring(6, str.length()-1);
+		} else
+			throw new FormuleErroneeException();
+			
+		String operandes[] = str.split(";");
+		b = this.getFeuille().creeBloc((Cellule) this.formuleToCellule(operandes[0]),(Cellule) this.formuleToCellule(operandes[1]));
 		if (b.estSansCelluleVide()) {
 			this.setCellulesLie(new LinkedList<Cellule>(b.getCellules()));
 			if (estMoyenne(str))
-				return (Contenu) new Moyenne(b, this.getFormule());
+				f=  new Moyenne(b, this.getFormule());
 			else
-				return (Contenu) new Somme(b, this.getFormule());
+				f=  new Somme(b, this.getFormule());
 		} else
 			throw new CelluleVideException();
+		
+		return (Contenu) f;
+		
+		
+		
+		
 
 	}
+	
+
 
 	private float stringToValeur(String str) {
 		str = str.trim().toLowerCase();
