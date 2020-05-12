@@ -142,10 +142,12 @@ public class AnalyseFormule {
 	}
 
 	public static boolean estFonction(String str) {
+		boolean rtr;
 		if (estSomme(str) || estMoyenne(str))
-			return true;
+			rtr= true;
 		else
-			return false;
+			rtr= false;
+		return rtr;
 	}
 
 	private static boolean estSomme(String str) {
@@ -190,7 +192,9 @@ public class AnalyseFormule {
 		return (Contenu) new Valeur(this.stringToValeur(str), this.getFormule());
 	}
 
-	private Contenu formuleToCellule(String str) throws HorsFeuilleException,  CelluleVideException {
+	private Contenu formuleToCellule(String str) throws HorsFeuilleException,  CelluleVideException, FormuleErroneeException {
+		if(!estCellule(str))
+			throw new FormuleErroneeException();
 		int x, y;
 		str = str.trim().toLowerCase();
 		String[] coordonnee = str.split("\\.");
@@ -233,8 +237,10 @@ public class AnalyseFormule {
 
 	private Contenu formuleToFonction(String str) throws HorsFeuilleException, CelluleVideException, FormuleErroneeException {
 		Bloc b;
-		Fonction f;
+		Contenu f;
+		
 		str = str.trim().toLowerCase();
+		String strInit = str;
 		if(estMoyenne(str)) {
 			str = str.substring(8, str.length()-1);
 		} else if (estSomme(str)) {
@@ -243,17 +249,18 @@ public class AnalyseFormule {
 			throw new FormuleErroneeException();
 			
 		String operandes[] = str.split(";");
+		
 		b = this.getFeuille().creeBloc((Cellule) this.formuleToCellule(operandes[0]),(Cellule) this.formuleToCellule(operandes[1]));
 		if (b.estSansCelluleVide()) {
 			this.setCellulesLie(new LinkedList<Cellule>(b.getCellules()));
-			if (estMoyenne(str))
+			if (estMoyenne(strInit))
 				f=  new Moyenne(b, this.getFormule());
 			else
 				f=  new Somme(b, this.getFormule());
 		} else
 			throw new CelluleVideException();
 		
-		return (Contenu) f;
+		return f;
 		
 		
 		

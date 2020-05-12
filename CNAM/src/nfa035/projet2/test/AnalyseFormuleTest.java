@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -29,6 +30,8 @@ class AnalyseFormuleTest {
 		f.setCellule(0, 1, "-3");
 		f.setCellule(1, 0, "2");
 	}
+	
+	
 
 	@ParameterizedTest
 	@CsvSource(value = {"0.0:1.5", "1,0:1.0","1,:1.0", " 0325,25 :325.25", " 569,01234 :569.01234", "123456:123456", "-1:-1", "-1,1:-1.1",
@@ -62,7 +65,7 @@ class AnalyseFormuleTest {
 
 	@ParameterizedTest
 	@ValueSource(strings = {".0:1.5", "1,,5", "15++6", "--5", "12345 6789", "12,345,6789", "12,6a789", "Soeme(0.0;0.1)",
-			"Somme(1.1;22.)", "Somme(0.0;0.1", "Soeme(0.0;0.1)", "Moyenne(0.0;01.)", "Moyenne(0.0;0.1",
+			"Somme(0.0;22.)", "Somme(0.0;0.1", "Soeme(0.0;0.1)", "Moyenne(0.0;01.)", "Moyenne(0.0;0.1",
 			"Moyenne0.0;0.1)", "Moyene(0.0;0.1)", "1.2 ** 20,5", "20,20+3.4+", " /2136,2 ", "1.2 3.4", "5,,5*2,3",
 			"5,5++2,3", "5..5*2,3", "5,5+ADD", "35,27+-2.3", "35,27+2.3+" })
 	void testgetContenuThrowFormuleErronee(String valeur) throws FormuleErroneeException, HorsFeuilleException {
