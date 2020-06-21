@@ -1,6 +1,7 @@
 package nfa035.projet2.feuille;
 
 import java.util.Iterator;
+import java.util.Observable;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -15,7 +16,7 @@ import nfa035.projet2.exceptions.HorsFeuilleException;
 public class Feuille {
 	protected TreeSet<Cellule> cellules;
 	protected int xMax, yMax;
-
+	
 	protected Feuille() {
 
 	}

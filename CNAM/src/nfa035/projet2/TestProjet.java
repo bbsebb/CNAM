@@ -1,33 +1,24 @@
 package nfa035.projet2;
 
-import nfa035.projet2.exceptions.HorsFeuilleException;
-import nfa035.projet2.feuille.Feuille;
+import javax.swing.SwingUtilities;
+
+import nfa035.projet2.vue.Tableur;
 
 public class TestProjet {
 
 	public static void main(String[] args) {
+		System.out.println("test");
 		// TODO Auto-generated method stub
+		SwingUtilities.invokeLater(new Runnable() {
 
-		Feuille f = null;
-		try {
-			f = new Feuille(2, 2);
-	
-		f.setCellule(0, 0, "5/2");
-		f.setCellule(0, 1, "6,3");
-		f.setCellule(1, 0, "0.0+0.1");
-		
-		f.affichageCellule();
-		System.out.println("------------------");
-		f.setCellule(0, 1, "1.0+1.1");
-		f.affichageCellule();
-		f.setCellule(0, 1, "3");
-		f.setCellule(1,1, "Somme(0.0;22.)");
-		System.out.println("------------------");
-		f.affichageCellule();
-		} catch (HorsFeuilleException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			@Override
+			public void run() {
+				new Tableur();
+				
+			}
+			
 		}
+		);
 	}
 
 }
