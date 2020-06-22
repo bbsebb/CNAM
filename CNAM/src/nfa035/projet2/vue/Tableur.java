@@ -89,6 +89,8 @@ public class Tableur extends JFrame{
 	
 	private void majToutesFieldText() {
 		
+		
+		
 	}
 	
 	private void majFieldText(int x, int y) {
