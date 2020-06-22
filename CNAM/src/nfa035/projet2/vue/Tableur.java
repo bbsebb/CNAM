@@ -2,6 +2,8 @@ package nfa035.projet2.vue;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -16,7 +18,7 @@ import nfa035.projet2.exceptions.ErreurAffichage;
 import nfa035.projet2.exceptions.HorsFeuilleException;
 import nfa035.projet2.feuille.Feuille;
 
-public class Tableur extends JFrame{
+public class Tableur extends JFrame implements FocusListener{
 
 	/**
 	 * 
@@ -41,6 +43,9 @@ public class Tableur extends JFrame{
 		try {
 			f = new Feuille(10,6);
 			f.setCellule(0, 0, "5,5");
+			f.setCellule(0, 1, "3+2,2");
+			f.setCellule(0, 2, "0.0+1");
+			f.setCellule(0, 3, "somme(0.0;0.2)");
 		} catch (HorsFeuilleException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,6 +81,7 @@ public class Tableur extends JFrame{
 					cases[i][j].setText(e.getMessage());
 				}
 				cases[i][j].setName(i+""+j);
+				cases[i][j].addFocusListener(this);
 	    		pCases.add(cases[i][j]);
 	    	}
 	    }
@@ -87,14 +93,57 @@ public class Tableur extends JFrame{
 	    this.setVisible(true);
 	}
 	
-	private void majToutesFieldText() {
+	
+	private void majFieldText() {
+		
+		 for(int i = 0; i<lignes; i++) {
+		    	for(int j = 0; j < colonnes; j++) {
+					try {
+						cases[i][j].setText(Float.toString( f.getCellule(i, j).getResultat()));
+					} catch (HorsFeuilleException | ErreurAffichage e) {
+						// TODO Auto-generated catch block
+						cases[i][j].setText(e.getMessage());
+					}
+					cases[i][j].setName(i+""+j);
+		    		pCases.add(cases[i][j]);
+		    	}
+		    }
+		
+	}
+	
+	private void setFieldText(int x, int y, String str) {
+		cases[x][y].setText(str);
+	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		JTextField focusFieldText = ((JTextField)(e.getSource()));
+		int x = Character.getNumericValue(focusFieldText.getName().charAt(0));
+		int y = Character.getNumericValue(focusFieldText.getName().charAt(1));
+		try {
+			focusFieldText.setText(f.getCellule(x, y).getFormule());
+		} catch (HorsFeuilleException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		
 		
 	}
-	
-	private void majFieldText(int x, int y) {
-		cases[x][y].setText(str);
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		// TODO Auto-generated method stub
+		JTextField focusFieldText = ((JTextField)(e.getSource()));
+		int x = Character.getNumericValue(focusFieldText.getName().charAt(0));
+		int y = Character.getNumericValue(focusFieldText.getName().charAt(1));
+		try {
+			f.setCellule(x, y, focusFieldText.getText());
+		} catch (HorsFeuilleException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		this.majFieldText();
 	}
 
 }
