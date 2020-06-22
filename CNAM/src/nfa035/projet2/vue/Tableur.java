@@ -22,6 +22,8 @@ public class Tableur extends JFrame{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private int lignes = 10;
+	private int colonnes = 6;
 	private Feuille f ;
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu fichier = new JMenu("Fichier");
@@ -31,7 +33,8 @@ public class Tableur extends JFrame{
 	private JMenuItem quitter = new JMenuItem("Quitter");
 	private JRadioButtonMenuItem viewFormule = new JRadioButtonMenuItem("Formule");
 	private JRadioButtonMenuItem viewResultat = new JRadioButtonMenuItem("Resultat");
-	private JPanel cases = new JPanel();
+	private JPanel pCases = new JPanel();
+	private JTextField[][] cases = new JTextField[lignes][colonnes] ;
 	
 
 	public Tableur() {
@@ -61,27 +64,35 @@ public class Tableur extends JFrame{
 	    menuBar.add(fichier);
 	    menuBar.add(affichage);
 	    
-	    cases.setLayout(new GridLayout(10,6));
+	    pCases.setLayout(new GridLayout(10,6));
 	    
-	    for(int i = 0; i<10; i++) {
-	    	for(int j = 0; j < 6; j++) {
-	    		JTextField tf = new JTextField();
+	    for(int i = 0; i<lignes; i++) {
+	    	for(int j = 0; j < colonnes; j++) {
+	    		cases[i][j] = new JTextField();
 				try {
-					tf.setText(Float.toString( f.getCellule(i, j).getResultat()));
+					cases[i][j].setText(Float.toString( f.getCellule(i, j).getResultat()));
 				} catch (HorsFeuilleException | ErreurAffichage e) {
 					// TODO Auto-generated catch block
-					tf.setText(e.getMessage());
+					cases[i][j].setText(e.getMessage());
 				}
-	    		tf.setName(i+""+j);
-	    		cases.add(tf);
+				cases[i][j].setName(i+""+j);
+	    		pCases.add(cases[i][j]);
 	    	}
 	    }
 	    
-	    this.setContentPane(cases);
+	    this.setContentPane(pCases);
 	    this.setJMenuBar(menuBar);
 	    
 	    
 	    this.setVisible(true);
+	}
+	
+	private void majToutesFieldText() {
+		
+	}
+	
+	private void majFieldText(int x, int y) {
+		cases[x][y].setText(str);
 	}
 
 }
