@@ -86,15 +86,16 @@ public class AnalyseFormule {
 				return false;
 			if (c == 44) {
 				compteurVirgule++;
-				if (compteurVirgule > 1)
+				if (compteurVirgule > 1 )
 					return false;
 			}
 			if (c == 45) {
 				compteurNegatif++;
-				if (compteurNegatif > 1)
+				if (compteurNegatif > 1 || (compteurNegatif == 1 && chaine[0] != 44))
 					return false;
 			}
 		}
+		
 		return true;
 	}
 

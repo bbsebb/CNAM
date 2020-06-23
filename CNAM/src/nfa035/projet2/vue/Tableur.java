@@ -2,6 +2,8 @@ package nfa035.projet2.vue;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -18,7 +20,7 @@ import nfa035.projet2.exceptions.ErreurAffichage;
 import nfa035.projet2.exceptions.HorsFeuilleException;
 import nfa035.projet2.feuille.Feuille;
 
-public class Tableur extends JFrame implements FocusListener{
+public class Tableur extends JFrame implements FocusListener,ActionListener{
 
 	/**
 	 * 
@@ -47,7 +49,6 @@ public class Tableur extends JFrame implements FocusListener{
 			f.setCellule(0, 2, "0.0+1");
 			f.setCellule(0, 3, "somme(0.0;0.2)");
 		} catch (HorsFeuilleException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		this.setTitle("Tableur");
@@ -55,9 +56,11 @@ public class Tableur extends JFrame implements FocusListener{
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    this.setLocationRelativeTo(null);
 	    ButtonGroup bg = new ButtonGroup();
+	    viewFormule.addActionListener(this);
+	    viewResultat.addActionListener(this);
 	    bg.add(viewFormule);
 	    bg.add(viewResultat);
-	    viewFormule.setSelected(true);
+	    viewResultat.setSelected(true);
 	    
 	    fichier.add(ouvrir);
 	    fichier.add(enregistrer);
@@ -69,7 +72,7 @@ public class Tableur extends JFrame implements FocusListener{
 	    menuBar.add(fichier);
 	    menuBar.add(affichage);
 	    
-	    pCases.setLayout(new GridLayout(10,6));
+	    pCases.setLayout(new GridLayout(11,7));
 	    
 	    for(int i = 0; i<lignes; i++) {
 	    	for(int j = 0; j < colonnes; j++) {
@@ -95,13 +98,13 @@ public class Tableur extends JFrame implements FocusListener{
 	
 	
 	private void majFieldText() {
-		
+		String str;
 		 for(int i = 0; i<lignes; i++) {
 		    	for(int j = 0; j < colonnes; j++) {
 					try {
-						cases[i][j].setText(Float.toString( f.getCellule(i, j).getResultat()));
+						str = (viewResultat.isSelected())? Float.toString( f.getCellule(i, j).getResultat()) :  f.getCellule(i, j).getFormule();
+						cases[i][j].setText(str);
 					} catch (HorsFeuilleException | ErreurAffichage e) {
-						// TODO Auto-generated catch block
 						cases[i][j].setText(e.getMessage());
 					}
 					cases[i][j].setName(i+""+j);
@@ -123,7 +126,6 @@ public class Tableur extends JFrame implements FocusListener{
 		try {
 			focusFieldText.setText(f.getCellule(x, y).getFormule());
 		} catch (HorsFeuilleException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -140,10 +142,20 @@ public class Tableur extends JFrame implements FocusListener{
 		try {
 			f.setCellule(x, y, focusFieldText.getText());
 		} catch (HorsFeuilleException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		this.majFieldText();
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JRadioButtonMenuItem src = (JRadioButtonMenuItem) e.getSource();
+		if(src == viewFormule)
+			System.out.println("Formule");
+		else 
+			System.out.println("Resultat");
+		majFieldText();
 	}
 
 }

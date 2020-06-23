@@ -103,7 +103,7 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 	void setCellulesLie(LinkedList<Cellule> cellulesLie) throws CircuitException {
 		if (cellulesLie != null) {
 			this.cellulesLie = cellulesLie;
-			if (!this.parcoursArbre(new LinkedHashSet<Cellule>())) {
+			if (!this.parcoursArbre()) {
 				throw new CircuitException();
 			}
 		} else {
@@ -124,31 +124,29 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 
 	@Override
 	public float getResultat() throws ErreurAffichage {
-		// TODO Auto-generated method stub
 		if (this.getContenu() == null)
 			throw new ErreurAffichage();
 		else
 			return this.getContenu().getResultat();
 	}
 
-	private boolean parcoursArbre(LinkedHashSet<Cellule> marquage) {
+	private boolean parcoursArbre() {
 
 		LinkedList<Cellule> listCellule = this.getCellulesLie();
-		boolean rtr = true;
+		boolean rtr;
 		if (listCellule.isEmpty()) {
-			marquage.add(this);
 			rtr = true;
-		} else if (marquage.contains(this))
+		} else if (listCellule.contains(this)) {
 			rtr = false;
-		else {
-			marquage.add(this);
+		} else {
 			rtr = true;
 			for (Cellule c : listCellule) {
-				rtr = rtr && c.parcoursArbre(marquage);
+				rtr = rtr && c.parcoursArbre();
 			}
 		}
 		return rtr;
 	}
+
 
 	@Override
 	public int hashCode() {
