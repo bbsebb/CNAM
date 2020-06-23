@@ -158,13 +158,15 @@ public class Tableur extends JFrame implements FocusListener, ActionListener {
 			JFileChooser fileChooser = new JFileChooser();
 			int reponse = fileChooser.showOpenDialog(this);
 			if (reponse == JFileChooser.APPROVE_OPTION) {
-				System.out.println(fileChooser.getSelectedFile());
+				f.ouvrir(fileChooser.getSelectedFile());
 			}
 		} else if (src == enregistrer) {
 			JFileChooser fileChooser = new JFileChooser();
 			int reponse = fileChooser.showSaveDialog(this);
 			if (reponse == JFileChooser.APPROVE_OPTION) {
-				System.out.println(fileChooser.getSelectedFile());
+				f.enregistrer(fileChooser.getSelectedFile());
+			
+				
 			}
 		}
 

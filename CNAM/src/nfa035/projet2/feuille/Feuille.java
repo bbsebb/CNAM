@@ -1,5 +1,13 @@
 package nfa035.projet2.feuille;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.Observable;
 import java.util.Set;
@@ -16,7 +24,7 @@ import nfa035.projet2.exceptions.HorsFeuilleException;
 public class Feuille {
 	protected TreeSet<Cellule> cellules;
 	protected int xMax, yMax;
-	
+
 	protected Feuille() {
 
 	}
@@ -26,8 +34,6 @@ public class Feuille {
 		this.setxMax(nbrLigne - 1);
 		this.setyMax(nbrColonne - 1);
 	}
-
-
 
 	/**
 	 * @return the cellules
@@ -80,7 +86,6 @@ public class Feuille {
 			c.setContenu(af.getContenu());
 			c.setCellulesLie(af.getCellulesLie());
 		} catch (HorsFeuilleException | FormuleErroneeException | CircuitException | CelluleVideException e) {
-			// TODO Auto-generated catch block
 			c.setFormule(formule);
 			c.setContenu((Contenu) new Erreur(e.getMessage()));
 			c.clearCellulesLie();
@@ -117,14 +122,14 @@ public class Feuille {
 		}
 		return cellules;
 	}
-	
+
 	public Bloc creeBloc(Cellule c1, Cellule c2) throws HorsFeuilleException {
-		if(this.getCellules().contains(c1) && this.getCellules().contains(c2))
-			return creeBloc(c1.getX(),c1.getY(),c2.getX(),c2.getY());
+		if (this.getCellules().contains(c1) && this.getCellules().contains(c2))
+			return creeBloc(c1.getX(), c1.getY(), c2.getX(), c2.getY());
 		else
 			throw new HorsFeuilleException();
 	}
-	
+
 	public Bloc creeBloc(int xCellule1, int yCellule1, int xCellule2, int yCellule2) throws HorsFeuilleException {
 		TreeSet<Cellule> cellules = new TreeSet<Cellule>();
 		for (int i = xCellule1; i <= xCellule2; i++) {
@@ -133,6 +138,52 @@ public class Feuille {
 			}
 		}
 		return new Bloc(cellules);
+	}
+
+	public boolean enregistrer(File file) {
+
+		Path path = Paths.get(file.getPath());
+
+		try {
+			BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
+			writer.write("test \n");
+			for (Cellule c : this.getCellules()) {
+				writer.write(c.getFormule());
+				if (c.getY() == yMax)
+					writer.write("\n");
+				else
+					writer.write(" & ");
+			}
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public boolean ouvrir(File file) throws HorsFeuilleException {
+		Path path = Paths.get(file.getPath());
+		try {
+			BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
+			int x = 0;
+			int y = 0;
+			while (reader.readLine() != null) {
+				String str = reader.readLine();
+				String[] formules = str.split("&");
+				for (String formule : formules) {
+					this.setCellule(x, y, formule);
+					y++;
+				}
+				x++;
+			}
+			reader.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
 	}
 
 	public void affichageCellule() {
@@ -149,7 +200,7 @@ public class Feuille {
 					str += resultat;
 				} catch (ErreurAffichage e) {
 					// TODO Auto-generated catch block
-					str += e.getMessage() ;
+					str += e.getMessage();
 				}
 			}
 			System.out.println(str);
