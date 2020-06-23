@@ -8,6 +8,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -20,7 +21,7 @@ import nfa035.projet2.exceptions.ErreurAffichage;
 import nfa035.projet2.exceptions.HorsFeuilleException;
 import nfa035.projet2.feuille.Feuille;
 
-public class Tableur extends JFrame implements FocusListener,ActionListener{
+public class Tableur extends JFrame implements FocusListener, ActionListener {
 
 	/**
 	 * 
@@ -28,7 +29,7 @@ public class Tableur extends JFrame implements FocusListener,ActionListener{
 	private static final long serialVersionUID = 1L;
 	private int lignes = 10;
 	private int colonnes = 6;
-	private Feuille f ;
+	private Feuille f;
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu fichier = new JMenu("Fichier");
 	private JMenu affichage = new JMenu("Affichage");
@@ -38,12 +39,11 @@ public class Tableur extends JFrame implements FocusListener,ActionListener{
 	private JRadioButtonMenuItem viewFormule = new JRadioButtonMenuItem("Formule");
 	private JRadioButtonMenuItem viewResultat = new JRadioButtonMenuItem("Resultat");
 	private JPanel pCases = new JPanel();
-	private JTextField[][] cases = new JTextField[lignes][colonnes] ;
-	
+	private JTextField[][] cases = new JTextField[lignes][colonnes];
 
 	public Tableur() {
 		try {
-			f = new Feuille(10,6);
+			f = new Feuille(10, 6);
 			f.setCellule(0, 0, "5,5");
 			f.setCellule(0, 1, "3+2,2");
 			f.setCellule(0, 2, "0.0+1");
@@ -52,75 +52,78 @@ public class Tableur extends JFrame implements FocusListener,ActionListener{
 			e.printStackTrace();
 		}
 		this.setTitle("Tableur");
-	    this.setSize(600, 300);
-	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    this.setLocationRelativeTo(null);
-	    ButtonGroup bg = new ButtonGroup();
-	    viewFormule.addActionListener(this);
-	    viewResultat.addActionListener(this);
-	    bg.add(viewFormule);
-	    bg.add(viewResultat);
-	    viewResultat.setSelected(true);
-	    
-	    fichier.add(ouvrir);
-	    fichier.add(enregistrer);
-	    fichier.add(quitter);
-	    
-	    affichage.add(viewFormule);
-	    affichage.add(viewResultat);
-	    
-	    menuBar.add(fichier);
-	    menuBar.add(affichage);
-	    
-	    pCases.setLayout(new GridLayout(11,7));
-	    
-	    for(int i = 0; i<lignes; i++) {
-	    	for(int j = 0; j < colonnes; j++) {
-	    		cases[i][j] = new JTextField();
+		this.setSize(600, 300);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+		ButtonGroup bg = new ButtonGroup();
+		viewFormule.addActionListener(this);
+		viewResultat.addActionListener(this);
+		bg.add(viewFormule);
+		bg.add(viewResultat);
+		viewResultat.setSelected(true);
+
+		ouvrir.addActionListener(this);
+		enregistrer.addActionListener(this);
+		quitter.addActionListener(this);
+
+		fichier.add(ouvrir);
+		fichier.add(enregistrer);
+		fichier.add(quitter);
+
+		affichage.add(viewFormule);
+		affichage.add(viewResultat);
+
+		menuBar.add(fichier);
+		menuBar.add(affichage);
+
+		pCases.setLayout(new GridLayout(11, 7));
+
+		for (int i = 0; i < lignes; i++) {
+			for (int j = 0; j < colonnes; j++) {
+				cases[i][j] = new JTextField();
 				try {
-					cases[i][j].setText(Float.toString( f.getCellule(i, j).getResultat()));
+					cases[i][j].setText(Float.toString(f.getCellule(i, j).getResultat()));
 				} catch (HorsFeuilleException | ErreurAffichage e) {
 					// TODO Auto-generated catch block
 					cases[i][j].setText(e.getMessage());
 				}
-				cases[i][j].setName(i+""+j);
+				cases[i][j].setName(i + "" + j);
 				cases[i][j].addFocusListener(this);
-	    		pCases.add(cases[i][j]);
-	    	}
-	    }
-	    
-	    this.setContentPane(pCases);
-	    this.setJMenuBar(menuBar);
-	    
-	    
-	    this.setVisible(true);
+				pCases.add(cases[i][j]);
+			}
+		}
+
+		this.setContentPane(pCases);
+		this.setJMenuBar(menuBar);
+
+		this.setVisible(true);
 	}
-	
-	
+
 	private void majFieldText() {
 		String str;
-		 for(int i = 0; i<lignes; i++) {
-		    	for(int j = 0; j < colonnes; j++) {
-					try {
-						str = (viewResultat.isSelected())? Float.toString( f.getCellule(i, j).getResultat()) :  f.getCellule(i, j).getFormule();
-						cases[i][j].setText(str);
-					} catch (HorsFeuilleException | ErreurAffichage e) {
-						cases[i][j].setText(e.getMessage());
-					}
-					cases[i][j].setName(i+""+j);
-		    		pCases.add(cases[i][j]);
-		    	}
-		    }
-		
+		for (int i = 0; i < lignes; i++) {
+			for (int j = 0; j < colonnes; j++) {
+				try {
+					str = (viewResultat.isSelected()) ? Float.toString(f.getCellule(i, j).getResultat())
+							: f.getCellule(i, j).getFormule();
+					cases[i][j].setText(str);
+				} catch (HorsFeuilleException | ErreurAffichage e) {
+					cases[i][j].setText(e.getMessage());
+				}
+				cases[i][j].setName(i + "" + j);
+				pCases.add(cases[i][j]);
+			}
+		}
+
 	}
-	
+
 	private void setFieldText(int x, int y, String str) {
 		cases[x][y].setText(str);
 	}
 
 	@Override
 	public void focusGained(FocusEvent e) {
-		JTextField focusFieldText = ((JTextField)(e.getSource()));
+		JTextField focusFieldText = ((JTextField) (e.getSource()));
 		int x = Character.getNumericValue(focusFieldText.getName().charAt(0));
 		int y = Character.getNumericValue(focusFieldText.getName().charAt(1));
 		try {
@@ -128,15 +131,12 @@ public class Tableur extends JFrame implements FocusListener,ActionListener{
 		} catch (HorsFeuilleException e1) {
 			e1.printStackTrace();
 		}
-		
-		
-		
+
 	}
 
 	@Override
 	public void focusLost(FocusEvent e) {
-		// TODO Auto-generated method stub
-		JTextField focusFieldText = ((JTextField)(e.getSource()));
+		JTextField focusFieldText = ((JTextField) (e.getSource()));
 		int x = Character.getNumericValue(focusFieldText.getName().charAt(0));
 		int y = Character.getNumericValue(focusFieldText.getName().charAt(1));
 		try {
@@ -147,15 +147,27 @@ public class Tableur extends JFrame implements FocusListener,ActionListener{
 		this.majFieldText();
 	}
 
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JRadioButtonMenuItem src = (JRadioButtonMenuItem) e.getSource();
-		if(src == viewFormule)
-			System.out.println("Formule");
-		else 
-			System.out.println("Resultat");
-		majFieldText();
+		Object src = e.getSource();
+		if (src == viewFormule)
+			majFieldText();
+		else if (src == viewResultat)
+			majFieldText();
+		else if (src == ouvrir) {
+			JFileChooser fileChooser = new JFileChooser();
+			int reponse = fileChooser.showOpenDialog(this);
+			if (reponse == JFileChooser.APPROVE_OPTION) {
+				System.out.println(fileChooser.getSelectedFile());
+			}
+		} else if (src == enregistrer) {
+			JFileChooser fileChooser = new JFileChooser();
+			int reponse = fileChooser.showSaveDialog(this);
+			if (reponse == JFileChooser.APPROVE_OPTION) {
+				System.out.println(fileChooser.getSelectedFile());
+			}
+		}
+
 	}
 
 }
