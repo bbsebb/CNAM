@@ -1,12 +1,10 @@
 package nfa035.projet2.vue;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.File;
 import java.io.IOException;
 
 import javax.swing.ButtonGroup;
@@ -42,7 +40,6 @@ public class Tableur extends JFrame implements FocusListener, ActionListener {
 	private JRadioButtonMenuItem viewFormule = new JRadioButtonMenuItem("Formule");
 	private JRadioButtonMenuItem viewResultat = new JRadioButtonMenuItem("Resultat");
 	private JPanel pCases = new JPanel();
-	private JOptionPane jErreur = new JOptionPane();
 	private JTextField[][] cases = new JTextField[lignes][colonnes];
 
 	public Tableur() {
@@ -89,7 +86,6 @@ public class Tableur extends JFrame implements FocusListener, ActionListener {
 				try {
 					cases[i][j].setText(Float.toString(f.getCellule(i, j).getResultat()));
 				} catch (HorsFeuilleException | ErreurAffichage e) {
-					// TODO Auto-generated catch block
 					cases[i][j].setText(e.getMessage());
 				}
 				cases[i][j].setName(i + "" + j);
@@ -122,9 +118,6 @@ public class Tableur extends JFrame implements FocusListener, ActionListener {
 
 	}
 
-	private void setFieldText(int x, int y, String str) {
-		cases[x][y].setText(str);
-	}
 
 	@Override
 	public void focusGained(FocusEvent e) {
@@ -134,7 +127,7 @@ public class Tableur extends JFrame implements FocusListener, ActionListener {
 		try {
 			focusFieldText.setText(f.getCellule(x, y).getFormule());
 		} catch (HorsFeuilleException e1) {
-			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, e1.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -147,7 +140,7 @@ public class Tableur extends JFrame implements FocusListener, ActionListener {
 		try {
 			f.setCellule(x, y, focusFieldText.getText());
 		} catch (HorsFeuilleException e1) {
-			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, e1.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
 		this.majFieldText();
 	}

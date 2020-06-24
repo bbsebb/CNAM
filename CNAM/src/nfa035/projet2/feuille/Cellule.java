@@ -1,18 +1,42 @@
 package nfa035.projet2.feuille;
 
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 import nfa035.projet2.cellule.Contenu;
 import nfa035.projet2.exceptions.CircuitException;
 import nfa035.projet2.exceptions.ErreurAffichage;
 
+/**
+ * <b> Cette classe représente une cellule contenu dans une {@link Feuille une feuille} .</b>
+ * <p> Une cellule est réprésenté par ses coordonnées et elle contient un contenu qui peut être de plusieurs forme et qui correspond toujours à sa formule. Le contenu peut des formes suivantes :</p>
+ * <ul>
+ * <li> Une cellule </li>
+ * <li> Une valeur </li>
+ * <li> Une fonction </li>
+ * <li> Une opération</li>
+ * <li> Une erreur</li>
+ * </ul>
+ * <p> Une cellule est lié ou non à d'autre cellule qu'elle référence dans sa formule</p>
+ * @see Contenu
+ * @see Erreur
+ * @see Moyenne
+ * @see Somme
+ * @see Operation
+ * @see Valeur
+ * @author bbseb
+ *
+ */
 public class Cellule implements Contenu, Comparable<Cellule> {
 	private int x, y;
 	private Contenu contenu;
 	private String formule;
 	private LinkedList<Cellule> cellulesLie = new LinkedList<Cellule>();
 
+	/**
+	 * Constructeur par defaut
+	 * @param x est la première coordonnée de la cellule
+	 * @param y est la deuxieme coordonnée de la cellule
+	 */
 	Cellule(int x, int y) {
 		this.setX(x);
 		this.setY(y);
@@ -21,6 +45,13 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 
 	}
 
+	/**
+	 * Constructeur avec un contenu et sa formule 
+	 * @param est la première coordonnée de la cellule
+	 * @param y est la deuxieme coordonnée de la cellule
+	 * @param c est le contenu de la cellule
+	 * @param formule est la formulle de cellule
+	 */
 	Cellule(int x, int y, Contenu c, String formule) {
 		this.setX(x);
 		this.setY(y);
@@ -111,7 +142,10 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 		}
 	}
 
-	void clearCellulesLie() {
+	/**
+	 * Supprime la liste des cellules liés
+	 */
+	 void clearCellulesLie() {
 		this.cellulesLie.clear();
 	}
 
@@ -130,8 +164,11 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 			return this.getContenu().getResultat();
 	}
 
+	/**
+	 * Permet de savoir si une cellule est dans une boucle. 
+	 * @return vrai si il y a une boucle, faux sinon.
+	 */
 	private boolean parcoursArbre() {
-
 		LinkedList<Cellule> listCellule = this.getCellulesLie();
 		boolean rtr;
 		if (listCellule.isEmpty()) {
@@ -158,7 +195,7 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 	}
 
 	@Override
-	public int compareTo(Cellule o) {
+	public int compareTo(Cellule o) { 
 		Cellule c = (Cellule) o;
 		int indiceComparaison = 0;
 		if (this.getX() > c.getX())

@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -88,14 +87,14 @@ class AnalyseFormuleTest {
 	}
 
 	@ParameterizedTest
-	@ValueSource(strings = { "1,5 ", " 1", " 0 ", "   0,55   ", "112554,58474410" ,"1,", ",0"})
+	@ValueSource(strings = { "1,5 ", " 1", " 0 ", "   0,55   ", "112554,58474410" ,"1,", ",0","-1,5"})
 	void testEstValeur(String str) {
 
 		assertTrue(AnalyseFormule.estValeur(str));
 	}
 
 	@ParameterizedTest
-	@ValueSource(strings = {  "a,1", "2,a", "2,,2", "5.5", "5;5" })
+	@ValueSource(strings = {  "a,1", "2,a", "2,,2", "5.5", "5;5","--5" })
 	void testNEstPasValeur(String str) {
 
 		assertFalse(AnalyseFormule.estValeur(str));

@@ -3,7 +3,7 @@ package nfa035.projet2.feuille;
 import java.util.LinkedList;
 
 import nfa035.projet2.cellule.Contenu;
-import nfa035.projet2.cellule.Fonction;
+import nfa035.projet2.cellule.Erreur;
 import nfa035.projet2.cellule.Moyenne;
 import nfa035.projet2.cellule.Operateur;
 import nfa035.projet2.cellule.Operation;
@@ -13,12 +13,52 @@ import nfa035.projet2.exceptions.CelluleVideException;
 import nfa035.projet2.exceptions.FormuleErroneeException;
 import nfa035.projet2.exceptions.HorsFeuilleException;
 
+/**
+ * <b> Cette classe permet d'évaluer et verifier un formule en rapport avec {@link Feuille une feuille} .</b>
+ * <p> Elle permet de verifier si une formule est correcte et de retourner un contenu de cellule pertinent. Il existe 5 types de cellules correspondant à 5 syntaxe plus un contenu spécifique au erreur.
+ * Les cellules sont représentée par leurs coordonnées séparées par un point. Cette classe est lié à une feuille pour permettre l'évaluation de la formule<p>
+ * <ul>
+ * <li> Moyenne : moyenne(0.0;1.5) , la séparation entre deux cellules se fait avec le ;. Insensible à la casse</li>
+ * <li> Somme : somme(0.0;1.5) , la séparation entre deux cellules se fait avec le ';'. Insensible à la casse</li>
+ * <li> Operation : 5,6 + 3 , Les operations possibles sont listées dans {@link Operateur cette enumération}</li>
+ * <li> Valeur : -5,3, les nombres décimaux ou la décimale se fait après une virgule ','</li>
+ * </ul>
+ * <p> Si il y a une erreur de syntaxe ou d'évaluation, un contenu spécifique sera renvoyé.
+ *  Il ne doit pas y avoir d'espace à l'interieur d'une formule auquel cas, il y aura une erreur de syntaxe renvoyée.</p>
+ * @see Moyenne
+ * @see Somme
+ * @see Operation
+ * @see Valeur
+ * @see Erreur
+ * @author bbseb
+ *
+ */
 public class AnalyseFormule {
+	/**
+	 * La formule à évaluer
+	 */
 	private String formule;
+	/**
+	 * La feuille en rapport avec la formule. 
+	 */
 	private Feuille feuille;
+	/**
+	 * Le contenu de la cellule qui sera renvoyé
+	 */
 	private Contenu contenu;
+	/**
+	 * La liste des cellules dont dépendent la cellule modifiée
+	 */
 	private LinkedList<Cellule> listCellules;
 
+	/**
+	 * Ce constructeur lie la feuille, vérifie la syntaxe et évalue la formule, ajoute les cellules qui dépendent de la cellule modifiée et crée un contenu. 
+	 * @param feuille est la feuille lié
+	 * @param formule est la formule à évaluer
+	 * @throws FormuleErroneeException si la syntaxe est erronée ou il y a une mauvaise évaluation
+	 * @throws HorsFeuilleException si la formule fait référence à une cellule hors feuille
+	 * @throws CelluleVideException si la formule fait référence à une cellule vide
+	 */
 	public AnalyseFormule(Feuille feuille, String formule) throws FormuleErroneeException, HorsFeuilleException, CelluleVideException {
 		this.setFeuille(feuille);
 		this.setFormule(formule);
@@ -26,6 +66,11 @@ public class AnalyseFormule {
 		this.setContenu(this.formuleToContenu());
 	}
 
+	/**
+	 * 
+	 * @return le contenu d'une cellule
+	 * @see Contenu
+	 */
 	public Contenu getContenu() {
 		return this.contenu;
 	}
@@ -34,6 +79,10 @@ public class AnalyseFormule {
 		this.contenu = contenu;
 	}
 
+	/**
+	 * 
+	 * @return La liste des cellules dont dépendent la cellule modifiée
+	 */
 	LinkedList<Cellule> getCellulesLie() {
 		return this.listCellules;
 	}
@@ -42,6 +91,7 @@ public class AnalyseFormule {
 		this.listCellules = ll;
 	}
 
+	
 	private Contenu formuleToContenu() throws FormuleErroneeException, HorsFeuilleException, CelluleVideException {
 		String f = this.getFormule();
 		if (this.getFormule() == null || this.getFormule().isEmpty())
@@ -74,41 +124,53 @@ public class AnalyseFormule {
 		this.feuille = feuille;
 	}
 
+	/**
+	 * Verifie si la chaine est une valeur. Les valeur sont les nombres décimaux ou la décimale se fait après une virgule ','
+	 * @param str la chaine a évalué
+	 * @return vrai si la chaine est une valeur, faux sinon
+	 */
 	public static boolean estValeur(String str) {
+		boolean rtr = true;
 		str = str.trim().toLowerCase();
 		if (str.isEmpty())
-			return false;
+			rtr = false;
 		char[] chaine = str.toCharArray();
 		int compteurVirgule = 0;
 		int compteurNegatif = 0;
 		for (int c : chaine) {
-			if (c != 44 && c != 45 && (c < 48 || c > 57))
-				return false;
+			if (c != 44 && c != 45 && (c < 48 || c > 57)) // doit contenur des chiffres ou une virgule ou un signe négatif
+				rtr = false;
 			if (c == 44) {
 				compteurVirgule++;
 				if (compteurVirgule > 1 )
-					return false;
+					rtr = false;
 			}
 			if (c == 45) {
 				compteurNegatif++;
-				if (compteurNegatif > 1 || (compteurNegatif == 1 && chaine[0] != 44))
-					return false;
+				if (compteurNegatif > 1 || (compteurNegatif == 1 && chaine[0] != 45))
+					rtr = false;
 			}
 		}
 		
-		return true;
+		return rtr;
 	}
 
+	
+	/**
+	 * Verifie si la chaine est une cellule. Les cellules sont représentée uniquement par leurs coordonnées séparées par un point '0.0'.
+	 * @param la chaine a évalué
+	 * @return vrai si la chaine est une cellule, faux sinon
+	 */
 	public static boolean estCellule(String str) {
 		str = str.trim().toLowerCase();
 		boolean rtr = true;
 		String[] coordonnee = str.split("\\.");
-		if (coordonnee.length != 2 || coordonnee[0].length() == 0 || coordonnee[1].length() == 0)
+		if (coordonnee.length != 2 || coordonnee[0].length() == 0 || coordonnee[1].length() == 0) // un seul point pour les coordonées
 			rtr = false;
 		for (String c : coordonnee) {
 			char[] chaine = c.toCharArray();
 			for (char car : chaine) {
-				if (car < 48 || car > 57)
+				if (car < 48 || car > 57) // si les coordonnées sont bien des chiffres
 					rtr = false;
 			}
 		}
@@ -116,32 +178,44 @@ public class AnalyseFormule {
 
 	}
 
+	/**
+	 * Vérifie si la chaine est une opération. Les operations possibles sont listées dans {@link Operateur cette enumération}
+	 * @param la chaine a évalué
+	 * @return vrai si la chaine est une opération, faux sinon
+	 */
 	public static boolean estOperation(String str) {
 
+		boolean rtr;
 		str = str.trim().toLowerCase();
 		String[] operandes = new String[0];
-		Operateur operateur;
+		Operateur operateur; 
 		try {
-			operateur = stringToOperateur(str);
+			operateur = stringToOperateur(str); // On récupère l'operateur (gère les valeurs négatives)
 		} catch (FormuleErroneeException e) {
-			// TODO Auto-generated catch block
-			return false;
+			rtr = false;
+			operateur = null;
 		}
-		if (str.charAt(0) == '-' && (str.charAt(1) > 47 && str.charAt(1) < 58)) {
+		if (str.charAt(0) == '-' && (str.charAt(1) > 47 && str.charAt(1) < 58) && operateur != null) { // Si la première opérande est négative
 			operandes = str.substring(1).split(operateur.toRegex(), 2);
 			operandes[0] = str.charAt(0) + operandes[0];
-		} else if (str.charAt(0) > 47 && str.charAt(0) < 58)
+		} else if (str.charAt(0) > 47 && str.charAt(0) < 58 && operateur != null)
 			operandes = str.split(operateur.toRegex(), 2);
 		else
-			return false;
-		if ((estCellule(operandes[0]) || estValeur(operandes[0]))
+			rtr =  false;
+		if (operandes.length !=0 && operateur != null && (estCellule(operandes[0]) || estValeur(operandes[0]))
 				&& (estCellule(operandes[1]) || estValeur(operandes[1])))
-			return true;
+			rtr = true;
 		else
-			return false;
+			rtr = false;
+		return rtr;
 
 	}
 
+	/**
+	 * Vérifie si la chaine est une fonction somme() ou moyenne(). 
+	 * @param la chaine a évalué
+	 * @return vrai si la chaine est une fonction, faux sinon
+	 */
 	public static boolean estFonction(String str) {
 		boolean rtr;
 		if (estSomme(str) || estMoyenne(str))
@@ -299,7 +373,7 @@ public class AnalyseFormule {
 
 	private static Operateur stringToOperateur(String str) throws FormuleErroneeException {
 		char[] chaine = str.toCharArray();
-		for (int i = (str.charAt(0) == '-') ? 1 : 0; i < chaine.length; i++) {
+		for (int i = (str.charAt(0) == '-') ? 1 : 0; i < chaine.length; i++) { // si la première valeur est négative, on n'utilise pas ce signe.
 			for (Operateur op : Operateur.values()) {
 				if (chaine[i] == op.toChar()) {
 					return op;
