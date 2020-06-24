@@ -140,49 +140,41 @@ public class Feuille {
 		return new Bloc(cellules);
 	}
 
-	public boolean enregistrer(File file) {
+	public boolean enregistrer(File file) throws IOException {
 
 		Path path = Paths.get(file.getPath());
 
-		try {
-			BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
-			writer.write("test \n");
-			for (Cellule c : this.getCellules()) {
-				writer.write(c.getFormule());
-				if (c.getY() == yMax)
-					writer.write("\n");
-				else
-					writer.write(" & ");
-			}
-			writer.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
+		for (Cellule c : this.getCellules()) {
+			writer.write(c.getFormule());
+			if (c.getY() == yMax)
+				writer.write("\n");
+			else
+				writer.write(" & ");
 		}
+		writer.close();
+
 		return true;
 	}
 
-	public boolean ouvrir(File file) throws HorsFeuilleException {
+	public boolean ouvrir(File file) throws HorsFeuilleException, IOException {
 		Path path = Paths.get(file.getPath());
-		try {
-			BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
-			int x = 0;
-			int y = 0;
-			while (reader.readLine() != null) {
-				String str = reader.readLine();
-				String[] formules = str.split("&");
-				for (String formule : formules) {
-					this.setCellule(x, y, formule);
-					y++;
-				}
-				x++;
-			}
-			reader.close();
+		String str;
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
+		int x = 0;
+		int y = 0;
+		while ((str = reader.readLine()) != null) {
+			y = 0;
+			String[] formules = str.split("&");
+			for (String formule : formules) {
+				this.setCellule(x, y, formule);
+				y++;
+			}
+			x++;
 		}
+		reader.close();
+
 		return true;
 	}
 

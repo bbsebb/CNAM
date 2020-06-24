@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
@@ -13,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
@@ -39,15 +42,17 @@ public class Tableur extends JFrame implements FocusListener, ActionListener {
 	private JRadioButtonMenuItem viewFormule = new JRadioButtonMenuItem("Formule");
 	private JRadioButtonMenuItem viewResultat = new JRadioButtonMenuItem("Resultat");
 	private JPanel pCases = new JPanel();
+	private JOptionPane jErreur = new JOptionPane();
 	private JTextField[][] cases = new JTextField[lignes][colonnes];
 
 	public Tableur() {
 		try {
 			f = new Feuille(10, 6);
-			f.setCellule(0, 0, "5,5");
-			f.setCellule(0, 1, "3+2,2");
-			f.setCellule(0, 2, "0.0+1");
-			f.setCellule(0, 3, "somme(0.0;0.2)");
+		//	f.setCellule(0, 0, "5,5");
+		//	f.setCellule(0, 1, "3+2,2");
+		//	f.setCellule(0, 2, "0.0+1");
+		//	f.setCellule(0, 3, "somme(0.0;0.2)");
+			
 		} catch (HorsFeuilleException e) {
 			e.printStackTrace();
 		}
@@ -158,13 +163,23 @@ public class Tableur extends JFrame implements FocusListener, ActionListener {
 			JFileChooser fileChooser = new JFileChooser();
 			int reponse = fileChooser.showOpenDialog(this);
 			if (reponse == JFileChooser.APPROVE_OPTION) {
-				f.ouvrir(fileChooser.getSelectedFile());
+				System.out.println(fileChooser.getSelectedFile());
+				try {
+					f.ouvrir(fileChooser.getSelectedFile());
+				} catch (HorsFeuilleException | IOException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
 			}
+			this.majFieldText();
 		} else if (src == enregistrer) {
 			JFileChooser fileChooser = new JFileChooser();
 			int reponse = fileChooser.showSaveDialog(this);
 			if (reponse == JFileChooser.APPROVE_OPTION) {
-				f.enregistrer(fileChooser.getSelectedFile());
+				try {
+					f.enregistrer(fileChooser.getSelectedFile());
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
 			
 				
 			}
