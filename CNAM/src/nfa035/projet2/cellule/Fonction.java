@@ -3,10 +3,21 @@ package nfa035.projet2.cellule;
 import nfa035.projet2.exceptions.ErreurAffichage;
 import nfa035.projet2.feuille.Bloc;
 
+/**
+ * <b>Cette classe réprésente un contenu possédant  dans sa formule une fonction</b>
+ * <p> La fonction demande la création d'un bloc</p>
+ * @author bbseb
+ *
+ */
 public abstract class Fonction implements Contenu{
 	protected Bloc bloc;
 	protected String formule;
 	
+	/**
+	 * Ce constructeur instancie un bloc au contenu
+	 * @param b
+	 * @param formule
+	 */
 	 public Fonction(Bloc b,String formule) {
 	    	this.setBloc(b);
 	    	this.setFormule(formule);

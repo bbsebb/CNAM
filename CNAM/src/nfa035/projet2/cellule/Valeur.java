@@ -1,9 +1,19 @@
 package nfa035.projet2.cellule;
 
+/**
+ * <b>Cette classe réprésente un contenu possédant  dans sa formule une valeur</b>
+ * @author bbseb
+ *
+ */
 public class Valeur implements Contenu{
 	private String formule;
 	private float valeur;
 	
+	/**
+	 * Ce constructeur instancie une valeur à la classe
+	 * @param valeur
+	 * @param formule
+	 */
 	public Valeur(float valeur,String formule) {
 		this.setValeur(valeur);
 		this.setFormule(formule);

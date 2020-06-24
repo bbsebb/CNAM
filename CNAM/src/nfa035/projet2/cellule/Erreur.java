@@ -2,14 +2,26 @@ package nfa035.projet2.cellule;
 
 import nfa035.projet2.exceptions.ErreurAffichage;
 
+/**
+ * <b>Cette classe réprésente un contenu possédant une formule éronée et renvoie une exception à la place du résultat</b>
+ * @author bbseb
+ *
+ */
 public class Erreur implements Contenu{
 	private String formule,typeErreur;
 
-	
+	/**
+	 * Constructeur par defaut
+	 */
 	public Erreur() {
 		this.setFormule(null);
 		this.setTypeErreur("Inconnu");
 	}
+	
+	/**
+	 * Ce constructeur indique l'erreur à afficher
+	 * @param erreur est l'erreur qui sera affiché dans l'exception
+	 */
 	public Erreur(String erreur) {
 		this.setFormule(null);
 		this.setTypeErreur(erreur);

@@ -6,6 +6,11 @@ import nfa035.projet2.exceptions.ErreurAffichage;
 import nfa035.projet2.feuille.Bloc;
 import nfa035.projet2.feuille.Cellule;
 
+/**
+ * <b>Cette classe réprésente un contenu possédant  dans sa formule une somme</b>
+ * @author bbseb
+ *
+ */
 public class Somme extends Fonction{
 	public Somme(Bloc b,String formule) {
 		super(b,formule);

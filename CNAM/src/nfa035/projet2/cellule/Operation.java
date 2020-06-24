@@ -1,13 +1,27 @@
 package nfa035.projet2.cellule;
 
 import nfa035.projet2.exceptions.ErreurAffichage;
+import nfa035.projet2.feuille.Feuille;
 
+/**
+ *  <b>Cette classe réprésente un contenu possédant  dans sa formule une opération</b>
+ *  <p> Les opérateurs sont listes dans l'énumération {@link Operateur Operateur} </p>
+ * @author bbseb
+ *
+ */
 public class Operation implements Contenu{
 	private Contenu operande1,operande2;
 	private Operateur operateur;
 	private String formule;
 	
 	
+	/**
+	 * Ce constructeur instancie une opération à partir du contenu de deux cellules et d'un opérateur
+	 * @param c1 est le contenu de la cellule 1
+	 * @param c2 est le contenu de la cellule 2
+	 * @param op est l'operateur de la l'opération
+	 * @param formule
+	 */
 	public Operation(Contenu c1,Contenu c2,Operateur op,String formule) {
 		this.setOperande1(c1);
 		this.setOperande2(c2);
