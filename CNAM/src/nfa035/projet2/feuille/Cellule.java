@@ -3,11 +3,6 @@ package nfa035.projet2.feuille;
 import java.util.LinkedList;
 
 import nfa035.projet2.cellule.Contenu;
-import nfa035.projet2.cellule.Erreur;
-import nfa035.projet2.cellule.Moyenne;
-import nfa035.projet2.cellule.Operation;
-import nfa035.projet2.cellule.Somme;
-import nfa035.projet2.cellule.Valeur;
 import nfa035.projet2.exceptions.CircuitException;
 import nfa035.projet2.exceptions.ErreurAffichage;
 import nfa035.projet2.exceptions.HorsFeuilleException;
