@@ -44,7 +44,7 @@ public class Tableur extends JFrame implements FocusListener, ActionListener {
 
 	public Tableur() {
 		try {
-			f = new Feuille(10, 6);			
+			f = new Feuille(10, 6);
 		} catch (HorsFeuilleException e) {
 			e.printStackTrace();
 		}
@@ -103,7 +103,7 @@ public class Tableur extends JFrame implements FocusListener, ActionListener {
 					str = (viewResultat.isSelected()) ? Float.toString(f.getCellule(i, j).getResultat())
 							: f.getCellule(i, j).getFormule();
 					cases[i][j].setText(str);
-				} catch ( ErreurAffichage | HorsFeuilleException e) {
+				} catch (ErreurAffichage | HorsFeuilleException e) {
 					cases[i][j].setText(e.getMessage());
 				}
 				cases[i][j].setName(i + "" + j);
@@ -112,7 +112,6 @@ public class Tableur extends JFrame implements FocusListener, ActionListener {
 		}
 
 	}
-
 
 	@Override
 	public void focusGained(FocusEvent e) {
@@ -168,9 +167,10 @@ public class Tableur extends JFrame implements FocusListener, ActionListener {
 				} catch (IOException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
 				}
-			
-				
+
 			}
+		} else if (src == quitter) {
+			System.exit(0);
 		}
 
 	}
