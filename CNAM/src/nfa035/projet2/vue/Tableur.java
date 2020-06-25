@@ -44,12 +44,7 @@ public class Tableur extends JFrame implements FocusListener, ActionListener {
 
 	public Tableur() {
 		try {
-			f = new Feuille(10, 6);
-		//	f.setCellule(0, 0, "5,5");
-		//	f.setCellule(0, 1, "3+2,2");
-		//	f.setCellule(0, 2, "0.0+1");
-		//	f.setCellule(0, 3, "somme(0.0;0.2)");
-			
+			f = new Feuille(10, 6);			
 		} catch (HorsFeuilleException e) {
 			e.printStackTrace();
 		}

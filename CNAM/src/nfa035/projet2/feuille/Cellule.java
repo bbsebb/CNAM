@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import nfa035.projet2.cellule.Contenu;
 import nfa035.projet2.exceptions.CircuitException;
 import nfa035.projet2.exceptions.ErreurAffichage;
+import nfa035.projet2.exceptions.HorsFeuilleException;
 
 /**
  * <b> Cette classe représente une cellule contenu dans une {@link Feuille une feuille} .</b>
@@ -36,8 +37,9 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 	 * Constructeur par defaut
 	 * @param x est la première coordonnée de la cellule
 	 * @param y est la deuxieme coordonnée de la cellule
+	 * @throws HorsFeuilleException 
 	 */
-	Cellule(int x, int y) {
+	Cellule(int x, int y) throws HorsFeuilleException {
 		this.setX(x);
 		this.setY(y);
 		this.setContenu(null);
@@ -51,8 +53,9 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 	 * @param y est la deuxieme coordonnée de la cellule
 	 * @param c est le contenu de la cellule
 	 * @param formule est la formulle de cellule
+	 * @throws HorsFeuilleException 
 	 */
-	Cellule(int x, int y, Contenu c, String formule) {
+	Cellule(int x, int y, Contenu c, String formule) throws HorsFeuilleException {
 		this.setX(x);
 		this.setY(y);
 		this.setContenu(c);
@@ -69,8 +72,11 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 
 	/**
 	 * @param x the x to set
+	 * @throws HorsFeuilleException si la coordonnée est inférieur à 0
 	 */
-	private void setX(int x) {
+	private void setX(int x) throws HorsFeuilleException {
+		if(x<0)
+			throw new HorsFeuilleException();
 		this.x = x;
 	}
 
@@ -83,8 +89,11 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 
 	/**
 	 * @param y the y to set
+	 * @throws HorsFeuilleException si la coordonnée est inférieur à 0
 	 */
-	private void setY(int y) {
+	private void setY(int y) throws HorsFeuilleException {
+		if(y<0)
+			throw new HorsFeuilleException();
 		this.y = y;
 	}
 
@@ -138,14 +147,14 @@ public class Cellule implements Contenu, Comparable<Cellule> {
 				throw new CircuitException();
 			}
 		} else {
-			this.cellulesLie.clear();
+			this.clearCellulesLie();
 		}
 	}
 
 	/**
 	 * Supprime la liste des cellules liés
 	 */
-	 void clearCellulesLie() {
+	 public void clearCellulesLie() {
 		this.cellulesLie.clear();
 	}
 
