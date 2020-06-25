@@ -11,8 +11,8 @@ public class Valeur implements Contenu{
 	
 	/**
 	 * Ce constructeur instancie une valeur à la classe
-	 * @param valeur
-	 * @param formule
+	 * @param valeur est la valeur de la classe
+	 * @param formule est la formule de la classe
 	 */
 	public Valeur(float valeur,String formule) {
 		this.setValeur(valeur);

@@ -15,8 +15,8 @@ public abstract class Fonction implements Contenu{
 	
 	/**
 	 * Ce constructeur instancie un bloc au contenu
-	 * @param b
-	 * @param formule
+	 * @param b est le bloc 
+	 * @param formule est la formule
 	 */
 	 public Fonction(Bloc b,String formule) {
 	    	this.setBloc(b);

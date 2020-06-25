@@ -3,6 +3,11 @@ package nfa035.projet2.feuille;
 import java.util.LinkedList;
 
 import nfa035.projet2.cellule.Contenu;
+import nfa035.projet2.cellule.Erreur;
+import nfa035.projet2.cellule.Moyenne;
+import nfa035.projet2.cellule.Operation;
+import nfa035.projet2.cellule.Somme;
+import nfa035.projet2.cellule.Valeur;
 import nfa035.projet2.exceptions.CircuitException;
 import nfa035.projet2.exceptions.ErreurAffichage;
 import nfa035.projet2.exceptions.HorsFeuilleException;
@@ -18,12 +23,12 @@ import nfa035.projet2.exceptions.HorsFeuilleException;
  * <li> Une erreur</li>
  * </ul>
  * <p> Une cellule est lié ou non à d'autre cellule qu'elle référence dans sa formule</p>
- * @see Contenu
- * @see Erreur
- * @see Moyenne
- * @see Somme
- * @see Operation
- * @see Valeur
+ * @see nfa035.projet2.cellule.Contenu
+ * @see nfa035.projet2.cellule.Erreur
+ * @see nfa035.projet2.cellule.Moyenne
+ * @see nfa035.projet2.cellule.Somme
+ * @see nfa035.projet2.cellule.Operation
+ * @see nfa035.projet2.cellule.Valeur
  * @author bbseb
  *
  */

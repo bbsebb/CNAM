@@ -16,7 +16,7 @@ import nfa035.projet2.exceptions.HorsFeuilleException;
 /**
  * <b> Cette classe permet d'évaluer et verifier un formule en rapport avec {@link Feuille une feuille} .</b>
  * <p> Elle permet de verifier si une formule est correcte et de retourner un contenu de cellule pertinent. Il existe 5 types de cellules correspondant à 5 syntaxe plus un contenu spécifique au erreur.
- * Les cellules sont représentée par leurs coordonnées absolues ou relatives séparées par un point. Cette classe est lié à une feuille pour permettre l'évaluation de la formule<p>
+ * Les cellules sont représentée par leurs coordonnées absolues ou relatives séparées par un point. Cette classe est lié à une feuille pour permettre l'évaluation de la formule</p>
  * <ul>
  * <li> Moyenne : moyenne(0.0;1.5) , la séparation entre deux cellules se fait avec le ;. Insensible à la casse</li>
  * <li> Somme : somme(0.0;1.5) , la séparation entre deux cellules se fait avec le ';'. Insensible à la casse</li>
@@ -59,6 +59,7 @@ public class AnalyseFormule {
 	 * Ce constructeur lie la feuille, vérifie la syntaxe et évalue la formule, ajoute les cellules qui dépendent de la cellule modifiée et crée un contenu. 
 	 * @param feuille est la feuille lié
 	 * @param formule est la formule à évaluer
+	 * @param c est la cellule modifiée
 	 * @throws FormuleErroneeException si la syntaxe est erronée ou il y a une mauvaise évaluation
 	 * @throws HorsFeuilleException si la formule fait référence à une cellule hors feuille
 	 * @throws CelluleVideException si la formule fait référence à une cellule vide
@@ -179,7 +180,7 @@ public class AnalyseFormule {
 	/**
 	 * Verifie si la chaine est une cellule. Les cellules sont représentée uniquement par leurs coordonnées séparées par un point '0.0'.
 	 * Elles peuvent être relative.
-	 * @param la chaine a évalué
+	 * @param str la chaine a évalué
 	 * @return vrai si la chaine est une cellule, faux sinon
 	 */
 	public static boolean estCellule(String str) {
@@ -206,7 +207,7 @@ public class AnalyseFormule {
 
 	/**
 	 * Vérifie si la chaine est une opération. Les operations possibles sont listées dans {@link Operateur cette enumération}
-	 * @param la chaine a évalué
+	 * @param str la chaine a évalué
 	 * @return vrai si la chaine est une opération, faux sinon
 	 */
 	public static boolean estOperation(String str) {
@@ -239,7 +240,7 @@ public class AnalyseFormule {
 
 	/**
 	 * Vérifie si la chaine est une fonction somme() ou moyenne(). 
-	 * @param la chaine a évalué
+	 * @param str la chaine a évalué
 	 * @return vrai si la chaine est une fonction, faux sinon
 	 */
 	public static boolean estFonction(String str) {

@@ -19,7 +19,7 @@ public class Operation implements Contenu{
 	 * @param c1 est le contenu de la cellule 1
 	 * @param c2 est le contenu de la cellule 2
 	 * @param op est l'operateur de la l'opération
-	 * @param formule
+	 * @param formule est la formule de l'opération
 	 */
 	public Operation(Contenu c1,Contenu c2,Operateur op,String formule) {
 		this.setOperande1(c1);
