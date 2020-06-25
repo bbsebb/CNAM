@@ -39,7 +39,7 @@ class AnalyseFormuleTest {
 			"Somme(0.0;0.1):-1.5", " Moyenne(0.0;0.1) :-0.75", "somme(0.0;1.0):3.5" }, delimiter = ':')
 	void testgetContenuTrue(String valeur, String valeurAttendu)
 			throws FormuleErroneeException, HorsFeuilleException, ErreurAffichage, CelluleVideException {
-		AnalyseFormule af = new AnalyseFormule(f, valeur);
+		AnalyseFormule af = new AnalyseFormule(f,null, valeur);
 
 		assertEquals(Float.valueOf(valeurAttendu), af.getContenu().getResultat());
 
@@ -47,7 +47,7 @@ class AnalyseFormuleTest {
 
 	@Test
 	void testgetContenuNull() throws FormuleErroneeException, HorsFeuilleException, CelluleVideException {
-		AnalyseFormule af = new AnalyseFormule(f, "");
+		AnalyseFormule af = new AnalyseFormule(f,null, "");
 		assertEquals(null, af.getContenu());
 
 	}
@@ -56,7 +56,7 @@ class AnalyseFormuleTest {
 	@CsvSource(value = { "1,0:1.0001", "-1,2:1.2", "1,2:-1.2", "-1:1", "10:-10" }, delimiter = ':')
 	void testgetContenuFalse(String valeur, String valeurAttendu)
 			throws FormuleErroneeException, HorsFeuilleException, ErreurAffichage, CelluleVideException {
-		AnalyseFormule af = new AnalyseFormule(f, valeur);
+		AnalyseFormule af = new AnalyseFormule(f,null, valeur);
 
 		assertNotEquals(Float.valueOf(valeurAttendu), af.getContenu().getResultat());
 
@@ -66,24 +66,24 @@ class AnalyseFormuleTest {
 	@ValueSource(strings = {".0:1.5", "1,,5", "15++6", "--5", "12345 6789", "12,345,6789", "12,6a789", "Soeme(0.0;0.1)",
 			"Somme(0.0;22.)", "Somme(0.0;0.1", "Soeme(0.0;0.1)", "Moyenne(0.0;01.)", "Moyenne(0.0;0.1",
 			"Moyenne0.0;0.1)", "Moyene(0.0;0.1)", "1.2 ** 20,5", "20,20+3.4+", " /2136,2 ", "1.2 3.4", "5,,5*2,3",
-			"5,5++2,3", "5..5*2,3", "5,5+ADD", "35,27+-2.3", "35,27+2.3+" })
+			"5,5++2,3", "5..5*2,3", "5,5+ADD", "35,27+2.3+" })
 	void testgetContenuThrowFormuleErronee(String valeur) throws FormuleErroneeException, HorsFeuilleException {
 
-		assertThrows(FormuleErroneeException.class, () -> new AnalyseFormule(f, valeur));
+		assertThrows(FormuleErroneeException.class, () -> new AnalyseFormule(f,null, valeur));
 	}
 
 	@ParameterizedTest
 	@ValueSource(strings = { "20.20", "Somme(0.0;2.2)" })
 	void testgetContenuThrowHorsFeuille(String valeur) throws FormuleErroneeException, HorsFeuilleException {
 
-		assertThrows(HorsFeuilleException.class, () -> new AnalyseFormule(f, valeur));
+		assertThrows(HorsFeuilleException.class, () -> new AnalyseFormule(f,null, valeur));
 	}
 
 	@ParameterizedTest
 	@ValueSource(strings = { "Somme(0.1;1.1)", "Moyenne(0.1;1.1)", "1.1" })
 	void testgetContenuThrowCelluleVide(String valeur) throws FormuleErroneeException, HorsFeuilleException {
 
-		assertThrows(CelluleVideException.class, () -> new AnalyseFormule(f, valeur));
+		assertThrows(CelluleVideException.class, () -> new AnalyseFormule(f,null, valeur));
 	}
 
 	@ParameterizedTest

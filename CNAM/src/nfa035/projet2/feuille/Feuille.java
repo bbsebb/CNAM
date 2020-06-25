@@ -136,7 +136,7 @@ public class Feuille {
 	public void setCellule(int x, int y, String formule) throws HorsFeuilleException {
 		Cellule c = this.getCellule(x, y);
 		try {
-			AnalyseFormule af = new AnalyseFormule(this, formule); // AnalyseFormule permet de vérifier et transformer la formule en contenu pour une cellule
+			AnalyseFormule af = new AnalyseFormule(this,c, formule); // AnalyseFormule permet de vérifier et transformer la formule en contenu pour une cellule
 			c.setFormule(formule);
 			c.setContenu(af.getContenu()); 
 			c.setCellulesLie(af.getCellulesLie()); // On ajoute la liste des cellules dont dépendent la cellule modifiée

@@ -108,7 +108,7 @@ public class Tableur extends JFrame implements FocusListener, ActionListener {
 					str = (viewResultat.isSelected()) ? Float.toString(f.getCellule(i, j).getResultat())
 							: f.getCellule(i, j).getFormule();
 					cases[i][j].setText(str);
-				} catch (HorsFeuilleException | ErreurAffichage e) {
+				} catch ( ErreurAffichage | HorsFeuilleException e) {
 					cases[i][j].setText(e.getMessage());
 				}
 				cases[i][j].setName(i + "" + j);

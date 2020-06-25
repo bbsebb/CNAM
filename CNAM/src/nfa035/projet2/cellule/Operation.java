@@ -1,7 +1,6 @@
 package nfa035.projet2.cellule;
 
 import nfa035.projet2.exceptions.ErreurAffichage;
-import nfa035.projet2.feuille.Feuille;
 
 /**
  *  <b>Cette classe réprésente un contenu possédant  dans sa formule une opération</b>
