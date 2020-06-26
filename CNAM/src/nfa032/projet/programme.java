@@ -339,7 +339,7 @@ public class programme {
 			imgs.affichageListeImgs();
 			int r = sc.nextInt();
 			try {
-				imgs.setImgFocus(r + 1);
+				imgs.setImgFocus(r - 1);
 				menuChoixImg = false;
 			} catch (ArrayIndexOutOfBoundsException e) {
 				System.out.println("Choix d'image invalide");
