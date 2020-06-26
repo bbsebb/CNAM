@@ -13,6 +13,9 @@ public class testP {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String path = "src/nfa032/projet/img/testRec.ppm";
+		
+		
+		
 		Path chemin = Paths.get(path);
 		BufferedReader lecteur = null;
 		try {
@@ -23,7 +26,7 @@ public class testP {
 		}
 		Image img = new Image();
 		try {
-			img.chargerImg(lecteur,path);
+			img.chargerImg(lecteur,path,"test");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -11,7 +11,7 @@ import java.io.IOException;
  *
  */
 public class Image {
-	private String name, description, source;
+	private String name, description, source, FileName;
 	private int largeur, hauteur, maxCouleur;
 	private Point premierPoint, dernierPoint;
 
@@ -24,9 +24,23 @@ public class Image {
 	}
 
 	/**
+	 * @return the fileName
+	 */
+	public String getFileName() {
+		return FileName;
+	}
+
+	/**
+	 * @param fileName the fileName to set
+	 */
+	public void setFileName(String fileName) {
+		FileName = fileName;
+	}
+
+	/**
 	 * @return the name
 	 */
-	private String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -40,7 +54,7 @@ public class Image {
 	/**
 	 * @return the description
 	 */
-	private String getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
@@ -327,6 +341,16 @@ public class Image {
 			p = p.getSuivant();
 		}
 	}
+	
+	public void reduireLargeur(int n) {
+		int i =0;
+		Point p = this.getPremierPoint();
+		while (p != null) {
+			i = i+p.getNbrId();
+			p = p.getSuivant();
+		}
+		
+	}
 
 	/**
 	 * Charge l'image en transformant chaque pixel en {@link Point point}
@@ -334,7 +358,8 @@ public class Image {
 	 * @param source est l'adresse d'ou vient le flux de données
 	 * @throws IOException si l'image n'est pas chargeable.
 	 */
-	public void chargerImg(BufferedReader lecteur, String source) throws IOException {
+	public void chargerImg(BufferedReader lecteur, String source, String fileName) throws IOException {
+		this.setFileName(fileName);
 		this.setSource(source);
 		this.chargerImg(lecteur);
 	}
@@ -342,7 +367,6 @@ public class Image {
 	private void chargerImg(BufferedReader lecteur) throws IOException {
 		if(lecteur == null)
 			throw new IllegalArgumentException();
-		this.reset();
 		//1er ligne
 		this.setName(lecteur.readLine());
 		//2e ligne
