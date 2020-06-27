@@ -342,13 +342,37 @@ public class Image {
 		}
 	}
 	
-	public void reduireLargeur(int n) {
-		int i =0;
+	public void modifierLargeur(int l) {
+		int ratio = ((l - this.getLargeur())/this.getLargeur())*100;
+		boolean augm = (ratio >= 1 )? true: false;
+		int i = 0;
+		this.setLargeur(l);
 		Point p = this.getPremierPoint();
+		Point pPrec = null;
 		while (p != null) {
-			i = i+p.getNbrId();
+			if(augm) {
+				if(i == ratio) {
+					p.setNbrId(p.getNbrId() +1);
+					i=0;
+				}
+			}
+			if(!augm) {
+				if( i == (int)(1/ratio) ) {
+					p.setNbrId(p.getNbrId() -1);
+					if(p.getNbrId() == 0) {
+						pPrec.setSuivant(p.getSuivant());
+					}
+				}
+			}
+			pPrec = p;
 			p = p.getSuivant();
+			i++;
 		}
+		
+	}
+	
+	public void modifierHauteur(int h) {
+		
 		
 	}
 
@@ -469,6 +493,7 @@ public class Image {
 	 */
 	static int[] stringToInt(String str, int nbrNbr) {
 		str = str.trim();
+		boolean finChiffre = true;
 		char[] chaine = str.toCharArray();
 		int[] nombre = new int[nbrNbr];
 		int compteurNbr = 0;
@@ -478,12 +503,14 @@ public class Image {
 			if (chaine[i] > 47 && chaine[i] < 58) {
 				nbr = (int) factoriel(compteur) * (chaine[i] - 48) + nbr;
 				compteur++;
+				finChiffre = true;
 			}
-			if ((chaine[i] <= 47 || chaine[i] >= 58) || i == 0) {
+			if (((chaine[i] <= 47 || chaine[i] >= 58) || i == 0) && finChiffre) {
 				nombre[compteurNbr] = nbr;
 				nbr = 0;
 				compteur = 0;
 				compteurNbr++;
+				finChiffre = false;
 			}
 		}
 		return nombre;

@@ -32,10 +32,11 @@ public class programme {
 				System.out.println("1 - Charger une nouvelle image dans le programme");
 				System.out.println("2 - Modifier Image");
 				System.out.println("3 - Enregistrer Image");
+				System.out.println("4 - Voir le detaille des images chargées");
 			} else {
 				System.out.println("1 - Charger une image dans le programme");
 			}
-			System.out.println("4 - Quitter");
+			System.out.println("5 - Quitter");
 			int r;
 			try {
 				r = sc.nextInt();
@@ -60,6 +61,9 @@ public class programme {
 				menu3(imgs);
 				break;
 			case 4:
+				imgs.affichageDetailsListeImgs();
+				break;
+			case 5:
 				menu = false;
 				break;
 			default:
@@ -136,7 +140,10 @@ public class programme {
 			System.out.println("3 - Mettre l'image en NB");
 			System.out.println("4 - Recadrer l'image");
 			System.out.println("5 - Mettre en négatif");
-			System.out.println("6 - Retour");
+			System.out.println("6 - Redimensionner l'image");
+			System.out.println("7 - Inscruster un carré rouge dans l'image");
+			System.out.println("8 - Inscruster une image dans l'image");
+			System.out.println("9 - Retour");
 			int r;
 			try {
 				r = sc.nextInt();
@@ -147,15 +154,15 @@ public class programme {
 			}
 			switch (r) {
 			case 1:
-				
+
 				menu21(imgs);
 				break;
 			case 2:
-				
+
 				menu22(imgs);
 				break;
 			case 3:
-				
+
 				imgs.getImgs()[imgs.getImgFocus()].mettreEnNB();
 				System.out.println("L'image a été changer en Noir & Blanc");
 				break;
@@ -193,6 +200,15 @@ public class programme {
 				System.out.println("L'image a été changer en Noir & Blanc");
 				break;
 			case 6:
+				menu26(imgs);
+				break;
+			case 7:
+				//menu27(imgs);
+				break;
+			case 8:
+			//	menu28(imgs);
+				break;
+			case 9:
 				menu2 = false;
 				break;
 			default:
@@ -218,7 +234,7 @@ public class programme {
 			}
 			switch (r) {
 			case 1:
-				
+
 				System.out.println("Entrer le chemin du dossier où enregistrer l'image");
 				sc.nextLine();
 				String str = sc.nextLine();
@@ -234,7 +250,7 @@ public class programme {
 				}
 				break;
 			case 2:
-				
+
 				Path chemin1 = Paths.get(imgs.getImgs()[imgs.getImgFocus()].getSource());
 				BufferedWriter redacteur1;
 				try {
@@ -330,6 +346,41 @@ public class programme {
 			}
 		}
 	}
+
+	static public void menu26(Images imgs) {
+		boolean menu26 = true;
+		while (menu26) {
+			System.out.println("*****************************");
+			System.out.println("Menu pour modifier la taille de l'iamge.");
+			System.out.println("La taille de l'image est " + imgs.getImgs()[imgs.getImgFocus()].getLargeur() + "x"
+					+ imgs.getImgs()[imgs.getImgFocus()].getHauteur());
+			System.out.println("Entrer la nouvelle largeur");
+			int l;
+			try {
+				l = sc.nextInt();
+			} catch (InputMismatchException e) {
+				menu26 = false;
+				System.out.println("Erreur de saisis");
+				continue;
+			}
+			System.out.println("Entrer la nouvelle hauteur : ");
+			int h;
+			try {
+				h = sc.nextInt();
+			} catch (InputMismatchException e) {
+				menu26 = false;
+				System.out.println("Erreur de saisis");
+				continue;
+
+			}	
+			menu26 = false;
+			imgs.getImgs()[imgs.getImgFocus()].modifierLargeur(l);
+			imgs.getImgs()[imgs.getImgFocus()].modifierHauteur(h);
+			System.err.println("Entrer un chiffre entre 1 et 3");
+		}
+	}
+
+	
 
 	static public void menuChoixImg(Images imgs) {
 		boolean menuChoixImg = true;

@@ -1,5 +1,11 @@
 package nfa032.projet;
 
+/**
+ * Ce classe permet la gestion de plusieurs images chargées dans le programme
+ * 
+ * @author bbseb
+ *
+ */
 public class Images {
 	private int nbrImg = 0;
 	private int imgFocus;
@@ -70,9 +76,22 @@ public class Images {
 
 	public void affichageListeImgs() {
 		for (int i = 0; i < this.getNbrImg(); i++) {
-			System.out.println((i + 1) + " " + this.getImgs()[i].getFileName() + " " + this.getImgs()[i].getSource());
+			System.out.println((i + 1) + " " + this.getImgs()[i].getName() + " " + this.getImgs()[i].getSource());
+		}
+	}
+
+	public void affichageDetailsListeImgs() {
+		if (estVide())
+			System.out.println("Aucune image chargée");
+		else {
+			for (int i = 0; i < this.getNbrImg(); i++) {
+				System.out.println("Nom : " + this.getImgs()[i].getName() + " Taille : "
+						+ this.getImgs()[i].getLargeur() + "x" + this.getImgs()[i].getHauteur() + " Description : "
+						+ this.getImgs()[i].getDescription() + " Source : " + this.getImgs()[i].getSource());
+				
+			}
+			System.out.println("--------------------FIN-------------------");
 		}
 	}
 
 }
-
