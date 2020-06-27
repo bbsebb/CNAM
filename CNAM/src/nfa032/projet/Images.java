@@ -27,7 +27,7 @@ public class Images {
 	 * @param imgFocus the imgFocus to set
 	 */
 	public void setImgFocus(int imgFocus) throws ArrayIndexOutOfBoundsException {
-		if (imgFocus >= maxImg)
+		if (imgFocus >= nbrImg)
 			throw new ArrayIndexOutOfBoundsException();
 		if (this.getNbrImg() == 0)
 			this.imgFocus = -1;

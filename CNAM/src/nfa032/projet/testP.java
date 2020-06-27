@@ -14,36 +14,9 @@ public class testP {
 		// TODO Auto-generated method stub
 		String path = "src/nfa032/projet/img/testRec.ppm";
 		
+		float i = ((float)(5-3))/3;
 		
 		
-		Path chemin = Paths.get(path);
-		BufferedReader lecteur = null;
-		try {
-			lecteur = Files.newBufferedReader(chemin, StandardCharsets.US_ASCII);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Image img = new Image();
-		try {
-			img.chargerImg(lecteur,path,"test");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		path = "src/nfa032/projet/img/testRec2.ppm";
-		chemin = Paths.get(path);
-		BufferedWriter redacteur;
-		try {
-			redacteur = Files.newBufferedWriter(chemin, StandardCharsets.US_ASCII);
-			img.enregistrerImg(redacteur);
-			redacteur.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		System.out.println("test");
 	}
 
 }

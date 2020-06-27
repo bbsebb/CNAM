@@ -376,7 +376,6 @@ public class programme {
 			menu26 = false;
 			imgs.getImgs()[imgs.getImgFocus()].modifierLargeur(l);
 			imgs.getImgs()[imgs.getImgFocus()].modifierHauteur(h);
-			System.err.println("Entrer un chiffre entre 1 et 3");
 		}
 	}
 

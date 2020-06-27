@@ -148,10 +148,11 @@ public class Image {
 
 	/**
 	 * Insere un point au début de la liste
+	 * 
 	 * @param p est le point à inserer
 	 */
 	public void insererDebut(Point p) {
-		if(p == null)
+		if (p == null)
 			throw new IllegalArgumentException();
 		p.setSuivant(this.getPremierPoint());
 		this.setPremierPoint(p);
@@ -161,12 +162,13 @@ public class Image {
 
 	/**
 	 * Insère un point à la fin de la liste
+	 * 
 	 * @param p est le point à inserer
 	 */
 	public void insererFin(Point p) {
-		if(p == null)
+		if (p == null)
 			throw new IllegalArgumentException();
-		//Si p n'a pas de suivant, il devient automatiquement le dernier élement
+		// Si p n'a pas de suivant, il devient automatiquement le dernier élement
 		if (p.getSuivant() == null) {
 			if (this.getPremierPoint() == null) {
 				this.setPremierPoint(p);
@@ -183,6 +185,7 @@ public class Image {
 			this.setDernierPoint(p);
 		}
 	}
+
 	/**
 	 * 
 	 * @return vrai si Image est vide faux sinon
@@ -197,7 +200,9 @@ public class Image {
 	}
 
 	/**
-	 * Recadre l'image charger à partir du pixel situé en haut à gauche jusqu'au pixel en bas à droite
+	 * Recadre l'image charger à partir du pixel situé en haut à gauche jusqu'au
+	 * pixel en bas à droite
+	 * 
 	 * @param l1 est l'abscisse du point en haut à gauche
 	 * @param l2 est l'abscisse du point en bas à droite
 	 * @param c1 est l'ordonnée du point en haut à gauche
@@ -208,7 +213,8 @@ public class Image {
 		int compteurLigne = 1;
 		Point p = this.getPremierPoint();
 		Point pTemp = null;
-		if (l1 < l2 && l2 <= this.getLargeur() && c1 < c2 && c2 <= this.getHauteur() && l1 >= 0 && c1 >= 0 && !this.estVide()) {
+		if (l1 < l2 && l2 <= this.getLargeur() && c1 < c2 && c2 <= this.getHauteur() && l1 >= 0 && c1 >= 0
+				&& !this.estVide()) {
 			while (p != null) {
 				for (int i = p.getNbrId(); i >= 1; i--) {
 					// Premier point
@@ -254,7 +260,7 @@ public class Image {
 
 	}
 
-	//vide l'image
+	// vide l'image
 	private void reset() {
 		this.setDernierPoint(null);
 		this.setPremierPoint(null);
@@ -278,7 +284,8 @@ public class Image {
 	}
 
 	/**
-	 * Fonce vers une couleur donnée en paramètre 
+	 * Fonce vers une couleur donnée en paramètre
+	 * 
 	 * @param couleur est la couleur à foncer
 	 */
 	public void foncerImg(String couleur) {
@@ -306,7 +313,8 @@ public class Image {
 	}
 
 	/**
-	 * Eclaircit vers une couleur donnée en paramètre 
+	 * Eclaircit vers une couleur donnée en paramètre
+	 * 
 	 * @param couleur est la couleur à eclaircir
 	 */
 	public void eclairecirImg(String couleur) {
@@ -332,7 +340,7 @@ public class Image {
 			p = p.getSuivant();
 		}
 	}
-	
+
 	public void mettreNegatif() {
 		Point p = this.getPremierPoint();
 		int intensiteMax = this.getMaxCouleur();
@@ -341,45 +349,80 @@ public class Image {
 			p = p.getSuivant();
 		}
 	}
-	
-	public void modifierLargeur(int l) {
-		int ratio = ((l - this.getLargeur())/this.getLargeur())*100;
-		boolean augm = (ratio >= 1 )? true: false;
+
+	public int nbrPoint() { // Pour test
+		Point p = this.getPremierPoint();
 		int i = 0;
+		while (p != null) {
+			i = i + p.getNbrId();
+			p = p.getSuivant();
+		}
+		return i;
+	}
+
+	public void modifierLargeur(int l) {
+		double ratio = ((double) (l - this.getLargeur())) / this.getLargeur();
+		double i = 0;
 		this.setLargeur(l);
 		Point p = this.getPremierPoint();
 		Point pPrec = null;
-		while (p != null) {
-			if(augm) {
-				if(i == ratio) {
-					p.setNbrId(p.getNbrId() +1);
-					i=0;
-				}
-			}
-			if(!augm) {
-				if( i == (int)(1/ratio) ) {
-					p.setNbrId(p.getNbrId() -1);
-					if(p.getNbrId() == 0) {
-						pPrec.setSuivant(p.getSuivant());
+		while (p != null && ratio != 0) {
+			int nbrPoint = p.getNbrId();
+			for (int j = 0; j < nbrPoint; j++) {
+				if (ratio < 0) { // Diminuation largeur
+					if (i <= -1) { // dès que on dépasse 1 en additionnant les ratios, on ajoute un Point
+						p.setNbrId(p.getNbrId() - 1); 
+						if (p.getNbrId() == 0) 
+							pPrec.setSuivant(p.getSuivant());
+						i = 0 + (i + 1); // on remet le reste 
+					}
+				} else {
+					if (i >= 1) { // Augmentation largeur
+						p.setNbrId(p.getNbrId() + 1);
+						i = 0 + (i - 1);
 					}
 				}
+				i = i + ratio;
 			}
 			pPrec = p;
 			p = p.getSuivant();
-			i++;
 		}
-		
 	}
-	
+
 	public void modifierHauteur(int h) {
-		
-		
+		double ratio = ((double) (h - this.getHauteur())) / this.getHauteur();
+		double i = 0;
+		Point p = this.getPremierPoint();
+		int compteurColonne = 0;
+		Point[] lignePrec = new Point[this.getLargeur()-1];
+		while (p != null) {
+			for (int j = p.getNbrId(); j >= 1; j--) {
+				if(compteurColonne == 0)
+					 lignePrec = new Point[this.getLargeur()-1];
+				lignePrec[compteurColonne] = p;
+				compteurColonne++;
+				if (compteurColonne == this.getLargeur()) {
+					compteurColonne = 0;
+			
+					if(i >= 1) {
+						p.setSuivant(lignePrec[0]);
+						lignePrec[this.getLargeur()-1].setSuivant(p.getSuivant());
+						i = 0 + (i - 1);
+					}
+					
+					i = i + ratio;
+				}
+			}
+
+			p = p.getSuivant();
+		}
 	}
 
 	/**
 	 * Charge l'image en transformant chaque pixel en {@link Point point}
+	 * 
 	 * @param lecteur est le flux de donné vers le fichier à charger
-	 * @param source est l'adresse d'ou vient le flux de données
+	 * @param source  est l'adresse d'ou vient le flux de données
 	 * @throws IOException si l'image n'est pas chargeable.
 	 */
 	public void chargerImg(BufferedReader lecteur, String source, String fileName) throws IOException {
@@ -389,19 +432,19 @@ public class Image {
 	}
 
 	private void chargerImg(BufferedReader lecteur) throws IOException {
-		if(lecteur == null)
+		if (lecteur == null)
 			throw new IllegalArgumentException();
-		//1er ligne
+		// 1er ligne
 		this.setName(lecteur.readLine());
-		//2e ligne
+		// 2e ligne
 		this.setDescription(lecteur.readLine());
-		//3e ligne
+		// 3e ligne
 		int[] dimension = stringToInt(lecteur.readLine(), 2);
 		this.setLargeur(dimension[1]);
 		this.setHauteur(dimension[0]);
-		//4e ligne
-		this.setMaxCouleur(stringToInt(lecteur.readLine(), 1)[0]);	
-		//image
+		// 4e ligne
+		this.setMaxCouleur(stringToInt(lecteur.readLine(), 1)[0]);
+		// image
 		int c = lecteur.read();
 		int numCouleur = 0;
 		int compteurChiffre = 3;
@@ -415,7 +458,7 @@ public class Image {
 				compteurChiffre--;
 				estNbr = true;
 			}
-			if (estNbr && (c < 48 || c > 57)) { //si c est un espace et la lecture du nombre est fini
+			if (estNbr && (c < 48 || c > 57)) { // si c est un espace et la lecture du nombre est fini
 				numCouleur = (int) (numCouleur / factoriel(compteurChiffre + 1));
 				compteurChiffre = 3;
 				couleurs[compteurCouleur] = numCouleur;
@@ -423,7 +466,7 @@ public class Image {
 				estNbr = false;
 				compteurCouleur++;
 			}
-			if (compteurCouleur == 3) { //une fois que l'on a les 3 nombres des couleurs du points
+			if (compteurCouleur == 3) { // une fois que l'on a les 3 nombres des couleurs du points
 				Point p = new Point(couleurs[0], couleurs[1], couleurs[2]);
 				if (pPrec != null && pPrec.egal(p))
 					pPrec.setNbrId(pPrec.getNbrId() + 1);
@@ -441,12 +484,13 @@ public class Image {
 	}
 
 	/**
-	 * Transforme la liste de point en image de pixel 
+	 * Transforme la liste de point en image de pixel
+	 * 
 	 * @param redacteur est le flux de donnée ou sera enregistrer l'image
 	 * @throws IOException si l'image n'est pas enregistrable
 	 */
 	public void enregistrerImg(BufferedWriter redacteur) throws IOException {
-		if(redacteur == null) 
+		if (redacteur == null)
 			throw new IllegalArgumentException();
 		redacteur.write(this.getName() + "\n");
 		redacteur.write(this.getDescription() + "\n");
@@ -471,8 +515,9 @@ public class Image {
 	}
 
 	/**
-	 * Renvoie la puissance de 10 du paramètre 
-	 * @param n est la puissance 
+	 * Renvoie la puissance de 10 du paramètre
+	 * 
+	 * @param n est la puissance
 	 * @return
 	 */
 	static double factoriel(int n) {
@@ -486,8 +531,10 @@ public class Image {
 	}
 
 	/**
-	 * Renvoie un tableau d'entier positif contenu dans une chaine de caractère dans la limite du deuxieme paramètre
-	 * @param str est l'entier positif en format String
+	 * Renvoie un tableau d'entier positif contenu dans une chaine de caractère dans
+	 * la limite du deuxieme paramètre
+	 * 
+	 * @param str    est l'entier positif en format String
 	 * @param nbrNbr est le nombre d'entier à renvoyé dans le chaine
 	 * @return
 	 */
