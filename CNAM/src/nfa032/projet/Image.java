@@ -392,28 +392,34 @@ public class Image {
 	public void modifierHauteur(int h) {
 		double ratio = ((double) (h - this.getHauteur())) / this.getHauteur();
 		double i = 0;
+		Point pPrec = null;
 		Point p = this.getPremierPoint();
 		int compteurColonne = 0;
-		Point[] lignePrec = new Point[this.getLargeur()-1];
+		Point[] lignePrec = new Point[this.getLargeur()];
+		this.setHauteur(h);
 		while (p != null) {
 			for (int j = p.getNbrId(); j >= 1; j--) {
 				if(compteurColonne == 0)
-					 lignePrec = new Point[this.getLargeur()-1];
-				lignePrec[compteurColonne] = p;
+					 lignePrec = new Point[this.getLargeur()];
+				lignePrec[compteurColonne] = p.clone();
 				compteurColonne++;
 				if (compteurColonne == this.getLargeur()) {
 					compteurColonne = 0;
 			
 					if(i >= 1) {
-						p.setSuivant(lignePrec[0]);
-						lignePrec[this.getLargeur()-1].setSuivant(p.getSuivant());
+						pPrec.setSuivant(lignePrec[0]);
 						i = 0 + (i - 1);
+						int k;
+						for(k = 1; k < lignePrec.length;k++) {
+							lignePrec[k-1].setSuivant(lignePrec[k]);
+						}
+						lignePrec[k-1].setSuivant(p);
 					}
 					
 					i = i + ratio;
 				}
 			}
-
+			pPrec = p;
 			p = p.getSuivant();
 		}
 	}

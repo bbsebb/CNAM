@@ -199,4 +199,11 @@ public class Point {
 		else
 			return false;
 	}
+	 
+	public Point clone() {
+		Point p =  new Point(this.getRouge(),this.getVert(),this.getBleu());
+		p.setNbrId(this.getNbrId());
+		p.setSuivant(this.getSuivant());
+		return p ;
+	}
 }
