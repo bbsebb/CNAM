@@ -1,4 +1,4 @@
-package nfa032.projet;
+package nfa032.projet.image;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +10,7 @@ import java.io.IOException;
  * @author bbsebb
  *
  */
-public class Image {
+ class Image {
 	private String name, description, source, FileName;
 	private int largeur, hauteur, maxCouleur;
 	private Point premierPoint, dernierPoint;
@@ -18,7 +18,7 @@ public class Image {
 	/**
 	 * Constructeur par defaut, il le premier élément de la liste à null
 	 */
-	public Image() {
+	 Image() {
 		this.setPremierPoint(null);
 		this.setDernierPoint(null);
 	}
@@ -110,7 +110,7 @@ public class Image {
 	/**
 	 * @return le chemin de l'image chargée
 	 */
-	public String getSource() {
+	String getSource() {
 		return source;
 	}
 
@@ -124,7 +124,7 @@ public class Image {
 	/**
 	 * @return the premierPoint
 	 */
-	public Point getPremierPoint() {
+	Point getPremierPoint() {
 		return premierPoint;
 	}
 
@@ -151,7 +151,7 @@ public class Image {
 	 * 
 	 * @param p est le point à inserer
 	 */
-	public void insererDebut(Point p) {
+	void insererDebut(Point p) {
 		if (p == null)
 			throw new IllegalArgumentException();
 		p.setSuivant(this.getPremierPoint());
@@ -165,7 +165,7 @@ public class Image {
 	 * 
 	 * @param p est le point à inserer
 	 */
-	public void insererFin(Point p) {
+	void insererFin(Point p) {
 		if (p == null)
 			throw new IllegalArgumentException();
 		// Si p n'a pas de suivant, il devient automatiquement le dernier élement
@@ -190,7 +190,7 @@ public class Image {
 	 * 
 	 * @return vrai si Image est vide faux sinon
 	 */
-	public boolean estVide() {
+	boolean estVide() {
 		boolean estVide;
 		if (this.getPremierPoint() == null)
 			estVide = true;
@@ -208,7 +208,7 @@ public class Image {
 	 * @param c1 est l'ordonnée du point en haut à gauche
 	 * @param c2 est l'ordonnée du point en bas à droite
 	 */
-	public void recadrer(int l1, int l2, int c1, int c2) {
+	void recadrer(int l1, int l2, int c1, int c2) {
 		int compteurColonne = 1;
 		int compteurLigne = 1;
 		Point p = this.getPremierPoint();
@@ -260,22 +260,10 @@ public class Image {
 
 	}
 
-	// vide l'image
-	private void reset() {
-		this.setDernierPoint(null);
-		this.setPremierPoint(null);
-		this.setDescription("Inconnu");
-		this.setName("Inconnu");
-		this.setHauteur(-1);
-		this.setSource("Inconnu");
-		this.setLargeur(-1);
-		this.setMaxCouleur(-1);
-	}
-
 	/**
 	 * Met chaque pixel de l'image en noir & blanc
 	 */
-	public void mettreEnNB() {
+	void mettreEnNB() {
 		Point p = this.getPremierPoint();
 		while (p != null) {
 			p.mettreEnNB();
@@ -288,7 +276,7 @@ public class Image {
 	 * 
 	 * @param couleur est la couleur à foncer
 	 */
-	public void foncerImg(String couleur) {
+	void foncerImg(String couleur) {
 		Point p = this.getPremierPoint();
 		int intensiteMax = this.getMaxCouleur();
 		while (p != null) {
@@ -317,7 +305,7 @@ public class Image {
 	 * 
 	 * @param couleur est la couleur à eclaircir
 	 */
-	public void eclairecirImg(String couleur) {
+	void eclairecirImg(String couleur) {
 		Point p = this.getPremierPoint();
 		int intensiteMax = this.getMaxCouleur();
 		while (p != null) {
@@ -341,7 +329,7 @@ public class Image {
 		}
 	}
 
-	public void mettreNegatif() {
+	void mettreNegatif() {
 		Point p = this.getPremierPoint();
 		int intensiteMax = this.getMaxCouleur();
 		while (p != null) {
@@ -350,7 +338,7 @@ public class Image {
 		}
 	}
 
-	public int nbrPoint() { // Pour test
+	int nbrPoint() { // Pour test
 		Point p = this.getPremierPoint();
 		int i = 0;
 		while (p != null) {
@@ -360,7 +348,9 @@ public class Image {
 		return i;
 	}
 
-	public void modifierLargeur(int l) {
+	void modifierLargeur(int l) {
+		if (l <= 0)
+			throw new IllegalArgumentException(" La largeur, " + l + " doit être supérieure à 0");
 		double ratio = ((double) (l - this.getLargeur())) / this.getLargeur();
 		double i = 0;
 		this.setLargeur(l);
@@ -389,13 +379,15 @@ public class Image {
 		}
 	}
 
-	public void modifierHauteur(int h) {
+	void modifierHauteur(int h) {
+		if (h <= 0)
+			throw new IllegalArgumentException(" La largeur, " + h + " doit être supérieure à 0");
 		double ratio = ((double) (h - this.getHauteur())) / this.getHauteur();
-		double i = (ratio>0)?0:ratio*2;
+		double i = (ratio > 0) ? 0 : ratio * 2; // Pour diminuer on supprimer la ligne avant et pour agrandir on ajoute
+												// la ligne après
 		Point[] lignePrec = new Point[this.getLargeur()];
 		boolean suppLigne = false;
 		Point debutSuppLigne = null;
-		Point pPrec = null;
 		Point p = this.getPremierPoint();
 		int compteurColonne = 0;
 		this.setHauteur(h);
@@ -404,14 +396,14 @@ public class Image {
 			for (int j = nbrId; j >= 1; j--) {
 				if (compteurColonne == this.getLargeur() - 1) { // Dernier point d'une ligne
 					lignePrec[compteurColonne] = p.clone();
-					if(suppLigne) { // Suppression de la ligne
+					if (suppLigne) { // Suppression de la ligne
 						if (j > 1) { // si le dernier point est sur pls lignes
 							Point pSuivant = p.clone();
 							pSuivant.setSuivant(p.getSuivant());
 							p.setNbrId(p.getNbrId() - (j - 1));
 							pSuivant.setNbrId((j - 1));
 							p.setSuivant(pSuivant);
-							j=1;
+							j = 1;
 						}
 						debutSuppLigne.setSuivant(p.getSuivant());
 						suppLigne = false;
@@ -423,7 +415,7 @@ public class Image {
 							p.setNbrId(p.getNbrId() - (j - 1));
 							pSuivant.setNbrId((j - 1));
 							p.setSuivant(pSuivant);
-							j=1;
+							j = 1;
 						}
 						// On insère la précédente ligne
 						Point pTempSuivant = p.getSuivant();
@@ -451,24 +443,95 @@ public class Image {
 							p.setNbrId(p.getNbrId() - (j - 1));
 							pSuivant.setNbrId((j - 1));
 							p.setSuivant(pSuivant);
-							j=1;
+							j = 1;
 						}
 						debutSuppLigne = p;
 						i = 0 + (i + 1);
 					} else {
 						i = i + ratio;
 					}
-					
+
 					compteurColonne = 0;
 				} else { // Autres points d'une lignes
 					lignePrec[compteurColonne] = p.clone();
 					compteurColonne++;
 				}
-				
-				
 
 			}
-			pPrec = p;
+			p = p.getSuivant();
+		}
+	}
+
+	void incrusterRectangle(int coinSupGaucheX, int coinSupGaucheY, int largeur, int hauteur, String couleur) {
+		couleur = couleur.trim().toLowerCase();
+		if (coinSupGaucheX < 1 || coinSupGaucheY < 1 || largeur < 1 || hauteur < 1
+				|| (couleur != "rouge" && couleur != "vert" && couleur != "bleu"))
+			throw new IllegalArgumentException();
+		if (coinSupGaucheX + largeur - 1 > this.getLargeur() || coinSupGaucheY + hauteur - 1 > this.getHauteur()) {
+			throw new IllegalArgumentException();
+		}
+		Point pTemp = null;
+		int compteurColonne = 1;
+		int compteurLigne = 1;
+		int coinInfDroitX = coinSupGaucheX + largeur - 1;
+		int coinInfDroitY = coinSupGaucheY + hauteur - 1;
+		Point p = this.getPremierPoint();
+		while (p != null) {
+			int nbrId = p.getNbrId();
+			for (int i = nbrId; i >= 1; i--) {
+
+				if (compteurColonne >= coinSupGaucheX && compteurColonne <= coinInfDroitX
+						&& compteurLigne >= coinSupGaucheY && compteurLigne <= coinInfDroitY) { // On est dans les
+																								// coordonnées du
+																								// rectangle
+					if (coinSupGaucheX == compteurColonne) { // Premier point d'une ligne dans le rectangle
+						if (p.getNbrId() != i) { // Si le point exister déjà avant
+							Point pNouveau = p.clone();
+							pNouveau.setSuivant(p.getSuivant());
+							p.setSuivant(pNouveau);
+							p.setNbrId(p.getNbrId() - i);
+							pNouveau.setNbrId(i);
+							p = pNouveau;
+						}
+						if (p.getNbrId() > largeur) {
+							pTemp = p.clone(); // On sauvegarde la couleur si le point dépasse une ligne entière
+						} else {
+							pTemp = null;
+						}
+						p.setCouleur(couleur, this.maxCouleur);
+					} else if (coinInfDroitX == compteurColonne) { // Dernier point d'une ligne dans le rectangle
+						if (i > 1) { // Si le point existera encore après
+							Point pSuivant;
+							if (pTemp == null) { // On récupère la couleur précédente si pTemp n'est pas null
+								pSuivant = p.clone();
+							} else {
+								pSuivant = pTemp;
+							}
+							pSuivant.setSuivant(p.getSuivant());
+							p.setSuivant(pSuivant);
+							p.setNbrId(p.getNbrId() - (i - 1));
+							pSuivant.setNbrId((i - 1));
+							i = 1;
+						}
+						p.setCouleur(couleur, this.maxCouleur);
+					} else { // Autres points du rectangle
+						if (p.getNbrId() + compteurColonne - 1 > largeur) {
+							if (p.getNbrId() == i)
+								pTemp = p.clone(); // On sauvegarde la couleur si le point dépasse une ligne entière
+													// (uniquement la première occurence du point)
+						} else {
+							pTemp = null;
+						}
+						p.setCouleur(couleur, this.maxCouleur);
+					}
+				}
+				if (compteurColonne == this.getLargeur()) {
+					compteurLigne++;
+					compteurColonne = 0;
+				}
+				compteurColonne++;
+			}
+
 			p = p.getSuivant();
 		}
 	}
@@ -480,7 +543,7 @@ public class Image {
 	 * @param source  est l'adresse d'ou vient le flux de données
 	 * @throws IOException si l'image n'est pas chargeable.
 	 */
-	public void chargerImg(BufferedReader lecteur, String source, String fileName) throws IOException {
+	void chargerImg(BufferedReader lecteur, String source, String fileName) throws IOException {
 		this.setFileName(fileName);
 		this.setSource(source);
 		this.chargerImg(lecteur);
@@ -544,7 +607,7 @@ public class Image {
 	 * @param redacteur est le flux de donnée ou sera enregistrer l'image
 	 * @throws IOException si l'image n'est pas enregistrable
 	 */
-	public void enregistrerImg(BufferedWriter redacteur) throws IOException {
+	void enregistrerImg(BufferedWriter redacteur) throws IOException {
 		if (redacteur == null)
 			throw new IllegalArgumentException();
 		redacteur.write(this.getName() + "\n");

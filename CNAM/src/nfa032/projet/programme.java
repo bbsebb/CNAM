@@ -11,6 +11,11 @@ import java.nio.file.Paths;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import nfa032.projet.image.Images;
+import nfa032.projet.image.MenuChargementImg;
+import nfa032.projet.image.MenuChoixImg;
+import nfa032.projet.image.MenuModificationImg;
+
 public class programme {
 	static Scanner sc = new Scanner(System.in);
 	static String path = "src/nfa032/projet/img";
@@ -68,15 +73,15 @@ public class programme {
 				break;
 			default:
 				if (imgs.estVide())
-					System.err.println("Entrer un chiffre 1 ou 4");
+					System.err.println("Entrer un chiffre 1 ou 5");
 				else
-					System.err.println("Entrer un chiffre entre 1 et 4");
+					System.err.println("Entrer un chiffre entre 1 et 5");
 
 			}
 		}
 	}
 
-	static public void menu1(Images imgs) {
+	static public void menu1(MenuChargementImg imgs) {
 		boolean menu1 = true;
 		while (menu1) {
 			System.out.println("*****************************");
@@ -108,16 +113,25 @@ public class programme {
 
 					System.out.println("Entrer le numéro de l'image");
 					int r2 = sc.nextInt();
+					if(r2<1 || r2>listing.length)
+						throw new IllegalArgumentException(String.valueOf(listing.length));
 					String source = listing[r2 - 1].getPath();
 					Path chemin = Paths.get(source);
 					BufferedReader lecteur = null;
 					lecteur = Files.newBufferedReader(chemin, StandardCharsets.US_ASCII);
-					Image img = new Image();
-					img.chargerImg(lecteur, source, listing[r2 - 1].getName());
-					imgs.ajoutImg(img);
+					imgs.ajoutImg(lecteur, source, listing[r2 - 1].getName());
 					lecteur.close();
 					System.out.println("Image chargée");
-				} catch (IOException e) {
+				} catch (InputMismatchException e) {
+					System.err.println("Veuillez entrer un chiffre");
+					r = 1;
+					sc.nextLine();
+					menu1 = true;
+				} catch (IllegalArgumentException e) {
+					System.err.println("Veuillez entrer un chiffre entre 1 et " + e.getMessage());
+					menu1 = true;
+				}
+				catch (IOException e) {
 					System.err.println("Erreur dans le chargement de l'image, Verifier si le chemin est correcte");
 
 					menu1 = true;
@@ -131,7 +145,7 @@ public class programme {
 		}
 	}
 
-	static public void menu2(Images imgs) {
+	static public void menu2(MenuModificationImg imgs) {
 		boolean menu2 = true;
 		while (menu2) {
 			System.out.println("*****************************");
@@ -163,7 +177,7 @@ public class programme {
 				break;
 			case 3:
 
-				imgs.getImgs()[imgs.getImgFocus()].mettreEnNB();
+				imgs.mettreEnNBFocus();
 				System.out.println("L'image a été changer en Noir & Blanc");
 				break;
 			case 4:
@@ -171,8 +185,8 @@ public class programme {
 				l1 = l2 = c1 = c2 = -1;
 				System.out.println("*****************************");
 				System.out.println(
-						"L'image fait :" + imgs.getImgs()[imgs.getImgFocus()].getLargeur() + " pixels de largeur et "
-								+ imgs.getImgs()[imgs.getImgFocus()].getHauteur() + " pixels de hauteur");
+						"L'image fait :" + imgs.getLargeurFocus() + " pixels de largeur et "
+								+ imgs.getHauteurFocus() + " pixels de hauteur");
 				System.out.println("*****************************");
 				try {
 					System.out.println("Choississez la première ligne des pixels");
@@ -186,9 +200,9 @@ public class programme {
 				} catch (InputMismatchException e) {
 					System.err.println("Vous avez entré des points incorrectes");
 				}
-				if (l1 < l2 && l2 <= imgs.getImgs()[imgs.getImgFocus()].getLargeur() && c1 < c2
-						&& c2 <= imgs.getImgs()[imgs.getImgFocus()].getHauteur() && l1 >= 0 && c1 >= 0) {
-					imgs.getImgs()[imgs.getImgFocus()].recadrer(l1, l2, c1, c2);
+				if (l1 < l2 && l2 <= imgs.getLargeurFocus() && c1 < c2
+						&& c2 <= imgs.getHauteurFocus() && l1 >= 0 && c1 >= 0) {
+					imgs.recadrerFocus(l1, l2, c1, c2);
 					System.out.println("l'image a été recadré");
 				} else {
 					System.err.println("Vous avez entré des points incorrectes");
@@ -196,14 +210,14 @@ public class programme {
 
 				break;
 			case 5:
-				imgs.getImgs()[imgs.getImgFocus()].mettreNegatif();
+				imgs.mettreNegatifFocus();
 				System.out.println("L'image a été changer en Noir & Blanc");
 				break;
 			case 6:
 				menu26(imgs);
 				break;
 			case 7:
-				//menu27(imgs);
+				menu27(imgs);
 				break;
 			case 8:
 			//	menu28(imgs);
@@ -212,7 +226,7 @@ public class programme {
 				menu2 = false;
 				break;
 			default:
-				System.err.println("Entrer un chiffre entre 1 et 6");
+				System.err.println("Entrer un chiffre entre 1 et 9");
 			}
 		}
 	}
@@ -242,7 +256,7 @@ public class programme {
 				BufferedWriter redacteur;
 				try {
 					redacteur = Files.newBufferedWriter(chemin, StandardCharsets.US_ASCII);
-					imgs.getImgs()[imgs.getImgFocus()].enregistrerImg(redacteur);
+					imgs.enregistrerImgFocus(redacteur);
 					redacteur.close();
 					System.out.println("Image enregistrée");
 				} catch (IOException e) {
@@ -251,11 +265,11 @@ public class programme {
 				break;
 			case 2:
 
-				Path chemin1 = Paths.get(imgs.getImgs()[imgs.getImgFocus()].getSource());
+				Path chemin1 = Paths.get(imgs.getSourceFocus());
 				BufferedWriter redacteur1;
 				try {
 					redacteur1 = Files.newBufferedWriter(chemin1, StandardCharsets.US_ASCII);
-					imgs.getImgs()[imgs.getImgFocus()].enregistrerImg(redacteur1);
+					imgs.enregistrerImgFocus(redacteur1);
 					redacteur1.close();
 					System.out.println("Image enregistrée");
 				} catch (IOException e) {
@@ -271,7 +285,7 @@ public class programme {
 		}
 	}
 
-	static public void menu21(Images imgs) {
+	static public void menu21(MenuModificationImg imgs) {
 		boolean menu21 = true;
 		while (menu21) {
 			System.out.println("*****************************");
@@ -292,15 +306,15 @@ public class programme {
 			}
 			switch (r) {
 			case 1:
-				imgs.getImgs()[imgs.getImgFocus()].foncerImg("rouge");
+				imgs.foncerImgFocus("rouge");
 				System.out.println("L'image a été foncé vers le rouge");
 				break;
 			case 2:
-				imgs.getImgs()[imgs.getImgFocus()].foncerImg("vert");
+				imgs.foncerImgFocus("vert");
 				System.out.println("L'image a été foncé vers le vert");
 				break;
 			case 3:
-				imgs.getImgs()[imgs.getImgFocus()].foncerImg("bleu");
+				imgs.foncerImgFocus("bleu");
 				System.out.println("L'image a été foncé vers le bleu");
 				break;
 			case 4:
@@ -313,7 +327,7 @@ public class programme {
 
 	}
 
-	static public void menu22(Images imgs) {
+	static public void menu22(MenuModificationImg imgs) {
 		boolean menu22 = true;
 		while (menu22) {
 			System.out.println("*****************************");
@@ -324,18 +338,25 @@ public class programme {
 			System.out.println("2 - eclairecir vers le vert");
 			System.out.println("3 - eclairecir vers le bleu");
 			System.out.println("4 - Retour");
-			int r = sc.nextInt();
+			int r;
+			try {
+				r = sc.nextInt();
+			} catch (InputMismatchException e) {
+				r = -1;
+				sc.nextLine();
+
+			}
 			switch (r) {
 			case 1:
-				imgs.getImgs()[imgs.getImgFocus()].eclairecirImg("rouge");
+				imgs.eclairecirImgFocus("rouge");
 				System.out.println("L'image a été eclairci vers le rouge");
 				break;
 			case 2:
-				imgs.getImgs()[imgs.getImgFocus()].eclairecirImg("vert");
+				imgs.eclairecirImgFocus("vert");
 				System.out.println("L'image a été eclairci vers le vert");
 				break;
 			case 3:
-				imgs.getImgs()[imgs.getImgFocus()].eclairecirImg("bleu");
+				imgs.eclairecirImgFocus("bleu");
 				System.out.println("L'image a été eclairci vers le bleu");
 				break;
 			case 4:
@@ -347,20 +368,21 @@ public class programme {
 		}
 	}
 
-	static public void menu26(Images imgs) {
+	static public void menu26(MenuModificationImg imgs) {
 		boolean menu26 = true;
 		while (menu26) {
 			System.out.println("*****************************");
-			System.out.println("Menu pour modifier la taille de l'iamge.");
-			System.out.println("La taille de l'image est " + imgs.getImgs()[imgs.getImgFocus()].getLargeur() + "x"
-					+ imgs.getImgs()[imgs.getImgFocus()].getHauteur());
+			System.out.println("Menu pour modifier la taille de l'image.");
+			System.out.println("La taille de l'image est " + imgs.getLargeurFocus() + "x"
+					+ imgs.getHauteurFocus());
 			System.out.println("Entrer la nouvelle largeur");
 			int l;
 			try {
 				l = sc.nextInt();
 			} catch (InputMismatchException e) {
-				menu26 = false;
-				System.out.println("Erreur de saisis");
+				menu26 = true;
+				sc.nextLine();
+				System.err.println("Erreur de saisis");
 				continue;
 			}
 			System.out.println("Entrer la nouvelle hauteur : ");
@@ -368,31 +390,120 @@ public class programme {
 			try {
 				h = sc.nextInt();
 			} catch (InputMismatchException e) {
-				menu26 = false;
-				System.out.println("Erreur de saisis");
+				menu26 = true;
+				sc.nextLine();
+				System.err.println("Erreur de saisis");
 				continue;
 
 			}	
+			
+			try {
+			imgs.modifierLargeurFocus(l);
+			imgs.modifierHauteurFocus(h);
 			menu26 = false;
-			imgs.getImgs()[imgs.getImgFocus()].modifierLargeur(l);
-			imgs.getImgs()[imgs.getImgFocus()].modifierHauteur(h);
+			} catch (IllegalArgumentException e) {
+				System.err.println("Erreur de saisis :" + e.getMessage());
+				menu26 = true;
+			}
 		}
 	}
-
+	
+	static public void menu27(MenuModificationImg imgs) {
+		boolean menu27 = true;
+		while (menu27) {
+			int coinSupGaucheX = 0;
+			int coinSupGaucheY = 0;
+			int largeur = 0;
+			int hauteur = 0;
+			String couleur = null;
+			System.out.println("*****************************");
+			System.out.println("Menu pour incruster un carré.");
+			System.out.println("Choissir la couleur du carré");
+			System.out.println("1 - Rouge");
+			System.out.println("2 - Vert");
+			System.out.println("3 - Bleu");
+			int numCouleur;
+			try {
+				numCouleur = sc.nextInt();
+				switch (numCouleur) {
+				case 1:
+					couleur = "rouge";
+					break;
+				case 2:
+					couleur = "vert";
+					break;
+				case 3:
+					couleur = "bleu";
+					break;
+				default:
+					throw new IllegalArgumentException();
+				}
+			} catch (InputMismatchException | IllegalArgumentException e) {
+				numCouleur = -1;
+				sc.nextLine();
+				System.err.println("Erreur de saisi des couleurs, veuillez réessayer");
+				continue;
+			}
+			System.out.println("Choisir la coordonnée X ou l'inscruster entre 1 et "+ imgs.getLargeurFocus());
+			try {
+				coinSupGaucheX = sc.nextInt();
+			} catch (InputMismatchException e) {
+				menu27 = true;
+				sc.nextLine();
+				System.err.println("Veuillez entrer uniquement des nombres");
+				continue;
+			}	
+			System.out.println("Choisir la coordonnée Y ou l'inscruster entre 1 et "+ imgs.getHauteurFocus());
+			try {
+				coinSupGaucheY = sc.nextInt();
+			} catch (InputMismatchException e) {
+				menu27 = true;
+				sc.nextLine();
+				System.err.println("Veuillez entrer uniquement des nombres");
+				continue;
+			}	
+			System.out.println("Choisir la largeur ou l'inscruster entre 1 et "+ (imgs.getLargeurFocus()- coinSupGaucheX+1));
+			try {
+				largeur = sc.nextInt();
+			} catch (InputMismatchException e) {
+				menu27 = true;
+				sc.nextLine();
+				System.err.println("Veuillez entrer uniquement des nombres");
+				continue;
+			}
+			System.out.println("Choisir la largeur ou l'inscruster entre 1 et "+ (imgs.getHauteurFocus()- coinSupGaucheY+1));
+			try {
+				hauteur = sc.nextInt();
+			} catch (InputMismatchException e) {
+				menu27 = true;
+				sc.nextLine();
+				System.err.println("Veuillez entrer uniquement des nombres");
+				continue;
+			}
+			try {
+			imgs.inscrusterRectangleFocus(coinSupGaucheX, coinSupGaucheY, largeur, hauteur, couleur);
+			} catch (IllegalArgumentException e) {
+				menu27 = true;
+				System.err.println("Erreur de saisis");
+			}
+			menu27 = false;
+		}
+	}
 	
 
-	static public void menuChoixImg(Images imgs) {
+	static public void menuChoixImg(MenuChoixImg imgs) {
 		boolean menuChoixImg = true;
 		while (menuChoixImg) {
 			System.out.println("*****************************");
 			System.out.println("Choississez l'image chargée où faire votre action");
 			imgs.affichageListeImgs();
-			int r = sc.nextInt();
+			int r ;
 			try {
-				imgs.setImgFocus(r - 1);
+				r = sc.nextInt();
+				imgs.setIdImgFocus(r - 1);
 				menuChoixImg = false;
-			} catch (ArrayIndexOutOfBoundsException e) {
-				System.out.println("Choix d'image invalide");
+			} catch (ArrayIndexOutOfBoundsException | InputMismatchException e) {
+				System.err.println("Choix d'image invalide");
 				menuChoixImg = true;
 			}
 		}

@@ -1,11 +1,11 @@
-package nfa032.projet;
+package nfa032.projet.image;
 
 /**
  * Point represente un ou plusieurs pixel identique d'une image ppm.
  * @author bbsebb
  *
  */
-public class Point {
+ class Point {
 	private int rouge, vert, bleu;
 	private int nbrId;
 	private Point PointSuivant;
@@ -126,6 +126,31 @@ public class Point {
 			return false;
 	}
 	
+	 
+	 void setCouleur(String couleur, int intMax) {
+		 if(intMax<1)
+			 throw new IllegalArgumentException();
+		 couleur = couleur.trim().toLowerCase();
+		 switch(couleur) {
+		 case "vert":
+			 this.setBleu(0);
+			 this.setRouge(0);
+			 this.setVert(intMax);
+			 break;
+		 case "rouge":
+			 this.setBleu(0);
+			 this.setRouge(intMax);
+			 this.setVert(0);
+			 break;
+		 case "bleu":
+			 this.setBleu(intMax);
+			 this.setRouge(0);
+			 this.setVert(0);
+			 break;
+		 default: 
+			 throw new IllegalArgumentException();
+		 }
+	 }
 	 /**
 	  * Eclairci le point vers sa dominante de 20% de son intensité maximale
 	  * @param intensiteMax est l'intensité maximale de la couleur
@@ -200,7 +225,7 @@ public class Point {
 			return false;
 	}
 	 
-	public Point clone() {
+	 protected Point clone() {
 		Point p =  new Point(this.getRouge(),this.getVert(),this.getBleu());
 		
 		return p ;
