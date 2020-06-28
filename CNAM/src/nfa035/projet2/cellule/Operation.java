@@ -22,6 +22,8 @@ public class Operation implements Contenu{
 	 * @param formule est la formule de l'opération
 	 */
 	public Operation(Contenu c1,Contenu c2,Operateur op,String formule) {
+		if(c1 == null || c2 == null || op == null)
+			throw new NullPointerException();
 		this.setOperande1(c1);
 		this.setOperande2(c2);
 		this.setOperateur(op);

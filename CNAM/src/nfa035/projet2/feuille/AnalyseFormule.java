@@ -76,7 +76,7 @@ public class AnalyseFormule {
 	/**
 	 * @return the c
 	 */
-	public Cellule getC() {
+	private Cellule getC() {
 		return c;
 	}
 
@@ -84,6 +84,8 @@ public class AnalyseFormule {
 	 * @param c the c to set
 	 */
 	public void setC(Cellule c) {
+		if(c == null)
+			throw new NullPointerException();
 		this.c = c;
 	}
 
@@ -142,6 +144,8 @@ public class AnalyseFormule {
 	}
 
 	private void setFeuille(Feuille feuille) {
+		if(feuille == null)
+			throw new NullPointerException();
 		this.feuille = feuille;
 	}
 

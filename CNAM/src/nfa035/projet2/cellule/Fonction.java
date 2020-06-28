@@ -27,6 +27,8 @@ public abstract class Fonction implements Contenu{
 		 * @param bloc est le bloc de cellule ou l'on applique la fonction
 		 */
 		protected void setBloc(Bloc bloc) {
+			if(bloc == null) 
+				throw new NullPointerException();
 			this.bloc = bloc;
 		}
 		
