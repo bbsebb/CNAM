@@ -537,42 +537,67 @@ class Image {
 	}
 
 	void incrusterImg(int coinSupGaucheX, int coinSupGaucheY, Image img) {
+		if (img == null || img.estVide())
+			throw new NullPointerException("Aucune image à inscruster ou image à inscruster vide");
+		if (coinSupGaucheX < 1 || coinSupGaucheY < 1)
+			throw new IllegalArgumentException("Coordonnée incorrecte");
+		if (coinSupGaucheX + img.getLargeur() - 1 > this.getLargeur()
+				|| coinSupGaucheY + img.getHauteur() - 1 > this.getHauteur())
+			throw new IllegalArgumentException("L'image à inscruster dépasse l'image de fond");
 		int compteurColonne = 1;
 		int compteurLigne = 1;
 		int coinInfDroitX = coinSupGaucheX + img.getLargeur() - 1;
 		int coinInfDroitY = coinSupGaucheY + img.getHauteur() - 1;
+		Point pPrec = null;
 		Point p = this.getPremierPoint();
 		Point p2 = img.getPremierPoint();
-		Point couleurFontP2 = p2.clone();
+		Point couleurFontP2 = p2.clone(); // On récupère la couleur du premier point comme couleur "fond vert"
+		int j = p2.getNbrId();
 		while (p != null) {
 			int nbrId = p.getNbrId();
 			for (int i = nbrId; i >= 1; i--) {
-				if (compteurColonne == this.getLargeur()) {
-					
-					if (compteurColonne >= coinSupGaucheX && compteurColonne <= coinInfDroitX
-							&& compteurLigne >= coinSupGaucheY && compteurLigne <= coinInfDroitY) {
-						if(!couleurFontP2.egal(p2)) {
-							if(p.getNbrId() != i) {
-								
-							} else if( i>1) {
-								
-							} else {
-								
-							}
+
+				if (compteurColonne >= coinSupGaucheX && compteurColonne <= coinInfDroitX
+						&& compteurLigne >= coinSupGaucheY && compteurLigne <= coinInfDroitY) { // Si on est sur les 2
+																								// images
+					if (!couleurFontP2.egal(p2)) { // Si on n'est plus sur le fond vert, on inscruste les points
+						if (p.getNbrId() != i) { // Si un pixel précédent correspond au point actuel
+							Point pNouveau = p.clone();
+							pNouveau.setSuivant(p.getSuivant());
+							p.setSuivant(pNouveau);
+							p.setNbrId(p.getNbrId() - i);
+							pNouveau.setNbrId(i);
+							p = pNouveau;
+						} else if (i > 1) { // si un pixel suivant correspond au point actuel
+							Point pSuivant = p.clone();
+							pSuivant.setSuivant(p.getSuivant());
+							p.setSuivant(pSuivant);
+							p.setNbrId(p.getNbrId() - (i - 1));
+							pSuivant.setNbrId((i - 1));
+							i = 1;
 						}
-						if(i == 1) {
-							p2 = p2.getSuivant();
-							i = p2.getNbrId();
-						} else {
-							i--;
+						p.setBleu(p2.getBleu());
+						p.setVert(p2.getVert());
+						p.setRouge(p2.getRouge());
+						if(pPrec.egal(p)) { // Si identique, on rattache les pixels en un seul point
+							pPrec.setNbrId(pPrec.getNbrId() + p.getNbrId());
+							pPrec.setSuivant(p.getSuivant());
 						}
 					}
-					
+					if (j == 1 && p2.getSuivant() != null) { // Si on a fini avec un point on passe au suivant
+						p2 = p2.getSuivant();
+						j = p2.getNbrId();
+					} else { // Sinon on décrémente d'un pixel
+						j--;
+					}
+				}
+				if (compteurColonne == this.getLargeur()) {
 					compteurLigne++;
 					compteurColonne = 0;
 				}
 				compteurColonne++;
 			}
+			pPrec = p;
 			p = p.getSuivant();
 		}
 	}
