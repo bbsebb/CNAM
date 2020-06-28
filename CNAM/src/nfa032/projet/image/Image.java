@@ -26,35 +26,35 @@ class Image {
 	/**
 	 * @return the fileName
 	 */
-	public String getFileName() {
+	String getFileName() {
 		return FileName;
 	}
 
 	/**
 	 * @param fileName the fileName to set
 	 */
-	public void setFileName(String fileName) {
+	void setFileName(String fileName) {
 		FileName = fileName;
 	}
 
 	/**
 	 * @return the name
 	 */
-	public String getName() {
+	String getName() {
 		return name;
 	}
 
 	/**
 	 * @param name the name to set
 	 */
-	private void setName(String name) {
+	void setName(String name) {
 		this.name = name;
 	}
 
 	/**
 	 * @return the description
 	 */
-	public String getDescription() {
+	String getDescription() {
 		return description;
 	}
 
@@ -68,7 +68,7 @@ class Image {
 	/**
 	 * @return the largeur
 	 */
-	public int getLargeur() {
+	int getLargeur() {
 		return largeur;
 	}
 
@@ -82,7 +82,7 @@ class Image {
 	/**
 	 * @return the hauteur
 	 */
-	public int getHauteur() {
+	int getHauteur() {
 		return hauteur;
 	}
 

@@ -19,7 +19,6 @@ public class Images implements MenuChargementImg, MenuEnregistrementImg, MenuMod
 
 	public Images(int maxImg) {
 		this.maxImg = maxImg;
-		setIdImgFocus(-1);
 	}
 
 	private Image getImgFocus() {
@@ -40,11 +39,9 @@ public class Images implements MenuChargementImg, MenuEnregistrementImg, MenuMod
 	 */
 	@Override
 	public void setIdImgFocus(int idImgFocus) throws ArrayIndexOutOfBoundsException {
-		if (idImgFocus >= nbrImg)
+		if (idImgFocus >= nbrImg || idImgFocus<0)
 			throw new ArrayIndexOutOfBoundsException();
-		if (this.getNbrImg() == 0)
-			this.idImgFocus = -1;
-		else if (this.getNbrImg() == 1)
+		if (this.getNbrImg() == 1)
 			this.idImgFocus = 0;
 		else
 			this.idImgFocus = idImgFocus;
@@ -115,7 +112,7 @@ public class Images implements MenuChargementImg, MenuEnregistrementImg, MenuMod
 
 	@Override
 	public void ajoutImg(BufferedReader lecteur, String source, String fileName) throws IOException {
-		if (this.getNbrImg() == maxImg - 1)
+		if (this.getNbrImg() == maxImg)
 			throw new ArrayIndexOutOfBoundsException("limité à 10 images chargées");
 		Image img = new Image();
 		img.chargerImg(lecteur, source, fileName);

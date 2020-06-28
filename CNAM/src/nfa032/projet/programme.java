@@ -18,7 +18,7 @@ import nfa032.projet.image.MenuModificationImg;
 
 public class programme {
 	static Scanner sc = new Scanner(System.in);
-	static String path = "src/nfa032/projet/img";
+	static String path = "src/nfa032/projet/img"; // Ou sont stockées les images
 	static int maxImg = 10;
 
 	public static void main(String[] args) {
@@ -132,6 +132,9 @@ public class programme {
 					menu1 = true;
 				} catch (IOException e) {
 					System.err.println("Erreur dans le chargement de l'image, Verifier si le chemin est correcte");
+					menu1 = true;
+				} catch (ArrayIndexOutOfBoundsException e) {
+					System.err.println(e.getMessage());
 
 					menu1 = true;
 				} catch (Exception e) {
@@ -161,7 +164,7 @@ public class programme {
 			System.out.println("5 - Mettre en négatif");
 			System.out.println("6 - Redimensionner l'image");
 			System.out.println("7 - Inscruster un rectangle dans l'image");
-			System.out.println("8 - Inscruster une image dans l'image \n Choisir le fond :");
+			System.out.println("8 - Inscruster une image dans l'image");
 			System.out.println("9 - Retour");
 			int r;
 			try {
@@ -203,6 +206,7 @@ public class programme {
 					c2 = sc.nextInt();
 				} catch (InputMismatchException e) {
 					System.err.println("Vous avez entré des points incorrectes");
+					break;
 				}
 				if (l1 < l2 && l2 <= imgs.getLargeurFocus() && c1 < c2 && c2 <= imgs.getHauteurFocus() && l1 >= 0
 						&& c1 >= 0) {
@@ -504,7 +508,8 @@ public class programme {
 			System.out.println("*****************************");
 			System.out.println("Menu pour incruster une image dans un fond.");
 			menuChoixImg((Images) imgs, true);
-			System.out.println("Choisir la coordonnée X ou l'inscruster entre 1 et " + imgs.getLargeurFocus() + " \n attention, l'image ne doit pas dépasser du fond");
+			System.out.println("Choisir la coordonnée X ou l'inscruster entre 1 et " + imgs.getLargeurFocus()
+					+ " \n attention, l'image ne doit pas dépasser du fond");
 			try {
 				coinSupGaucheX = sc.nextInt();
 			} catch (InputMismatchException e) {
@@ -513,7 +518,8 @@ public class programme {
 				System.err.println("Veuillez entrer uniquement des nombres");
 				continue;
 			}
-			System.out.println("Choisir la coordonnée Y ou l'inscruster entre 1 et " + imgs.getHauteurFocus() + " \n attention, l'image ne doit pas dépasser du fond");
+			System.out.println("Choisir la coordonnée Y ou l'inscruster entre 1 et " + imgs.getHauteurFocus()
+					+ " \n attention, l'image ne doit pas dépasser du fond");
 			try {
 				coinSupGaucheY = sc.nextInt();
 			} catch (InputMismatchException e) {
@@ -523,7 +529,8 @@ public class programme {
 				continue;
 			}
 			try {
-			imgs.incrusterImgFocus(coinSupGaucheX, coinSupGaucheY); } catch (IllegalArgumentException | NullPointerException e) {
+				imgs.incrusterImgFocus(coinSupGaucheX, coinSupGaucheY);
+			} catch (IllegalArgumentException | NullPointerException e) {
 				System.err.println(e.getMessage());
 				menu28 = true;
 				continue;
@@ -537,7 +544,7 @@ public class programme {
 		boolean menuChoixImg = true;
 		while (menuChoixImg) {
 			System.out.println("*****************************");
-			if (multi)
+			if (multi) // Si l'on veut selectionner une 2e image pour travailler avec 2 images
 				System.out.println(
 						"Choisir l'image à inscruster /n *Elle doit être de taille inferieure ou égale à l'image de fond \n0 - Revenir au menu principal");
 			else
@@ -547,10 +554,10 @@ public class programme {
 			try {
 				r = sc.nextInt();
 				if (multi)
-					if(r == 0) 
+					if (r == 0)
 						menu((Images) imgs);
 					else
-					imgs.setSecondImg(r - 1);
+						imgs.setSecondImg(r - 1);
 				else
 					imgs.setIdImgFocus(r - 1);
 				menuChoixImg = false;
