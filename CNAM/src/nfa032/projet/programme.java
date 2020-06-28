@@ -58,11 +58,11 @@ public class programme {
 				menu1(imgs);
 				break;
 			case 2:
-				menuChoixImg(imgs);
+				menuChoixImg(imgs,false);
 				menu2(imgs);
 				break;
 			case 3:
-				menuChoixImg(imgs);
+				menuChoixImg(imgs,false);
 				menu3(imgs);
 				break;
 			case 4:
@@ -155,8 +155,8 @@ public class programme {
 			System.out.println("4 - Recadrer l'image");
 			System.out.println("5 - Mettre en négatif");
 			System.out.println("6 - Redimensionner l'image");
-			System.out.println("7 - Inscruster un carré rouge dans l'image");
-			System.out.println("8 - Inscruster une image dans l'image");
+			System.out.println("7 - Inscruster un rectangle dans l'image");
+			System.out.println("8 - Inscruster une image dans l'image \n Choisir le fond :");
 			System.out.println("9 - Retour");
 			int r;
 			try {
@@ -220,7 +220,7 @@ public class programme {
 				menu27(imgs);
 				break;
 			case 8:
-			//	menu28(imgs);
+				menu28(imgs);
 				break;
 			case 9:
 				menu2 = false;
@@ -417,8 +417,8 @@ public class programme {
 			int hauteur = 0;
 			String couleur = null;
 			System.out.println("*****************************");
-			System.out.println("Menu pour incruster un carré.");
-			System.out.println("Choissir la couleur du carré");
+			System.out.println("Menu pour incruster un rectangle.");
+			System.out.println("Choisir la couleur du rectangle");
 			System.out.println("1 - Rouge");
 			System.out.println("2 - Vert");
 			System.out.println("3 - Bleu");
@@ -490,8 +490,42 @@ public class programme {
 		}
 	}
 	
-
-	static public void menuChoixImg(MenuChoixImg imgs) {
+	static public void menu28(MenuModificationImg imgs) {
+		boolean menu28 = true;
+		while (menu28) {
+			int coinSupGaucheX = 0;
+			int coinSupGaucheY = 0;
+			System.out.println("*****************************");
+			System.out.println("Menu pour incruster une image dans un fond.");
+			System.out.println("Choisir l'image à inscruster /n *Elle doit être de taille inferieure ou égale à l'image de fond");
+			menuChoixImg((Images) imgs, true);
+			System.out.println("Choisir la coordonnée Y ou l'inscruster entre 1 et "+ imgs.getLargeurFocus());
+			try {
+				coinSupGaucheX = sc.nextInt();
+			} catch (InputMismatchException e) {
+				menu28 = true;
+				sc.nextLine();
+				System.err.println("Veuillez entrer uniquement des nombres");
+				continue;
+			}	
+			System.out.println("Choisir la coordonnée Y ou l'inscruster entre 1 et "+ imgs.getHauteurFocus());
+			try {
+				coinSupGaucheY = sc.nextInt();
+			} catch (InputMismatchException e) {
+				menu28 = true;
+				sc.nextLine();
+				System.err.println("Veuillez entrer uniquement des nombres");
+				continue;
+			}
+			imgs.incrusterImgFocus(coinSupGaucheX, coinSupGaucheY);
+			
+			
+			
+			menu28 = false;
+		}
+	}
+	
+	static public void menuChoixImg(MenuChoixImg imgs, boolean multi) {
 		boolean menuChoixImg = true;
 		while (menuChoixImg) {
 			System.out.println("*****************************");
@@ -500,7 +534,10 @@ public class programme {
 			int r ;
 			try {
 				r = sc.nextInt();
-				imgs.setIdImgFocus(r - 1);
+				if(multi)
+					imgs.setSecondImg(r - 1);
+				else
+					imgs.setIdImgFocus(r - 1);
 				menuChoixImg = false;
 			} catch (ArrayIndexOutOfBoundsException | InputMismatchException e) {
 				System.err.println("Choix d'image invalide");

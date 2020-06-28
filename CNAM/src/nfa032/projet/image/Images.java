@@ -14,6 +14,7 @@ public class Images implements MenuChargementImg, MenuEnregistrementImg, MenuMod
 	private int nbrImg = 0;
 	private int idImgFocus;
 	private int maxImg;
+	private Image secondImg = null;
 	private Image[] imgs = new Image[10];
 
 	public Images(int maxImg) {
@@ -47,6 +48,17 @@ public class Images implements MenuChargementImg, MenuEnregistrementImg, MenuMod
 			this.idImgFocus = 0;
 		else
 			this.idImgFocus = idImgFocus;
+	}
+	
+	@Override
+	public void setSecondImg(int idSecondImg) throws ArrayIndexOutOfBoundsException {
+		if (idSecondImg >= nbrImg)
+			throw new ArrayIndexOutOfBoundsException();
+		this.secondImg = this.getImgs()[idSecondImg];
+	}
+	
+	private Image getSecondImg() {
+		return this.secondImg;
 	}
 
 	/**
@@ -168,7 +180,14 @@ public class Images implements MenuChargementImg, MenuEnregistrementImg, MenuMod
 			throw new NullPointerException();
 		this.getImgFocus().incrusterRectangle(coinSupGaucheX, coinSupGaucheY, largeur, hauteur, couleur);
 	}
-
+	
+	@Override
+	public void incrusterImgFocus(int coinSupGaucheX, int coinSupGaucheY) {
+		if (this.getIdImgFocus() < 0 || this.getSecondImg() == null)
+			throw new NullPointerException();
+		this.getImgFocus().incrusterImg(coinSupGaucheX, coinSupGaucheY, this.getSecondImg());
+	}
+	
 	@Override
 	public void enregistrerImgFocus(BufferedWriter redacteur) throws IOException {
 		if (this.getIdImgFocus() < 0)

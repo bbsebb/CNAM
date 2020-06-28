@@ -11,5 +11,6 @@ public interface MenuModificationImg {
 	public void modifierLargeurFocus(int l);
 	public void modifierHauteurFocus(int h);
 	public void inscrusterRectangleFocus(int coinSupGaucheX, int coinSupGaucheY, int largeur, int hauteur, String couleur);
+	public void incrusterImgFocus(int coinSupGaucheX, int coinSupGaucheY);
 	
 }

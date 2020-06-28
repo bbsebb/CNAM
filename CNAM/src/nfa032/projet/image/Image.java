@@ -10,7 +10,7 @@ import java.io.IOException;
  * @author bbsebb
  *
  */
- class Image {
+class Image {
 	private String name, description, source, FileName;
 	private int largeur, hauteur, maxCouleur;
 	private Point premierPoint, dernierPoint;
@@ -18,7 +18,7 @@ import java.io.IOException;
 	/**
 	 * Constructeur par defaut, il le premier élément de la liste à null
 	 */
-	 Image() {
+	Image() {
 		this.setPremierPoint(null);
 		this.setDernierPoint(null);
 	}
@@ -532,6 +532,47 @@ import java.io.IOException;
 				compteurColonne++;
 			}
 
+			p = p.getSuivant();
+		}
+	}
+
+	void incrusterImg(int coinSupGaucheX, int coinSupGaucheY, Image img) {
+		int compteurColonne = 1;
+		int compteurLigne = 1;
+		int coinInfDroitX = coinSupGaucheX + img.getLargeur() - 1;
+		int coinInfDroitY = coinSupGaucheY + img.getHauteur() - 1;
+		Point p = this.getPremierPoint();
+		Point p2 = img.getPremierPoint();
+		Point couleurFontP2 = p2.clone();
+		while (p != null) {
+			int nbrId = p.getNbrId();
+			for (int i = nbrId; i >= 1; i--) {
+				if (compteurColonne == this.getLargeur()) {
+					
+					if (compteurColonne >= coinSupGaucheX && compteurColonne <= coinInfDroitX
+							&& compteurLigne >= coinSupGaucheY && compteurLigne <= coinInfDroitY) {
+						if(!couleurFontP2.egal(p2)) {
+							if(p.getNbrId() != i) {
+								
+							} else if( i>1) {
+								
+							} else {
+								
+							}
+						}
+						if(i == 1) {
+							p2 = p2.getSuivant();
+							i = p2.getNbrId();
+						} else {
+							i--;
+						}
+					}
+					
+					compteurLigne++;
+					compteurColonne = 0;
+				}
+				compteurColonne++;
+			}
 			p = p.getSuivant();
 		}
 	}
