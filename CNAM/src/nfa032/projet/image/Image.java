@@ -265,10 +265,7 @@ class Image {
 	 */
 	void mettreEnNB() {
 		Point p = this.getPremierPoint();
-		while (p != null) {
-			p.mettreEnNB();
-			p = p.getSuivant();
-		}
+		p.mettreEnNB(p.getSuivant());
 	}
 
 	/**
