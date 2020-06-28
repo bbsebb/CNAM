@@ -371,10 +371,10 @@ public class Image {
 			for (int j = 0; j < nbrPoint; j++) {
 				if (ratio < 0) { // Diminuation largeur
 					if (i <= -1) { // dès que on dépasse 1 en additionnant les ratios, on ajoute un Point
-						p.setNbrId(p.getNbrId() - 1); 
-						if (p.getNbrId() == 0) 
+						p.setNbrId(p.getNbrId() - 1);
+						if (p.getNbrId() == 0)
 							pPrec.setSuivant(p.getSuivant());
-						i = 0 + (i + 1); // on remet le reste 
+						i = 0 + (i + 1); // on remet le reste
 					}
 				} else {
 					if (i >= 1) { // Augmentation largeur
@@ -391,33 +391,82 @@ public class Image {
 
 	public void modifierHauteur(int h) {
 		double ratio = ((double) (h - this.getHauteur())) / this.getHauteur();
-		double i = 0;
+		double i = (ratio>0)?0:ratio*2;
+		Point[] lignePrec = new Point[this.getLargeur()];
+		boolean suppLigne = false;
+		Point debutSuppLigne = null;
 		Point pPrec = null;
 		Point p = this.getPremierPoint();
 		int compteurColonne = 0;
-		Point[] lignePrec = new Point[this.getLargeur()];
 		this.setHauteur(h);
-		while (p != null) {
-			for (int j = p.getNbrId(); j >= 1; j--) {
-				if(compteurColonne == 0)
-					 lignePrec = new Point[this.getLargeur()];
-				lignePrec[compteurColonne] = p.clone();
-				compteurColonne++;
-				if (compteurColonne == this.getLargeur()) {
-					compteurColonne = 0;
-			
-					if(i >= 1) {
-						pPrec.setSuivant(lignePrec[0]);
-						i = 0 + (i - 1);
-						int k;
-						for(k = 1; k < lignePrec.length;k++) {
-							lignePrec[k-1].setSuivant(lignePrec[k]);
+		while (p != null && ratio != 0) {
+			int nbrId = p.getNbrId();
+			for (int j = nbrId; j >= 1; j--) {
+				if (compteurColonne == this.getLargeur() - 1) { // Dernier point d'une ligne
+					lignePrec[compteurColonne] = p.clone();
+					if(suppLigne) { // Suppression de la ligne
+						if (j > 1) { // si le dernier point est sur pls lignes
+							Point pSuivant = p.clone();
+							pSuivant.setSuivant(p.getSuivant());
+							p.setNbrId(p.getNbrId() - (j - 1));
+							pSuivant.setNbrId((j - 1));
+							p.setSuivant(pSuivant);
+							j=1;
 						}
-						lignePrec[k-1].setSuivant(p);
+						debutSuppLigne.setSuivant(p.getSuivant());
+						suppLigne = false;
+					}
+					if (i >= 1 && ratio > 0) { // Si on doit ajouter une ligne
+						if (j > 1) { // si le dernier point est sur pls lignes
+							Point pSuivant = p.clone();
+							pSuivant.setSuivant(p.getSuivant());
+							p.setNbrId(p.getNbrId() - (j - 1));
+							pSuivant.setNbrId((j - 1));
+							p.setSuivant(pSuivant);
+							j=1;
+						}
+						// On insère la précédente ligne
+						Point pTempSuivant = p.getSuivant();
+						if (p.egal(lignePrec[0])) {
+							lignePrec[0] = p;
+							lignePrec[0].setNbrId(p.getNbrId() + 1);
+						} else {
+							p.setSuivant(lignePrec[0]);
+						}
+						for (int k = 1; k < lignePrec.length; k++) {
+							if (lignePrec[k - 1].egal(lignePrec[k])) {
+								lignePrec[k] = lignePrec[k - 1];
+								lignePrec[k].setNbrId(lignePrec[k - 1].getNbrId() + 1);
+							} else {
+								lignePrec[k - 1].setSuivant(lignePrec[k]);
+							}
+						}
+						lignePrec[lignePrec.length - 1].setSuivant(pTempSuivant);
+						i = 0 + (i - 1);
+					} else if (i <= -1 && ratio < 0) { // si on doit supprimer une ligne
+						suppLigne = true;
+						if (j > 1) { // si le dernier point est sur pls lignes
+							Point pSuivant = p.clone();
+							pSuivant.setSuivant(p.getSuivant());
+							p.setNbrId(p.getNbrId() - (j - 1));
+							pSuivant.setNbrId((j - 1));
+							p.setSuivant(pSuivant);
+							j=1;
+						}
+						debutSuppLigne = p;
+						i = 0 + (i + 1);
+					} else {
+						i = i + ratio;
 					}
 					
-					i = i + ratio;
+					compteurColonne = 0;
+				} else { // Autres points d'une lignes
+					lignePrec[compteurColonne] = p.clone();
+					compteurColonne++;
 				}
+				
+				
+
 			}
 			pPrec = p;
 			p = p.getSuivant();
