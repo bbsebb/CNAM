@@ -9,6 +9,12 @@ import java.sql.SQLException;
 public class Main {
 
 	public static void main(String[] args)  {
+        switch( value ) {
+        case 0, 1, 2, 3, 4 -> System.out.println( "Petit chiffre" );
+        case 5, 6, 7, 8, 9 -> System.out.println( "Grand chiffre" );
+        default -> System.out.println( "Ce n'est plus un chiffre, mais un nombre" );
+    }
+	
 		boolean boucle = true;
 		try {
 			Class.forName("org.postgresql.Driver");
