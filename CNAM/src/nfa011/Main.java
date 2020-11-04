@@ -14,7 +14,7 @@ public class Main {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
-			System.out.println("Erreur de connection à la BDD");;
+			System.out.println("Erreur de connection ï¿½ la BDD");;
 		}
 		String url = "jdbc:postgresql://192.168.1.41:5432/ComptesDB";
 		String login = "postgres";
@@ -29,6 +29,9 @@ public class Main {
 		while(boucle) {
 			
 		}
+	
+
+
 
 	}
 
