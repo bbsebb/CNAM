@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 
@@ -19,7 +22,11 @@ public class Main {
 		// }
 		ListeTables lt = new ListeTables();
 		int nbrTable = lt.affichageTables();
-
+		try (Scanner sc = new Scanner(System.in)) {
+			int choix = sc.nextInt();
+			if (choix > 0 && choix < nbrTable + 1)
+				lt.affichageTable(choix - 1);
+		}
 	}
 
 }
@@ -35,8 +42,7 @@ class ListeTables {
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e1) {
-			System.out.println("Erreur de connection ï¿½ la BDD");
-			;
+			System.out.println("Erreur de connection à la BDD");
 		}
 
 		try (Connection con = DriverManager.getConnection(url, login, psw)) {
@@ -58,8 +64,7 @@ class ListeTables {
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e1) {
-			System.out.println("Erreur de connection ï¿½ la BDD");
-			;
+			System.out.println("Erreur de connection à la BDD");
 		}
 
 		try (Connection con = DriverManager.getConnection(url, login, psw)) {
@@ -84,7 +89,35 @@ class ListeTables {
 	}
 
 	void affichageTable(int numTable) {
+		String SQL = "SELECT * FROM " + tables.get(numTable);
+		try {
+			Class.forName("org.postgresql.Driver");
+		} catch (ClassNotFoundException e1) {
+			System.out.println("Erreur de connection à la BDD");
+		}
+		
+		try (Connection con = DriverManager.getConnection(url, login, psw); Statement st = con.createStatement();) {
 
+			try (ResultSet rs = st.executeQuery(SQL)) {
+				ResultSetMetaData meta = rs.getMetaData();
+				for (int i = 1; i <= meta.getColumnCount(); i++) {
+					//System.out.print(meta.getColumnTypeName(i) + "  = ");
+					System.out.printf("%-17s",meta.getColumnName(i) + " - ");
+				}
+				System.out.println();
+				while (rs.next()) {
+					for (int i = 1; i <= meta.getColumnCount(); i++) {
+						//System.out.print(meta.getColumnTypeName(i) + "  = ");
+						System.out.printf("%-17s",rs.getString(i) + " - ");
+					}
+					System.out.println();
+					
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
