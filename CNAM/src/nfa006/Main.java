@@ -24,9 +24,9 @@ public class Main {
 		t5 = System.currentTimeMillis();
 		//System.out.println("C : " +RechercheTab.rechercheDic(r, tab,0,tab.length-1));
 		t6= System.currentTimeMillis();
-		System.out.println("Recherche séquentiel : " +(t2-t1));
+		System.out.println("Recherche sï¿½quentiel : " +(t2-t1));
 		System.out.println("Recherche dicotomique : " +(t4-t3));
-		System.out.println("Recherche dicotomique récursive : " +(t6-t5));
+		System.out.println("Recherche dicotomique rï¿½cursive : " +(t6-t5));
 		System.out.println("Temps tri : " +(tTri2-tTri1));
 		int[] tab2 = {1,5,6,9,12};
 		System.out.println(RechercheTab.rechercheDic(7, tab2));
