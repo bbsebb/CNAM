@@ -65,7 +65,6 @@ public class Tp3 {
 						? rsMeta.getColumnDisplaySize(i)
 						: rsMeta.getColumnName(i).length();
 			}
-
 			ligne(rsMeta, sizeCol);
 			System.out.println();
 			for (int i = 1; i <= nbrCol; i++) {
