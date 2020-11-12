@@ -2,6 +2,7 @@ package nfa011;
 
 import java.sql.*;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Tp4 {
 
@@ -29,9 +30,13 @@ public class Tp4 {
 					sc.nextLine();
 					switch (chx) {
 					case 1 -> {
-						System.out.println("Entrer votre requete 'SELECT'");
+						System.out.println("Entrer votre requete ");
 						String sql = sc.nextLine();
-						afficherQuery(sql, con);
+						String rgx = "^(SELECT|UPDATE|INSERT|DELETE)[^;]*(;|.)$";
+						if(Pattern.compile(rgx, Pattern.CASE_INSENSITIVE).matcher(sql).matches())
+							afficherQuery(sql, con);
+						else
+							System.err.println("Votre requète est incorrecte");
 					}
 					case 2 -> {
 						menu = false;
@@ -55,39 +60,32 @@ public class Tp4 {
 		System.out.println("2 : Quitter le programme.");
 	}
 
-	static void afficherQuery(String sql, Connection con) {
-		try (Statement st = con.createStatement()) {
-			if (st.execute(sql)) {
-				try (ResultSet rs = st.executeQuery(sql)) {
-					ResultSetMetaData rsMeta = rs.getMetaData();
-					int nbrCol = rsMeta.getColumnCount();
-					int[] sizeCol = new int[nbrCol];
-					for (int i = 1; i <= nbrCol; i++) {
-						sizeCol[i - 1] = (rsMeta.getColumnDisplaySize(i) > rsMeta.getColumnName(i).length())
-								? rsMeta.getColumnDisplaySize(i)
-								: rsMeta.getColumnName(i).length();
-					}
-					ligne(rsMeta, sizeCol);
-					System.out.println();
-					for (int i = 1; i <= nbrCol; i++) {
-						System.out.printf("| %-" + sizeCol[i - 1] + "s |", rsMeta.getColumnName(i));
-					}
-					System.out.println();
-					ligne(rsMeta, sizeCol);
-					System.out.println();
-					while (rs.next()) {
-						for (int i = 1; i <= nbrCol; i++) {
-							System.out.printf("| %-" + sizeCol[i - 1] + "s |", rs.getString(i));
-						}
-						System.out.println();
-					}
-					ligne(rsMeta, sizeCol);
-					System.out.println();
-				}
-			} else {
-				int codeRetour = st.executeUpdate(sql);
-				System.out.println("Votre requète " + sql + " a bien été effectué : \n code retour : " + codeRetour);
+	static void afficherQuery(String sql, Connection con)  {
+		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+			ResultSetMetaData rsMeta = rs.getMetaData();
+			int nbrCol = rsMeta.getColumnCount();
+			int[] sizeCol = new int[nbrCol];
+			for (int i = 1; i <= nbrCol; i++) {
+				sizeCol[i - 1] = (rsMeta.getColumnDisplaySize(i) > rsMeta.getColumnName(i).length())
+						? rsMeta.getColumnDisplaySize(i)
+						: rsMeta.getColumnName(i).length();
 			}
+			ligne(rsMeta, sizeCol);
+			System.out.println();
+			for (int i = 1; i <= nbrCol; i++) {
+				System.out.printf("| %-" + sizeCol[i - 1] + "s |", rsMeta.getColumnName(i));
+			}
+			System.out.println();
+			ligne(rsMeta, sizeCol);
+			System.out.println();
+			while (rs.next()) {
+				for (int i = 1; i <= nbrCol; i++) {
+					System.out.printf("| %-" + sizeCol[i - 1] + "s |", rs.getString(i));
+				}
+				System.out.println();
+			}
+			ligne(rsMeta, sizeCol);
+			System.out.println();
 		} catch (SQLException e) {
 			System.err.println("La requete " + sql + " a échoué : \n" + e.getMessage());
 		}

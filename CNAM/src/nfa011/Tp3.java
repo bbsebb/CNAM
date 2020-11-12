@@ -1,7 +1,13 @@
 package nfa011;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Tp3 {
 
@@ -31,13 +37,17 @@ public class Tp3 {
 					case 1 -> {
 						System.out.println("Entrer votre requete 'SELECT'");
 						String sql = sc.nextLine();
-						afficherQuery(sql, con);
+						String rgx = "^SELECT[^;]*(;|.)$";
+						if(Pattern.compile(rgx, Pattern.CASE_INSENSITIVE).matcher(sql).matches())
+							afficherQuery(sql, con);
+						else
+							System.err.println("Votre requète est incorrecte");
 					}
 					case 2 -> {
 						menu = false;
 					}
 					default -> {
-						System.out.println("Entrer 1 ou 2 !");
+						System.err.println("Entrer 1 ou 2 !");
 					}
 					}
 				}
