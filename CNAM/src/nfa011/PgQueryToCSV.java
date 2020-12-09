@@ -15,6 +15,7 @@ public class PgQueryToCSV {
 			e.printStackTrace();
 		}
 
+
 		try (Scanner sc = new Scanner(System.in)) {
 			
 			System.out.println("Bienvenu");
@@ -25,40 +26,11 @@ public class PgQueryToCSV {
 			System.out.println("Entrer votre pw:");
 			String pw = sc.nextLine();
 			
-			try (Connection con = DriverManager.getConnection(url, login, pw)) {
-				System.out.println("Connection à la bdd reussi ...");
-				boolean menu = true;
-				MyQuery q = null;
-				while (menu) {
-					
-					afficherMenu();
-					
-					int chx = sc.nextInt();
-					sc.nextLine();
-					switch (chx) {
-						case 1 -> {
-							System.out.println("Entrer votre requete 'SELECT'");
-							String sql = sc.nextLine();
-							String rgx = "^SELECT[^;]*(;|.)$"; // La requête commence par SELECT et se termine par un ; ou rien mais il ne peux rien avoir après un ;
-							if(Pattern.compile(rgx, Pattern.CASE_INSENSITIVE).matcher(sql).matches()) // On vérifie que la requete est correcte
-								q = new MyQuery( con, sql);
-							else
-								System.err.println("Votre requète est incorrecte");
-						}
-						
-						case 3 -> {
-							menu = false;
-						}
-						default -> {
-							System.err.println("Entrer 1 ou 2 !");
-						}
-					}
-				}
-				
-			} catch (SQLException e) {
-				System.err.println("La connexion a echoué : \n"+e.getMessage());
-			}
-		}
+
+	}
+
+	
+	
 	}
 
 	/**
