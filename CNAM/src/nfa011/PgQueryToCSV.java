@@ -10,6 +10,7 @@ public class PgQueryToCSV {
 
 	}
 
+	
 	class MyConnection {
 		static final String DRIVER = "org.postgresql.Driver";
 		private String url;
