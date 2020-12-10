@@ -1,5 +1,11 @@
 package nfa011;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -112,19 +118,28 @@ public class PgQueryToCSV {
 	}
 	
 	/**
-	 * Affiche la table demandée par la requete sql
+	 * Exporte la table demandée par la requete sql
+	 * @param pathSTR est chemin du fichier
 	 * @param sql est la requète à afficher
 	 * @param con est la connection à la bdd ou se trouve la table à afficher
 	 */
-	static void queryToCSV(String sql, Connection con, String path)  {
+	static void queryToCSV(String sql, Connection con, String pathSTR)  {
+		Path path = Paths.get(pathSTR);
+		
 		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 			ResultSetMetaData rsMeta = rs.getMetaData();
 			int nbrCol = rsMeta.getColumnCount();
+			try(BufferedWriter bw = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
+				
+			
 			while (rs.next()) {
 				for (int i = 1; i <= nbrCol; i++) {
-					//System.out.printf("| %-s |", rs.getString(i));
-					System.out.println("test");
+					bw.write(rs.getString(i) +";");
 				}
+				bw.newLine();
+			}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 
 		} catch (SQLException e) {
@@ -182,6 +197,3 @@ public class PgQueryToCSV {
 
 
 
-class WriteCSV {
-	private String path;
-}
