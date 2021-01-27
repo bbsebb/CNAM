@@ -6,9 +6,11 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 
+
+
 /*
- * Une fonction pl/sql permet d'éviter les mutiples  rrequete qui demande bcp de ressources pour y acceder depuis un programme en java. De cette facon, la bdd ne renvoie que les données utiles au programme
- * De plus, cela permet de gèrer toutes l'integralité des données de la bdd dans la bdd et ainsi eviter du code superflu en java qui peut s'occuper uniquement du programme.
+ * Une fonction pl/sql permet d'ï¿½viter les mutiples  rrequete qui demande bcp de ressources pour y acceder depuis un programme en java. De cette facon, la bdd ne renvoie que les donnï¿½es utiles au programme
+ * De plus, cela permet de gï¿½rer toutes l'integralitï¿½ des donnï¿½es de la bdd dans la bdd et ainsi eviter du code superflu en java qui peut s'occuper uniquement du programme.
  */
 public class Examen {
 
