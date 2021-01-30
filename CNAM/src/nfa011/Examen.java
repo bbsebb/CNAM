@@ -8,10 +8,7 @@ import java.sql.Statement;
 
 
 
-/*
- * Une fonction pl/sql permet d'�viter les mutiples  rrequete qui demande bcp de ressources pour y acceder depuis un programme en java. De cette facon, la bdd ne renvoie que les donn�es utiles au programme
- * De plus, cela permet de g�rer toutes l'integralit� des donn�es de la bdd dans la bdd et ainsi eviter du code superflu en java qui peut s'occuper uniquement du programme.
- */
+
 public class Examen {
 
 	public static void main(String[] args) {
