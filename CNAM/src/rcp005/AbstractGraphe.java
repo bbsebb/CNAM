@@ -1,45 +1,77 @@
 package rcp005;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 
-public abstract class AbstractGraphe<T> {
-	LinkedHashSet<AbstractSommet<T>> sommets;
-	LinkedHashMap<AbstractSommet<T>,AbstractSommet<T>> liens;
+public abstract class AbstractGraphe {
+	LinkedHashSet<AbstractSommet<?>> sommets;
 
-	
 	public AbstractGraphe() {
 		super();
-		this.sommets = null;
-		this.liens = null;
+		this.sommets = new LinkedHashSet<AbstractSommet<?>>();
 	}
 
-	public AbstractGraphe(LinkedHashSet<AbstractSommet<T>> sommets, LinkedHashMap<AbstractSommet<T>, AbstractSommet<T>> liens) {
+	public AbstractGraphe(LinkedHashSet<AbstractSommet<?>> sommets) {
 		super();
 		this.sommets = sommets;
-		this.liens = liens;
 	}
-	protected LinkedHashSet<AbstractSommet<T>> getSommets() {
+
+	protected LinkedHashSet<AbstractSommet<?>> getSommets() {
 		return sommets;
 	}
-	protected void setSommets(LinkedHashSet<AbstractSommet<T>> sommets) {
+
+	protected void setSommets(LinkedHashSet<AbstractSommet<?>> sommets) {
 		this.sommets = sommets;
 	}
-	protected LinkedHashMap<AbstractSommet<T>, AbstractSommet<T>> getLiens() {
-		return liens;
+
+	protected boolean addSommet(AbstractSommet<?> s) {
+		boolean rtr = false;
+		for (AbstractSommet<?> sommet : s.getSuccesseurs()) {
+			if (!this.getSommets().contains(sommet))
+				rtr = addSommet(sommet);
+		}
+		this.getSommets().add(s);
+		return rtr;
 	}
-	protected void setLiens(LinkedHashMap<AbstractSommet<T>, AbstractSommet<T>> liens) {
-		this.liens = liens;
+
+	protected void parcoursEnProfondeur(AbstractSommet<?> sommetDebut) {
+		LinkedList<AbstractSommet<?>> pile = new LinkedList<AbstractSommet<?>>();
+		LinkedList<AbstractSommet<?>> marquage = new LinkedList<AbstractSommet<?>>(sommets);
+		AbstractSommet<?> tetePile;
+		int compteur = 0;
+		pile.addFirst(sommetDebut);
+		marquage.remove(sommetDebut);
+		while (!marquage.isEmpty()) {
+			pile.add(marquage.remove());
+			while (!pile.isEmpty()) {			
+				tetePile = pile.remove();
+				System.out.println(tetePile.toString());
+				marquage.remove(tetePile);
+				for (AbstractSommet<?> successeur : tetePile.getSuccesseurs()) {
+					if(marquage.contains(successeur)) {
+						pile.addFirst(successeur);	
+					}
+							
+				}
+			
+				
+			}
+			
+			
+			
+
+			
+			
+		}
+
 	}
-	
-	protected abstract void parcoursEnProfondeur();
-	
+
 	protected abstract void parcoursEnLargeur();
-	
-	protected abstract ArrayList<AbstractGraphe<T>> composanteConnexe();
-	
-	protected abstract ArrayList<AbstractGraphe<T>> composanteFortementConnexe();
-	
-	
+
+	protected abstract ArrayList<AbstractGraphe> composanteConnexe();
+
+	protected abstract ArrayList<AbstractGraphe> composanteFortementConnexe();
+
 }
