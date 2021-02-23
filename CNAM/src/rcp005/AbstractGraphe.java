@@ -36,36 +36,48 @@ public abstract class AbstractGraphe {
 		return rtr;
 	}
 
+	protected void parcoursEnProfondeur() {
+		boolean contienBlanc = true;
+		while (contienBlanc) {
+			for (var s : this.getSommets()) {
+				contienBlanc = false;
+				if (s.getCouleur() == AbstractSommet.BLANC) {
+					this.parcoursEnProfondeur(s);
+					contienBlanc = true;
+				}
+			}
+
+		}
+	}
+
 	protected void parcoursEnProfondeur(AbstractSommet<?> sommetDebut) {
 		LinkedList<AbstractSommet<?>> pile = new LinkedList<AbstractSommet<?>>();
-		LinkedList<AbstractSommet<?>> marquage = new LinkedList<AbstractSommet<?>>(sommets);
-		AbstractSommet<?> tetePile;
-		int compteur = 0;
-		pile.addFirst(sommetDebut);
-		marquage.remove(sommetDebut);
-		while (!marquage.isEmpty()) {
-			pile.add(marquage.remove());
-			while (!pile.isEmpty()) {			
-				tetePile = pile.remove();
-				System.out.println(tetePile.toString());
-				marquage.remove(tetePile);
-				for (AbstractSommet<?> successeur : tetePile.getSuccesseurs()) {
-					if(marquage.contains(successeur)) {
-						pile.addFirst(successeur);	
-					}
-							
+		pile.offer(sommetDebut);
+		sommetDebut.setCouleur(AbstractSommet.GRIS);
+		while (!pile.isEmpty()) {
+			AbstractSommet<?> tetePile = pile.peek();
+			for (var s : tetePile.getSuccesseurs()) {
+				if (s.getCouleur() == AbstractSommet.BLANC) {
+					pile.offer(s);
+					s.setCouleur(AbstractSommet.GRIS);
 				}
-			
-				
 			}
-			
-			
-			
-
-			
-			
+			pile.pop().setCouleur(AbstractSommet.NOIR);
 		}
 
+	}
+	
+	protected void parcoursEnProfondeurRec(AbstractSommet<?> sommetDebut) {
+		if(sommetDebut.getCouleur() == AbstractSommet.BLANC) {
+			sommetDebut.setCouleur(AbstractSommet.GRIS);
+			sommetDebut.getSuccesseurs().stream().filter((s) -> s.getCouleur()==AbstractSommet.BLANC).forEach((s) -> parcoursEnProfondeurRec(s));
+		}
+	
+		sommetDebut.setCouleur(AbstractSommet.NOIR);
+	}
+	
+	protected void resetParcours() {
+		this.getSommets().forEach(AbstractSommet<?>::reset);
 	}
 
 	protected abstract void parcoursEnLargeur();

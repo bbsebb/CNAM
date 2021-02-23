@@ -10,17 +10,24 @@ public class Test {
 		AbstractSommet<String> s4 = new Sommet<String>("4");
 		AbstractSommet<String> s5 = new Sommet<String>("5");
 		AbstractSommet<String> s0 = new Sommet<String>("0");
+
 		
 		s1.addSuccesseur(s2);
 		s1.addSuccesseur(s3);
 		s2.addSuccesseur(s4);
 		s3.addSuccesseur(s5);
 		s4.addSuccesseur(s5);
+		s2.addSuccesseur(s0);
 		
 		GrapheTest g = new GrapheTest();
 		g.addSommet(s1);
 		g.addSommet(s0);
-		g.parcoursEnProfondeur(s1);
+		g.parcoursEnProfondeurRec(s1);
+		System.err.println(s1.getCouleur());
+		System.err.println(s3.getCouleur());
+		g.resetParcours();
+		System.err.println(s1.getCouleur());
+		System.err.println(s3.getCouleur());
 			
 	}
 
