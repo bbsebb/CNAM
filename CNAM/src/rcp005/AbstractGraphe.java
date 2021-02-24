@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public abstract class AbstractGraphe {
 	LinkedHashSet<AbstractSommet<?>> sommets;
-	static int dateDebut =0;
+	static int dateDebut = 0;
 	static int dateFin = 0;
 
 	public AbstractGraphe() {
@@ -68,31 +68,33 @@ public abstract class AbstractGraphe {
 		}
 
 	}
-	
+
 	protected void parcoursEnProfondeurRec(AbstractSommet<?> sommetDebut) {
+
 		
-		
-		sommetDebut.setDateDebut(this.dateDebut++);
 		sommetDebut.setCouleur(AbstractSommet.GRIS);
-		sommetDebut.getSuccesseurs().stream().filter((s) -> s.getCouleur()==AbstractSommet.BLANC).forEach((s) -> parcoursEnProfondeurRec(s));
+		sommetDebut.getSuccesseurs().stream().filter((s) -> s.getCouleur() == AbstractSommet.BLANC)
+				.forEach((s) -> parcoursEnProfondeurRec(s));
+
 		
-		sommetDebut.setDateFin(this.dateFin++);
 		sommetDebut.setCouleur(AbstractSommet.NOIR);
 	}
-	
+
 	protected void parcoursEnProfondeurRec() {
-		
-		
-		if(isParcouru()) {
+
+		if (isParcouru()) {
 			this.resetParcours();
 		}
-		this.getSommets().stream().filter((s) -> s.getCouleur()==AbstractSommet.BLANC).forEach((s) -> parcoursEnProfondeurRec(s));
+		while (this.isParcouru()) {
+			this.getSommets().stream().filter((s) -> s.getCouleur() == AbstractSommet.BLANC)
+					.forEach((s) -> parcoursEnProfondeurRec(s));
+		}
 	}
-	
+
 	protected boolean isParcouru() {
-		return this.getSommets().stream().noneMatch((s) -> s.getCouleur()==AbstractSommet.BLANC);
+		return this.getSommets().stream().noneMatch((s) -> s.getCouleur() == AbstractSommet.BLANC);
 	}
-	
+
 	protected void resetParcours() {
 		this.getSommets().forEach(AbstractSommet<?>::reset);
 	}
