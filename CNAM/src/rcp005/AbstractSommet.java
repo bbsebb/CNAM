@@ -81,7 +81,7 @@ public abstract class AbstractSommet<T> {
 	
 	@Override
 	public String toString() {
-		return "AbstractSommet [sommet=" + sommet + "]";
+		return sommet + " : -- Couleur : " + couleur + " --date début : " + dateDebut + " --date fin : " + dateFin;
 	}
 	
 	

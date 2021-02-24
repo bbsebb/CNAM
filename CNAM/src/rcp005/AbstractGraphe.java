@@ -7,6 +7,8 @@ import java.util.LinkedList;
 
 public abstract class AbstractGraphe {
 	LinkedHashSet<AbstractSommet<?>> sommets;
+	static int dateDebut =0;
+	static int dateFin = 0;
 
 	public AbstractGraphe() {
 		super();
@@ -68,12 +70,27 @@ public abstract class AbstractGraphe {
 	}
 	
 	protected void parcoursEnProfondeurRec(AbstractSommet<?> sommetDebut) {
-		if(sommetDebut.getCouleur() == AbstractSommet.BLANC) {
-			sommetDebut.setCouleur(AbstractSommet.GRIS);
-			sommetDebut.getSuccesseurs().stream().filter((s) -> s.getCouleur()==AbstractSommet.BLANC).forEach((s) -> parcoursEnProfondeurRec(s));
-		}
-	
+		
+		
+		sommetDebut.setDateDebut(this.dateDebut++);
+		sommetDebut.setCouleur(AbstractSommet.GRIS);
+		sommetDebut.getSuccesseurs().stream().filter((s) -> s.getCouleur()==AbstractSommet.BLANC).forEach((s) -> parcoursEnProfondeurRec(s));
+		
+		sommetDebut.setDateFin(this.dateFin++);
 		sommetDebut.setCouleur(AbstractSommet.NOIR);
+	}
+	
+	protected void parcoursEnProfondeurRec() {
+		
+		
+		if(isParcouru()) {
+			this.resetParcours();
+		}
+		this.getSommets().stream().filter((s) -> s.getCouleur()==AbstractSommet.BLANC).forEach((s) -> parcoursEnProfondeurRec(s));
+	}
+	
+	protected boolean isParcouru() {
+		return this.getSommets().stream().noneMatch((s) -> s.getCouleur()==AbstractSommet.BLANC);
 	}
 	
 	protected void resetParcours() {

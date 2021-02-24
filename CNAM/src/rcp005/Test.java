@@ -22,12 +22,9 @@ public class Test {
 		GrapheTest g = new GrapheTest();
 		g.addSommet(s1);
 		g.addSommet(s0);
-		g.parcoursEnProfondeurRec(s1);
-		System.err.println(s1.getCouleur());
-		System.err.println(s3.getCouleur());
-		g.resetParcours();
-		System.err.println(s1.getCouleur());
-		System.err.println(s3.getCouleur());
+		g.parcoursEnProfondeurRec();
+		g.getSommets().forEach(System.out::println);
+
 			
 	}
 
