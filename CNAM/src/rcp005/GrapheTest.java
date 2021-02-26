@@ -1,27 +1,23 @@
 package rcp005;
 
-import java.util.ArrayList;
-
-public class GrapheTest extends AbstractGraphe{
+public class GrapheTest<T extends Comparable<T>> extends AbstractGraphe<T> {
 
 	@Override
-	protected void parcoursEnLargeur() {
-		// TODO Auto-generated method stub
+	protected void addLien(AbstractSommet<T> s1, AbstractSommet<T> s2) {
+		if (!this.contenir(s1))
+			this.addSommet(s1);
+
+		if (!this.contenir(s2))
+			this.addSommet(s2);
+
+		this.liens.add(new Arrete<T>(s1,s2));
+
+	}
+
+	@Override
+	protected void addLien(T t1, T t2) {
+		this.addLien(this.getSommet(t1), this.getSommet(t2));
 		
 	}
-
-	@Override
-	protected ArrayList<AbstractGraphe> composanteConnexe() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected ArrayList<AbstractGraphe> composanteFortementConnexe() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 
 }

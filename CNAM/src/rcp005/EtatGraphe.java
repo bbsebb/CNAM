@@ -1,12 +1,9 @@
 package rcp005;
 
-import java.util.LinkedHashSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class EtatGraphe {
-	LinkedHashSet<AbstractSommet<?>> listSommets;
-	TreeMap<K, V> 
-	EtatGraphe() {
-		
-	}
+
+	TreeMap<TreeSet<AbstractSommet<?>>,String> etatGraphe;
 }

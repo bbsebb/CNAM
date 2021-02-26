@@ -1,108 +1,93 @@
 package rcp005;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
+import java.util.NoSuchElementException;
+import java.util.TreeSet;
 
-public abstract class AbstractGraphe {
-	LinkedHashSet<AbstractSommet<?>> sommets;
-	static int dateDebut = 0;
-	static int dateFin = 0;
+public abstract class AbstractGraphe<T extends Comparable<T>> {
+	protected TreeSet<AbstractSommet<T>> sommets;
+	protected TreeSet<AbstractLien<T>> liens;
+	
+	
 
-	public AbstractGraphe() {
-		super();
-		this.sommets = new LinkedHashSet<AbstractSommet<?>>();
+	public AbstractGraphe () {
+		this.sommets = new TreeSet<AbstractSommet<T>>();
+		this.liens = new TreeSet<AbstractLien<T>>();
+		
+	}
+	
+	
+	public AbstractGraphe (AbstractSommet<T> s) {
+		this.sommets = new TreeSet<AbstractSommet<T>>();
+		this.liens = new TreeSet<AbstractLien<T>>();
+		this.addSommet(s);
+	}
+	
+	
+	
+	
+	public  AbstractSommet<T> createSommet(T name) {
+		return new Sommet<T>(name);
 	}
 
-	public AbstractGraphe(LinkedHashSet<AbstractSommet<?>> sommets) {
-		super();
-		this.sommets = sommets;
-	}
-
-	protected LinkedHashSet<AbstractSommet<?>> getSommets() {
-		return sommets;
-	}
-
-	protected void setSommets(LinkedHashSet<AbstractSommet<?>> sommets) {
-		this.sommets = sommets;
-	}
-
-	protected boolean addSommet(AbstractSommet<?> s) {
-		boolean rtr = false;
-		for (AbstractSommet<?> sommet : s.getSuccesseurs()) {
-			if (!this.getSommets().contains(sommet))
-				rtr = addSommet(sommet);
+	public void addSommet(T name) {
+		if (!this.sommets.add(new Sommet<T>(name))) {
+			throw new IllegalArgumentException("Ce sommet existe deja");
 		}
-		this.getSommets().add(s);
+	}
+
+	public void addSommet(AbstractSommet<T> s) {
+		if (s == null) {
+			throw new NullPointerException("");
+		}
+		this.sommets.add(s);
+
+	}
+
+	protected abstract  void addLien(AbstractSommet<T> s1, AbstractSommet<T> s2) ;
+	protected abstract  void addLien(T t1, T t2) ;
+		/*
+		 * if (!this.contenir(s1)) this.addSommet(s1);
+		 * 
+		 * if (!this.contenir(s2)) this.addSommet(s2);
+		 * 
+		 * s1.addSommetAdj(s2);
+		 */
+
+	
+	protected AbstractSommet<T> getSommet(T t) {
+		for(AbstractSommet<T> s : this.sommets) {
+			if(s.getSommet().equals(t))
+				return s;
+		}
+		throw new NoSuchElementException("Sommet introuvable");
+	}
+	
+
+	
+	public  boolean contenir(AbstractSommet<T> s) {
+		if (s == null) {
+			return false;
+		}
+		return this.sommets.contains(s);
+	}
+	
+	public boolean contenir(T t) {
+		if (t == null) {
+			return false;
+		}
+		return this.sommets.stream().anyMatch((s) -> s.getSommet().equals(t));
+	}
+	
+	@Override 
+	public String toString() {
+		String rtr = ""; 
+		for(AbstractSommet<T> s : this.sommets) {
+			rtr += s.toString() + "\n";
+		}
+		for(AbstractLien<T> l : this.liens) {
+			rtr += l.toString() + "\n";
+		}
 		return rtr;
+	
 	}
-
-	protected void parcoursEnProfondeur() {
-		boolean contienBlanc = true;
-		while (contienBlanc) {
-			for (var s : this.getSommets()) {
-				contienBlanc = false;
-				if (s.getCouleur() == AbstractSommet.BLANC) {
-					this.parcoursEnProfondeur(s);
-					contienBlanc = true;
-				}
-			}
-
-		}
-	}
-
-	protected void parcoursEnProfondeur(AbstractSommet<?> sommetDebut) {
-		LinkedList<AbstractSommet<?>> pile = new LinkedList<AbstractSommet<?>>();
-		pile.offer(sommetDebut);
-		sommetDebut.setCouleur(AbstractSommet.GRIS);
-		while (!pile.isEmpty()) {
-			AbstractSommet<?> tetePile = pile.peek();
-			for (var s : tetePile.getSuccesseurs()) {
-				if (s.getCouleur() == AbstractSommet.BLANC) {
-					pile.offer(s);
-					s.setCouleur(AbstractSommet.GRIS);
-				}
-			}
-			pile.pop().setCouleur(AbstractSommet.NOIR);
-		}
-
-	}
-
-	protected void parcoursEnProfondeurRec(AbstractSommet<?> sommetDebut) {
-
-		
-		sommetDebut.setCouleur(AbstractSommet.GRIS);
-		sommetDebut.getSuccesseurs().stream().filter((s) -> s.getCouleur() == AbstractSommet.BLANC)
-				.forEach((s) -> parcoursEnProfondeurRec(s));
-
-		
-		sommetDebut.setCouleur(AbstractSommet.NOIR);
-	}
-
-	protected void parcoursEnProfondeurRec() {
-
-		if (isParcouru()) {
-			this.resetParcours();
-		}
-		while (this.isParcouru()) {
-			this.getSommets().stream().filter((s) -> s.getCouleur() == AbstractSommet.BLANC)
-					.forEach((s) -> parcoursEnProfondeurRec(s));
-		}
-	}
-
-	protected boolean isParcouru() {
-		return this.getSommets().stream().noneMatch((s) -> s.getCouleur() == AbstractSommet.BLANC);
-	}
-
-	protected void resetParcours() {
-		this.getSommets().forEach(AbstractSommet<?>::reset);
-	}
-
-	protected abstract void parcoursEnLargeur();
-
-	protected abstract ArrayList<AbstractGraphe> composanteConnexe();
-
-	protected abstract ArrayList<AbstractGraphe> composanteFortementConnexe();
-
 }
