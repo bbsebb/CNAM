@@ -1,31 +1,36 @@
 package rcp005;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 public abstract class AbstractGraphe<T extends Comparable<T>> {
 	protected TreeSet<AbstractSommet<T>> sommets;
-	protected TreeSet<AbstractLien<T>> liens;
-	
-	
 
+	
 	public AbstractGraphe () {
 		this.sommets = new TreeSet<AbstractSommet<T>>();
-		this.liens = new TreeSet<AbstractLien<T>>();
-		
 	}
 	
 	
-	public AbstractGraphe (AbstractSommet<T> s) {
+	protected AbstractGraphe (AbstractSommet<T> s) {
 		this.sommets = new TreeSet<AbstractSommet<T>>();
-		this.liens = new TreeSet<AbstractLien<T>>();
 		this.addSommet(s);
 	}
 	
+	protected void setSommet(T t1,T t2) {
+		this.sommets.stream().filter((s) -> s.getSommet().equals(t1)).limit(1).forEach((s) -> s.setSommet(t2));;
+	}
 	
+	protected AbstractSommet<T> getSommet(T t) {
+		for(AbstractSommet<T> s : this.sommets) {
+			if(s.getSommet().equals(t))
+				return s;
+		}
+		throw new NoSuchElementException("Sommet introuvable");
+	}
 	
-	
-	public  AbstractSommet<T> createSommet(T name) {
+	protected  AbstractSommet<T> createSommet(T name) {
 		return new Sommet<T>(name);
 	}
 
@@ -40,28 +45,18 @@ public abstract class AbstractGraphe<T extends Comparable<T>> {
 			throw new NullPointerException("");
 		}
 		this.sommets.add(s);
-
 	}
-
-	protected abstract  void addLien(AbstractSommet<T> s1, AbstractSommet<T> s2) ;
-	protected abstract  void addLien(T t1, T t2) ;
-		/*
-		 * if (!this.contenir(s1)) this.addSommet(s1);
-		 * 
-		 * if (!this.contenir(s2)) this.addSommet(s2);
-		 * 
-		 * s1.addSommetAdj(s2);
-		 */
-
 	
-	protected AbstractSommet<T> getSommet(T t) {
-		for(AbstractSommet<T> s : this.sommets) {
-			if(s.getSommet().equals(t))
-				return s;
+	public void getDegre(AbstractSommet<T> s) {
+		if(s == null) {
+			throw new NullPointerException("");
 		}
-		throw new NoSuchElementException("Sommet introuvable");
+		if(!this.contenir(s))
+			throw new IllegalArgumentException("");
+		
+		
 	}
-	
+
 
 	
 	public  boolean contenir(AbstractSommet<T> s) {
@@ -78,16 +73,74 @@ public abstract class AbstractGraphe<T extends Comparable<T>> {
 		return this.sommets.stream().anyMatch((s) -> s.getSommet().equals(t));
 	}
 	
+	
+	public void parcoursEnProfondeur() {
+		this.sommets.forEach((s) -> s.resetCouleur());
+		int date = 0;
+		Iterator<AbstractSommet<T>> it =  this.sommets.iterator();
+		while(it.hasNext()) {
+			AbstractSommet<T> s = (AbstractSommet<T>) it.next();
+			if(s.getCouleur() == Couleur.BLANC)
+				date = this.parcoursEnProfondeur(s,date);
+		}
+		this.updateSort();
+	}
+	
+	protected int parcoursEnProfondeur(AbstractSommet<T> s,int date) {
+		s.setCouleur(Couleur.GRIS);
+		s.setDateDebut(++date);
+		for(AbstractSommet<T> adj : s.getAdjacent()) {
+			if(adj.getCouleur() == Couleur.BLANC)
+				date = this.parcoursEnProfondeur(adj, date);
+		}
+		s.setCouleur(Couleur.NOIR);
+		s.setDateFin(++date);
+		return date;
+		
+	}
+	
+	private void updateSort() {
+		TreeSet<AbstractSommet<T>> sommets = new TreeSet<AbstractSommet<T>>(this.sommets);
+		this.sommets.clear();
+		sommets.forEach((s) -> this.sommets.add(s));
+	}
+	
+	
 	@Override 
 	public String toString() {
 		String rtr = ""; 
 		for(AbstractSommet<T> s : this.sommets) {
-			rtr += s.toString() + "\n";
-		}
-		for(AbstractLien<T> l : this.liens) {
-			rtr += l.toString() + "\n";
+			rtr += s.toString() +"\n";
+			for(AbstractSommet<T> adj : s.getAdjacent()) {
+				rtr += "\t" +adj.toString() +"\n";
+			}
+			rtr += "\n";
 		}
 		return rtr;
+	}
 	
+	public String toStringSommet() {
+		String rtr = ""; 
+		for(AbstractSommet<T> s : this.sommets) {
+			rtr += s.toString() +"\n";
+			rtr += "\n";
+		}
+		return rtr;
+	}
+	
+	public String toStringLien() {
+		String rtr = ""; 
+		for(AbstractSommet<T> s : this.sommets) {
+		
+			for(AbstractSommet<T> adj : s.getAdjacent()) {
+				rtr +=s.toString() + " ----- " +adj.toString() +"\n";
+			}		
+		}
+		return rtr;
+	}
+	
+	protected abstract  void addLien(AbstractSommet<T> s1, AbstractSommet<T> s2) ;
+	protected  void addLien(T t1, T t2) {
+		this.addLien(this.getSommet(t1), this.getSommet(t2));
 	}
 }
