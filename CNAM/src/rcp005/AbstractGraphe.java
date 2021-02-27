@@ -6,7 +6,8 @@ import java.util.TreeSet;
 
 public abstract class AbstractGraphe<T extends Comparable<T>> {
 	protected TreeSet<AbstractSommet<T>> sommets;
-
+	boolean connexe;
+	boolean trie;
 	
 	public AbstractGraphe () {
 		this.sommets = new TreeSet<AbstractSommet<T>>();
@@ -47,17 +48,20 @@ public abstract class AbstractGraphe<T extends Comparable<T>> {
 		this.sommets.add(s);
 	}
 	
-	public void getDegre(AbstractSommet<T> s) {
+	public int getDegre(AbstractSommet<T> s) {
 		if(s == null) {
 			throw new NullPointerException("");
 		}
 		if(!this.contenir(s))
 			throw new IllegalArgumentException("");
 		
-		
+		return s.getDegre();
 	}
 
 
+	public int getDegre(T t) {
+		return this.getDegre(this.getSommet(t));
+	}
 	
 	public  boolean contenir(AbstractSommet<T> s) {
 		if (s == null) {
@@ -81,9 +85,21 @@ public abstract class AbstractGraphe<T extends Comparable<T>> {
 		while(it.hasNext()) {
 			AbstractSommet<T> s = (AbstractSommet<T>) it.next();
 			if(s.getCouleur() == Couleur.BLANC)
-				date = this.parcoursEnProfondeur(s,date);
+				date = this.parcoursEnProfondeur_(s,date);
 		}
 		this.updateSort();
+	}
+	
+	private int parcoursEnProfondeur_(AbstractSommet<T> s,int date) {
+		s.setCouleur(Couleur.GRIS);
+		s.setDateDebut(++date);
+		for(AbstractSommet<T> adj : s.getAdjacent()) {
+			if(adj.getCouleur() == Couleur.BLANC)
+				date = this.parcoursEnProfondeur_(adj, date);
+		}
+		s.setCouleur(Couleur.NOIR);
+		s.setDateFin(++date);
+		return date;	
 	}
 	
 	protected int parcoursEnProfondeur(AbstractSommet<T> s,int date) {
@@ -91,12 +107,12 @@ public abstract class AbstractGraphe<T extends Comparable<T>> {
 		s.setDateDebut(++date);
 		for(AbstractSommet<T> adj : s.getAdjacent()) {
 			if(adj.getCouleur() == Couleur.BLANC)
-				date = this.parcoursEnProfondeur(adj, date);
+				date = this.parcoursEnProfondeur_(adj, date);
 		}
 		s.setCouleur(Couleur.NOIR);
 		s.setDateFin(++date);
-		return date;
-		
+		this.updateSort();
+		return date;	
 	}
 	
 	private void updateSort() {
