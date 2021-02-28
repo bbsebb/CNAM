@@ -1,6 +1,6 @@
 package rcp005;
 
-public class GrapheOriente<T extends Comparable<T> & Cloneable> extends AbstractGraphe<T> {
+public class GrapheOriente<T extends Comparable<T>> extends AbstractGraphe<T> {
 	
 	
 	@Override

@@ -1,6 +1,6 @@
 package rcp005;
 
-public class Sommet<T extends Comparable<T> & Cloneable> extends AbstractSommet<T>{
+public class Sommet<T extends Comparable<T>> extends AbstractSommet<T>{
 
 	public Sommet(T sommet) {
 		super(sommet);
@@ -9,7 +9,10 @@ public class Sommet<T extends Comparable<T> & Cloneable> extends AbstractSommet<
 
 	@Override
 	protected Sommet<T> clone() throws CloneNotSupportedException {
-		Sommet<T> s = new Sommet<T>(this.getSommet());
+		T t = this.getSommet();
+		Class<T> cl = (Class<T>) t.getClass();
+		Class<T> [] clInt = cl.getInterfaces();
+ 		Sommet<T> s = new Sommet<T>(this.getSommet());
 		
 		return s;
 	}

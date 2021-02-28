@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
-public abstract class AbstractGraphe<T extends Comparable<T> & Cloneable> implements Cloneable {
+public abstract class AbstractGraphe<T extends Comparable<T>> implements Cloneable {
 	protected TreeSet<AbstractSommet<T>> sommets;
 	boolean connexe;
 	boolean trie;

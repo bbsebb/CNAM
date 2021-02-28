@@ -3,7 +3,7 @@ package rcp005;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 
-public abstract class AbstractSommet<T extends Comparable<T> & Cloneable> implements Comparable<AbstractSommet<T>>, Cloneable {
+public abstract class AbstractSommet<T extends Comparable<T>> implements Comparable<AbstractSommet<T>>, Cloneable {
 	private T sommet;
 	private LinkedHashSet<AbstractSommet<T>> adjacent;
 	private int dateDebut;

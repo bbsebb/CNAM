@@ -2,7 +2,7 @@ package rcp005;
 
 import java.util.Objects;
 
-public abstract class AbstractLien<T extends Comparable<T>> implements Comparable<AbstractLien<T>>{
+public abstract class AbstractLien<T extends Comparable<T> & Cloneable> implements Comparable<AbstractLien<T>>{
 	private AbstractSommet<T> sommet1;
 	private AbstractSommet<T> sommet2;
 	
