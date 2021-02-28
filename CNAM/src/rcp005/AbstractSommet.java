@@ -3,11 +3,12 @@ package rcp005;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 
-public abstract class AbstractSommet<T extends Comparable<T>> implements Comparable<AbstractSommet<T>> {
+public abstract class AbstractSommet<T extends Comparable<T> & Cloneable> implements Comparable<AbstractSommet<T>>, Cloneable {
 	private T sommet;
 	private LinkedHashSet<AbstractSommet<T>> adjacent;
 	private int dateDebut;
 	private int dateFin;
+	private int classeConnexe;
 	private Couleur couleur;
 
 	public AbstractSommet() {
@@ -16,12 +17,15 @@ public abstract class AbstractSommet<T extends Comparable<T>> implements Compara
 		this.adjacent = new LinkedHashSet<AbstractSommet<T>>();
 
 	}
+	
+	
 
 	protected AbstractSommet(T sommet) {
 		this.sommet = sommet;
 		this.sommet = sommet;
 		this.dateDebut = 0;
 		this.dateFin = 0;
+		this.classeConnexe = 0;
 		this.adjacent = new LinkedHashSet<AbstractSommet<T>>();
 		this.couleur = Couleur.BLANC;
 	}
@@ -100,6 +104,21 @@ public abstract class AbstractSommet<T extends Comparable<T>> implements Compara
 		this.setCouleur(Couleur.BLANC);
 	}
 
+	
+	/**
+	 * @return the classeConnexe
+	 */
+	protected int getClasseConnexe() {
+		return classeConnexe;
+	}
+
+	/**
+	 * @param classeConnexe the classeConnexe to set
+	 */
+	protected void setClasseConnexe(int classeConnexe) {
+		this.classeConnexe = classeConnexe;
+	}
+
 	protected void addLien(AbstractSommet<T> s) {
 		if (s != null)
 			this.adjacent.add(s);
@@ -116,6 +135,11 @@ public abstract class AbstractSommet<T extends Comparable<T>> implements Compara
 	
 	protected int getDegre() {
 		return this.getAdjacent().size();
+	}
+	
+	public void inverse() {
+		this.getAdjacent().forEach((s) -> s.addLien(this));
+		this.getAdjacent().clear();
 	}
 
 	@Override
@@ -151,5 +175,12 @@ public abstract class AbstractSommet<T extends Comparable<T>> implements Compara
 		return "Sommet " + sommet.toString() + " (Couleur : " + this.getCouleur() + " date début : "
 				+ this.getDateDebut() + " date fin : " + this.getDateFin() + ")";
 	}
+
+
+
+	@Override
+	protected abstract AbstractSommet<T> clone() throws CloneNotSupportedException ;
+	
+	
 
 }
