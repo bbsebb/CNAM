@@ -29,10 +29,12 @@ public class Test {
 		g.addArc("8", "7");
 		
 		
-		System.out.println(g.toString());
+		System.out.println(g.toStringLien());
 		
 		GrapheOriente<String> g2 = (GrapheOriente<String>) g.reverse();
-		System.out.println(g2.toString());
+		System.err.println();
+		System.err.println();
+		System.out.println(g2.toStringLien());
 
 		
 		

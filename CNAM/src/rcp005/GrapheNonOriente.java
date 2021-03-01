@@ -24,4 +24,10 @@ public class GrapheNonOriente<T extends Comparable<T>> extends AbstractGraphe<T>
 	public void addArrete(T t1, T t2) {
 		this.addLien(t1, t2);
 	}
+
+	@Override
+	public AbstractGraphe<T> reverse() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

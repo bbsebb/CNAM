@@ -1,6 +1,6 @@
 package rcp005;
 
-public class GrapheOriente<T extends Comparable<T>> extends AbstractGraphe<T> {
+public class GrapheOriente<T extends Comparable<T>> extends AbstractGraphe<T>  {
 	
 	
 	@Override
@@ -27,18 +27,16 @@ public class GrapheOriente<T extends Comparable<T>> extends AbstractGraphe<T> {
 	}
 
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		GrapheOriente<T> g = new GrapheOriente<>();
+	public AbstractGraphe<T> reverse() {
+		AbstractGraphe<T> g = new GrapheOriente<T>();
 		this.sommets.forEach((s) -> {
-			try {
-				g.addSommet(s.clone());
-			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			AbstractSommet<T> nvs = new Sommet<T>(s.getSommet());
+			s.getAdjacent().
 		});
 		return null;
 	}
+
+
 	
 	
 }

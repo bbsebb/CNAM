@@ -3,7 +3,7 @@ package rcp005;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 
-public abstract class AbstractSommet<T extends Comparable<T>> implements Comparable<AbstractSommet<T>>, Cloneable {
+public abstract class AbstractSommet<T extends Comparable<T>> implements Comparable<AbstractSommet<T>> {
 	private T sommet;
 	private LinkedHashSet<AbstractSommet<T>> adjacent;
 	private int dateDebut;
@@ -178,8 +178,7 @@ public abstract class AbstractSommet<T extends Comparable<T>> implements Compara
 
 
 
-	@Override
-	protected abstract AbstractSommet<T> clone() throws CloneNotSupportedException ;
+
 	
 	
 

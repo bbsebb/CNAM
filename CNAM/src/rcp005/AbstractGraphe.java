@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
-public abstract class AbstractGraphe<T extends Comparable<T>> implements Cloneable {
+public abstract class AbstractGraphe<T extends Comparable<T>>   {
 	protected TreeSet<AbstractSommet<T>> sommets;
 	boolean connexe;
 	boolean trie;
@@ -150,13 +150,7 @@ public abstract class AbstractGraphe<T extends Comparable<T>> implements Cloneab
 		return date;
 	}
 
-	public AbstractGraphe<T> reverse() throws CloneNotSupportedException {
-
-		@SuppressWarnings("unchecked")
-		AbstractGraphe<T> g = (AbstractGraphe<T>) this.clone();
-		g.sommets.forEach((s) -> s.inverse());
-		return g;
-	}
+	public abstract AbstractGraphe<T> reverse() ;
 	
 	private void DFSpreTraitement(AbstractSommet<T> s, int date) {
 		s.setCouleur(Couleur.GRIS);
@@ -214,7 +208,7 @@ public abstract class AbstractGraphe<T extends Comparable<T>> implements Cloneab
 	}
 
 
-	protected abstract Object clone() throws CloneNotSupportedException ;
+
 	
 	
 }
