@@ -1,6 +1,8 @@
 package nfa032.td;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 public class Terminal{    
     static BufferedReader in =
 	new BufferedReader(new InputStreamReader(System.in));

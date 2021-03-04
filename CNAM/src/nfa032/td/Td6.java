@@ -1,6 +1,18 @@
 package nfa032.td;
 
-import nfa032.td.td6.*;
+import nfa032.td.td6.AvecTranslation;
+import nfa032.td.td6.Cercle;
+import nfa032.td.td6.Chat;
+import nfa032.td.td6.Chien;
+import nfa032.td.td6.Comparer;
+import nfa032.td.td6.Compte;
+import nfa032.td.td6.Convertible;
+import nfa032.td.td6.Crier;
+import nfa032.td.td6.Date;
+import nfa032.td.td6.Deplacement;
+import nfa032.td.td6.Point;
+import nfa032.td.td6.Rectangle;
+import nfa032.td.td6.Triangle;
 
 public class Td6 {
 

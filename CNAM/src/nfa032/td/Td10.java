@@ -1,7 +1,7 @@
 package nfa032.td;
 
-import nfa032.td.td10.Liste;
 import nfa032.td.td10.ElementListe;
+import nfa032.td.td10.Liste;
 
 public class Td10 {
 	public static void main(String[] args) {

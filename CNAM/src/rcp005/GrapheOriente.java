@@ -26,13 +26,14 @@ public class GrapheOriente<T extends Comparable<T>> extends AbstractGraphe<T>  {
 		//this.parcoursEnProfondeur();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public AbstractGraphe<T> reverse() {
+	public AbstractGraphe<T> reverse() throws CloneNotSupportedException {
 		AbstractGraphe<T> g = new GrapheOriente<T>();
-		this.sommets.forEach((s) -> {
-			AbstractSommet<T> nvs = new Sommet<T>(s.getSommet());
-			s.getAdjacent().
-		});
+
+		for(AbstractSommet<T> s : this.sommets) {
+			g.addSommet((AbstractSommet<T>) s.clone() );
+		}
 		return null;
 	}
 

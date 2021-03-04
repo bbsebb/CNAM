@@ -1,14 +1,18 @@
 package nfa011;
 
 import java.io.FileInputStream;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class Tp2 {
 
 	public static void main(String[] args) {
 
-		// Récupération des propriétés de connexion à la BDD
+		// Rï¿½cupï¿½ration des propriï¿½tï¿½s de connexion ï¿½ la BDD
 		Properties prop = new Properties();
 		try (FileInputStream fis = new FileInputStream("conf.properties")) {
 			prop.load(fis);
@@ -21,7 +25,7 @@ public class Tp2 {
 				prop.getProperty("jdbc.pw"))) {
 			DatabaseMetaData metaDB = con.getMetaData();
 
-			String[] tab = { "TABLE" }; // On récupère uniquement les tables de type TABLE
+			String[] tab = { "TABLE" }; // On rï¿½cupï¿½re uniquement les tables de type TABLE
 			String shema = "public"; // On cherche les tables dans le shema "public "
 
 			System.out.print(metaDB.getDatabaseProductName() + " " + metaDB.getDatabaseProductVersion() + " "
@@ -29,20 +33,20 @@ public class Tp2 {
 			System.out.println();
 			System.out.println("  |");
 
-			try (ResultSet rsTables = metaDB.getTables(null, shema, "%", tab)) { // Récupération de la liste des tables
+			try (ResultSet rsTables = metaDB.getTables(null, shema, "%", tab)) { // Rï¿½cupï¿½ration de la liste des tables
 				while (rsTables.next()) {
 					String table = rsTables.getString(3);
 					System.out.println("  |-" + table);
 					try (ResultSet rsPKey = metaDB.getPrimaryKeys(null, shema, table);
-							ResultSet rsCol = metaDB.getColumns(null, shema, table, null)) { // Récupération de
-																								// metadonnées sur la
+							ResultSet rsCol = metaDB.getColumns(null, shema, table, null)) { // Rï¿½cupï¿½ration de
+																								// metadonnï¿½es sur la
 																								// table "table"
 						while (rsCol.next()) {
 							String nullable = (rsCol.getInt(11) == 0) ? "Non nullable" : "Nullable";
 							System.out.println("       |-" + rsCol.getString(4) + " " + nullable);
 						}
 						while (rsPKey.next()) {
-							System.out.println("                  clé primaire :" + rsPKey.getString(4));
+							System.out.println("                  clï¿½ primaire :" + rsPKey.getString(4));
 						}
 					}
 				}

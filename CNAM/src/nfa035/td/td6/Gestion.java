@@ -3,9 +3,6 @@ package nfa035.td.td6;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
-
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -47,7 +44,7 @@ public class Gestion {
 		
 		for(Iterator<Entry<NumBon, Fiche>> i = commandes.entrySet().iterator();i.hasNext();) {
 			Map.Entry<NumBon, Fiche> entree = i.next();
-			System.out.print("Commande numéro: " +entree.getKey().toString() +" ---> ");
+			System.out.print("Commande numï¿½ro: " +entree.getKey().toString() +" ---> ");
 			entree.getValue().affiche();
 			System.out.println();
 		}
@@ -73,7 +70,7 @@ public class Gestion {
 	}
 
 	/**
-	 * @param tab le tab à éditer
+	 * @param tab le tab ï¿½ ï¿½diter
 	 */
 	public void setTab(ArrayList<Fiche> tab) {
 		this.tab = tab;
@@ -118,10 +115,10 @@ public class Gestion {
 				afficheMenu = false;
 				break;
 			case 1:
-				System.out.println("Non implémenté");
+				System.out.println("Non implï¿½mentï¿½");
 				break;
 			case 2:
-				System.out.println("Non implémenté");
+				System.out.println("Non implï¿½mentï¿½");
 				break;
 			case 3 :
 				g.afficheFiches();
@@ -132,7 +129,7 @@ public class Gestion {
 				while(i.hasNext()) {
 					Map.Entry<NumBon, Fiche> entry = i.next();
 					if(g.getTab().get(iFiche).getNom().equals(entry.getValue().getNom())) {
-						System.out.print("Commande numéro: " +entry.getKey() +" ---> ");
+						System.out.print("Commande numï¿½ro: " +entry.getKey() +" ---> ");
 						entry.getValue().affiche();
 					}
 				}
@@ -162,19 +159,19 @@ public class Gestion {
 				break;
 			case 2:
 				g.afficheFiches();
-				System.out.println("Quel client correspond la commande; entrer le numéro associé");
+				System.out.println("Quel client correspond la commande; entrer le numï¿½ro associï¿½");
 				int iFiche = sc3.nextInt()-1;
-				System.out.println("Entrer le numéro de la commande :");
+				System.out.println("Entrer le numï¿½ro de la commande :");
 				sc3.nextLine();
 				String str = sc3.nextLine();
 				System.out.println("Entrer la date de commande :");
 				String date = sc3.nextLine();
 				if(g.getCommandes().containsKey(new NumBon(str)))
-					System.out.println("Le numéro de commande " + str +" est déjà utilisé");
+					System.out.println("Le numï¿½ro de commande " + str +" est dï¿½jï¿½ utilisï¿½");
 				else {
 					 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
 					g.ajouteCommande(str,LocalDate.parse(date, formatter), g.getTab().get(iFiche));
-					System.out.println("Commande enregistrée");
+					System.out.println("Commande enregistrï¿½e");
 				}
 				
 				break;

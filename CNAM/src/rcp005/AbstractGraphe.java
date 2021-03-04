@@ -150,7 +150,7 @@ public abstract class AbstractGraphe<T extends Comparable<T>>   {
 		return date;
 	}
 
-	public abstract AbstractGraphe<T> reverse() ;
+	public abstract AbstractGraphe<T> reverse() throws CloneNotSupportedException ;
 	
 	private void DFSpreTraitement(AbstractSommet<T> s, int date) {
 		s.setCouleur(Couleur.GRIS);
