@@ -82,6 +82,7 @@ public class Tp3 {
 	 */
 	static void afficherQuery(String sql, Connection con)  {
 		try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+			
 			ResultSetMetaData rsMeta = rs.getMetaData();
 			int nbrCol = rsMeta.getColumnCount();
 			int[] sizeCol = sizeColumn(rs);
