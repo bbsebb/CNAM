@@ -10,7 +10,7 @@ public class Exo3 {
 	String[][] init() {
 		String[][] echiquier = new String[8][8];
 		String[] couleur = {"noir","blanc"};
-		echiquier[0][0] = 
+		
 		
 		
 		return echiquier;
